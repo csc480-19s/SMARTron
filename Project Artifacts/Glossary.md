@@ -1,0 +1,1 @@
+1. **User** - An indivdual who utilizes the system
