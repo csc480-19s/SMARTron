@@ -5,4 +5,4 @@
 5. **SMARTron Web App** - The web app that provides the user interface for viewing and correcting scanned exams
 6. **LakerNet ID** - The username/identification a user will provide, specific to SUNY Oswego
 7. **SRS** - Software Requirements Specification
-8. **QMR** - Quality Management Report
+8. **QMR** - Quality Management Report 
