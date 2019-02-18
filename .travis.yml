@@ -1,10 +1,10 @@
 matrix:
   include:
-    - language: java
-      jdk: oraclejdk8
     - language: python
       python:
         - "3.7.0"
+        dist: xenial
+        sudo: true
       before_install:
         - sudo apt-get install build-essential
         - sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
