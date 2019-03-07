@@ -1,5 +1,8 @@
+/* Login page style*/
 .App {
   text-align: center;
+  color: #282c34;
+  background-color: #282c34;
 }
 
 .App-logo {
@@ -20,14 +23,150 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: #003C60;
+}
+.loginButton{
+  position: absolute;
+  width: 400px;
+  height: 500px;
+  text-align: center;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -25%);
+  padding: 50px;
+  border-radius: 25px;
+  border: 2px solid #60f3ab;
+}
+.loginButton p{
+  font-family: "Helvetica Neue";
+  font-size: x-large;
+
+
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.button{
+  justify-content: center;
 }
+
+
+/* Home page style*/
+.topBar{
+  position: fixed;
+  align-content: center;
+  top: 0;
+  margin-left: 0%;
+  margin-right: 0%;
+  height: 70px;
+  width: 100%;
+  background-color: #f2f2f2;
+}
+
+.right{
+  float: right;
+  padding: 10px;
+  font-size: x-large;
+  color: #003C60 ;
+}
+.leftA{
+  float: left;
+  padding-left: 10px;
+  color: #003C60 ;
+  font-family: "Helvetica Neue";
+}
+.leftB{
+  float: left;
+  color: #F4743B;
+  font-family: "Helvetica Neue";
+}
+.welcome{
+  padding-top: 100px;
+  padding-left: 50px;
+  padding-bottom: 100px;
+
+  font-family: "Helvetica Neue";
+  color: #003C60 ;
+}
+.testList{
+  position: absolute;
+  width: 40%;
+  left: 25%;
+  padding: 25px;
+  border: 2px solid black;
+  border-radius: 25px;
+}
+.testList2{
+  position:absolute ;
+  width: 40%;
+  left: 25%;
+  top: 600%;
+  padding: 25px;
+  border: 2px solid black;
+  border-radius: 25px;
+}
+.buttons{
+  display: table;
+  position: absolute;
+  top: 300%;
+  left: 25%;
+}
+.buttons button{
+  display: inline-block;
+  position: absolute;
+  float: right;
+  width: 150px;
+  height: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #60f3ab ;
+  color:  #003C60;
+  border-radius: 5px;
+  height: 50px;
+  left: 645px;
+
+}
+.buttons select{
+  position: absolute;
+  float: left;
+  height: 50px;
+  margin: 0 auto;
+  left:515px;
+
+
+}
+
+.topBar button {
+  display: inline-block;
+  float: right;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #60f3ab  ;
+  color: #003C60;
+  border-radius: 10px;
+  height: 50px;
+}
+button:hover{
+  background-color: white;
+  color: #003C60;
+}
+.test1 p{
+  display: inline-block;
+  float: left;
+  font-size: 14pt;
+  color: #0081A1;
+
+
+}
+.test1 p:hover{
+    color: #035B8F;
+}
+.logout{
+  float: right;
+  padding-top: 25px;
+}
+.alert{
+  float: left;
+  padding-left: 300px;
+  padding-top: 12px;
+}
+
+
