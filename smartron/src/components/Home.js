@@ -3,7 +3,6 @@ import logo from '../assets/logo.svg';
 import '../css/App.css';
 import alert from '../assets/logo.svg'
 
-import { createBrowserHistory } from 'history';
 
 class Home extends Component {
     constructor(props) {
