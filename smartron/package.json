@@ -1,12 +1,5 @@
 {
   "name": "smartron",
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!<rootDir>/node_modules/",
-      "!<rootDir>/path/to/dir/"
-    ]
-  },
   "version": "0.1.0",
   "private": true,
   "dependencies": {
