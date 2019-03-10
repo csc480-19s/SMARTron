@@ -12,11 +12,11 @@ class Home extends Component {
         this.state = {
             title1: "Exam 2",
             title2: "Exam 1",
-            show1: true,
-            show2: true
+            exams:[]
         }
 
         this.navResults = this.navResults.bind(this);
+        this.launchExam = this.launchExam.bind(this)
     }
 
     sort = () => {
@@ -25,19 +25,16 @@ class Home extends Component {
         this.setState({ title2: swap })
     }
 
-    showbutton = (num) => {
-        if (num === 1) {
-            var swap = this.state.show1
-            this.setState({ show1: !swap })
-        } else {
-            swap = this.state.show2
-            this.setState({ show2: !swap })
-        }
-    }
+
 
     navResults(){
         // createBrowserHistory().push("/results");
         this.props.history.push("/results");
+    }
+
+    launchExam(){
+        this.state.exams.push(<Exam problem={false} text={"Exam " + this.state.exams.length} history={this.props.history}/>)
+        this.setState(this.state)
     }
 
     render() {
@@ -48,10 +45,10 @@ class Home extends Component {
                 <img className={"logout"} src={logo} height={40} />
                 <h1 className={"welcome"}> Welcome, Bastian Tenbergen</h1>
                 <div className={"buttons"}>
-                    <button className={"scanButton"}>New Test Scan</button>
+                    <button onClick={this.launchExam} className={"scanButton"}>New Test Scan</button>
                     <select className={"select"} onChange={this.sort}><option value={"recent"}>Most Recent </option> <option value={"alpha"}>Alphanumeric</option></select>
                 </div>
-                <ExamList history={this.props.history}/>
+                <ExamList exams={this.state.exams} history={this.props.history}/>
 
 
             </div>

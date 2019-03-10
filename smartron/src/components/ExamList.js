@@ -4,15 +4,15 @@ import Exam from "./Exam";
 class ExamList extends Component{
     constructor(props) {
         super(props);
+        this.state ={
+            list:props.exams
+        }
 
     }
     render() {
+
         return(
-            <>
-            <Exam text={"Exam 1"} history={this.props.history}/>
-            <Exam text={"Exam 2"} history={this.props.history}/>
-            <Exam text={"Exam 3"} history={this.props.history}/>
-            </>
+            this.state.list
         )
     }
 
