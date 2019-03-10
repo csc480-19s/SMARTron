@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import logo from '../assets/logo.svg';
 import '../css/App.css';
 import alert from '../assets/logo.svg'
+import Exam from "./Exam";
+import ExamList from "./ExamList"
 
 
 class Home extends Component {
@@ -41,7 +43,7 @@ class Home extends Component {
     render() {
         return (
             <div className={"topBar"}>
-                <h1 className={"leftA"}>SMART</h1><h1 className={"leftB"}>ron</h1>
+                <h1 className={"leftA"}>SMART</h1><h1 className={"leftB"}>RON</h1>
                 <h1 className={"right"}>Username </h1>
                 <img className={"logout"} src={logo} height={40} />
                 <h1 className={"welcome"}> Welcome, Bastian Tenbergen</h1>
@@ -49,26 +51,9 @@ class Home extends Component {
                     <button className={"scanButton"}>New Test Scan</button>
                     <select className={"select"} onChange={this.sort}><option value={"recent"}>Most Recent </option> <option value={"alpha"}>Alphanumeric</option></select>
                 </div>
-                <div id={"testList"} className={"testList"}>
-                    <div className={"test1"}>
-                        <p className={"fir"}>{this.state.title1}
-                            <a onClick={this.sort} className={"editName"}><img src={logo} height={25} /></a>
-                        </p>{this.state.title1.localeCompare("Exam 2") ?
-                            <img className={"alert"} src={alert} height={25} /> : null}
-                        <button>Edit Answer Key</button>
-                        <button onClick={this.navResults}>View Results</button>
-                    </div>
-                </div>
-                <div className={"testList2"}>
-                    <div className={"test1"}>
-                        <p className={"sec"}>{this.state.title2}
-                            <a onClick={this.sort} className={"editName"}><img src={logo} height={25} /></a>
-                        </p>{this.state.title2.localeCompare("Exam 2") ?
-                            <img className={"alert"} src={alert} height={25} /> : null}
-                        <button>Edit Answer Key</button>
-                        <button>View Results</button>
-                    </div>
-                </div>
+                <ExamList history={this.props.history}/>
+
+
             </div>
         );
     }

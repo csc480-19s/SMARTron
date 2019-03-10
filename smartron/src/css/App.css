@@ -43,6 +43,9 @@
 
 
 }
+.Exam{
+  padding: 50px;
+}
 
 .button{
   justify-content: center;
@@ -75,7 +78,7 @@
 }
 .leftB{
   float: left;
-  color: #F4743B;
+  color: #00CCBC;
   font-family: "Helvetica Neue";
 }
 .welcome{
@@ -86,23 +89,8 @@
   font-family: "Helvetica Neue";
   color: #003C60 ;
 }
-.testList{
-  position: absolute;
-  width: 40%;
-  left: 25%;
-  padding: 25px;
-  border: 2px solid black;
-  border-radius: 25px;
-}
-.testList2{
-  position:absolute ;
-  width: 40%;
-  left: 25%;
-  top: 600%;
-  padding: 25px;
-  border: 2px solid black;
-  border-radius: 25px;
-}
+
+
 .buttons{
   display: table;
   position: absolute;
@@ -148,17 +136,7 @@ button:hover{
   background-color: white;
   color: #003C60;
 }
-.test1 p{
-  display: inline-block;
-  float: left;
-  font-size: 14pt;
-  color: #0081A1;
 
-
-}
-.test1 p:hover{
-    color: #035B8F;
-}
 .logout{
   float: right;
   padding-top: 25px;
@@ -168,5 +146,6 @@ button:hover{
   padding-left: 300px;
   padding-top: 12px;
 }
+
 
 
