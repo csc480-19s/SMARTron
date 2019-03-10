@@ -12,7 +12,7 @@ class Home extends Component {
         this.state = {
             title1: "Exam 2",
             title2: "Exam 1",
-            exams:[]
+            exams:[<Exam problem={true} text={"Exam 0"} history={this.props.history}/>]
         }
 
         this.navResults = this.navResults.bind(this);
