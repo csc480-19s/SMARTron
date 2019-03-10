@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import logo from '../assets/logo.svg';
 import '../css/App.css';
 import alert from '../assets/logo.svg'
+import Exam from "./Exam";
+import ExamList from "./ExamList"
 
 
 class Home extends Component {
@@ -10,11 +12,11 @@ class Home extends Component {
         this.state = {
             title1: "Exam 2",
             title2: "Exam 1",
-            show1: true,
-            show2: true
+            exams:[<Exam problem={true} text={"Exam 0"} history={props.history}/>]
         }
 
         this.navResults = this.navResults.bind(this);
+        this.launchExam = this.launchExam.bind(this)
     }
 
     sort = () => {
@@ -23,52 +25,32 @@ class Home extends Component {
         this.setState({ title2: swap })
     }
 
-    showbutton = (num) => {
-        if (num === 1) {
-            var swap = this.state.show1
-            this.setState({ show1: !swap })
-        } else {
-            swap = this.state.show2
-            this.setState({ show2: !swap })
-        }
-    }
+
 
     navResults(){
         // createBrowserHistory().push("/results");
         this.props.history.push("/results");
     }
 
+    launchExam(){
+        this.state.exams.push(<Exam problem={false} text={"Exam " + this.state.exams.length} history={this.props.history}/>)
+        this.setState(this.state)
+    }
+
     render() {
         return (
             <div className={"topBar"}>
-                <h1 className={"leftA"}>SMART</h1><h1 className={"leftB"}>ron</h1>
+                <h1 className={"leftA"}>SMART</h1><h1 className={"leftB"}>RON</h1>
                 <h1 className={"right"}>Username </h1>
                 <img className={"logout"} src={logo} height={40} />
                 <h1 className={"welcome"}> Welcome, Bastian Tenbergen</h1>
                 <div className={"buttons"}>
-                    <button className={"scanButton"}>New Test Scan</button>
+                    <button onClick={this.launchExam} className={"scanButton"}>New Test Scan</button>
                     <select className={"select"} onChange={this.sort}><option value={"recent"}>Most Recent </option> <option value={"alpha"}>Alphanumeric</option></select>
                 </div>
-                <div id={"testList"} className={"testList"}>
-                    <div className={"test1"}>
-                        <p className={"fir"}>{this.state.title1}
-                            <a onClick={this.sort} className={"editName"}><img src={logo} height={25} /></a>
-                        </p>{this.state.title1.localeCompare("Exam 2") ?
-                            <img className={"alert"} src={alert} height={25} /> : null}
-                        <button>Edit Answer Key</button>
-                        <button onClick={this.navResults}>View Results</button>
-                    </div>
-                </div>
-                <div className={"testList2"}>
-                    <div className={"test1"}>
-                        <p className={"sec"}>{this.state.title2}
-                            <a onClick={this.sort} className={"editName"}><img src={logo} height={25} /></a>
-                        </p>{this.state.title2.localeCompare("Exam 2") ?
-                            <img className={"alert"} src={alert} height={25} /> : null}
-                        <button>Edit Answer Key</button>
-                        <button>View Results</button>
-                    </div>
-                </div>
+                <ExamList exams={this.state.exams} history={this.props.history}/>
+
+
             </div>
         );
     }
