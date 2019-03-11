@@ -1,44 +1,16 @@
 import React, { Component } from 'react';
-import { PieChart, Pie } from 'recharts';
+import { PieChart, Pie, Sector, Cell } from 'recharts';
 import Tabs from './Tabs';
 
 require('../css/styles.css');
 
-const data01 = [
-    {
-        "name": "Group A",
-        "value": 400
-    },
-    {
-        "name": "Group B",
-        "value": 300
-    },
-    {
-        "name": "Group C",
-        "value": 300
-    },
-    {
-        "name": "Group D",
-        "value": 200
-    }
-];
-const data02 = [
-    {
-        "name": "Group A",
-        "value": 2400
-    },
-    {
-        "name": "Group B",
-        "value": 4567
-    },
-    {
-        "name": "Group C",
-        "value": 1398
-    },
-    {
-        "name": "Group D",
-        "value": 9800
-    }
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+const data = [
+    {"name": "Group A", "value": 10},
+    {"name": "Group B", "value": 20},
+    {"name": "Group C", "value": 5},
+    {"name": "Group D", "value": 2}
 ];
 
 class Results extends Component {
@@ -55,16 +27,11 @@ class Results extends Component {
                     </div>
                     <div label="By Question">
                         <PieChart width={730} height={250}>
-                            <Pie data={data01} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={50} fill="#8884d8" />
-                            <Pie data={data02} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#82ca9d" label />
-                        </PieChart>
-                        <PieChart width={730} height={250}>
-                            <Pie data={data01} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={50} fill="#F08080" />
-                            <Pie data={data02} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#20B2AA" label />
-                        </PieChart>
-                        <PieChart width={730} height={250}>
-                            <Pie data={data01} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={50} fill="#F4A460" />
-                            <Pie data={data02} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#EE82EE" label />
+                            <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" fill="#82ca9d" label>
+                                {
+                                    data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+                                }
+                            </Pie>
                         </PieChart>
                     </div>
                     <div label="By Student">
