@@ -22,5 +22,5 @@ matrix:
       - "stable"
     script:
       - echo 'skipping tests'
-    
+      
 install: true
