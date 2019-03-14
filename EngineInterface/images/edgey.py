@@ -1,14 +1,16 @@
-#from numba import jit
+from numba import jit #leads to functions being split up into inner and outer functions due to the specific requirements needed to use jit
 import numpy as np
 import cv2
-import random
+#import random
 import time
 import sys, getopt
 
+#Global variables of the images height and width also a list of all of the processed circles
 imgW = 0
 imgH = 0
 done = []
 
+#finds the centers of the given contours
 def center(cir):
     centers = []
     for c in cir:
@@ -18,19 +20,24 @@ def center(cir):
         centers.append((cx,cy))
     return centers
 
+#helper function for sorting lists
 def sec(val):
     return val[0][0][0][1]
 
+#helper function for sorting lists
 def sec1(val):
     return val[0][0][0][0]
 
+#helper function for sorting lists
 def first(val):
     return val[0][0][0]
 
+#helper function for sorting lists
 def first1(val):
     return val[0][0][1]
 
-#@jit(nopython=True)
+#inner function of findRows()
+@jit(nopython=True)
 def fr(cir, centers):
     visited = []
     groups = []
@@ -47,13 +54,15 @@ def fr(cir, centers):
             groups.append(temp)
     return groups
 
+#Separates circles into rows by grouping circles together in groups based on a vertical threshold
 def findRows(cir):
     centers = center(cir)
     groups = fr(cir, centers)
     groups.sort(key = sec)
     return groups
 
-#@jit(nopython=True)
+#inner function of findColumns()
+@jit(nopython=True)
 def fc(cir, centers):
     visited = []
     groups = []
@@ -70,12 +79,14 @@ def fc(cir, centers):
             groups.append(temp)
     return groups
 
+#Separates circles into columns by grouping circles together in groups based on a horizontal threshold
 def findColumns(cir):
     centers = center(cir)
     groups = fc(cir, centers)
     groups.sort(key = sec1)
     return groups
 
+#filters out groups of circles that follow the criteria for questions which is 5 circles within a certain horizontal threshold
 def questions(x):
     ret = []
     for row in x:
@@ -98,7 +109,7 @@ def questions(x):
                     for x in tempvisit:
                         done.append(x)
                     n.append(temp)
-        if n:
+        if n: #checks if there were question groups that did not have a full 5 circles
             for r, c in zip(row, centers):
                 if c not in done:
                     temp = []
@@ -118,6 +129,7 @@ def questions(x):
         ret.append(n)
     return ret
 
+#filters out groups of circles that follow the criteria for names which is 27 circles within a certain vertical threshold
 def names(x):
     ret = []
     for col in x:
@@ -143,6 +155,7 @@ def names(x):
         ret.append(n)
     return ret
 
+#filters out groups of circles that follow the criteria for grade/EDU level which is 17 circles within a certain vertical threshold
 def gradeEDU(x):
     ret = []
     for col in x:
@@ -168,6 +181,7 @@ def gradeEDU(x):
         ret.append(n)
     return ret
 
+#filters out groups of circles that follow the criteria for month of the date which is 12 circles within a certain vertical threshold
 def month(x):
     ret = []
     for col in x:
@@ -193,6 +207,7 @@ def month(x):
         ret.append(n)
     return ret
 
+#filters out groups of circles that follow the criteria for the normal date and ID which is 10 circles within a certain vertical threshold
 def dateID(x):
     ret = []
     for col in x:
@@ -218,6 +233,7 @@ def dateID(x):
         ret.append(n)
     return ret
 
+#filters out groups of circles that follow the criteria for the ten group of the day from the date which is 4 circles within a certain vertical threshold
 def date1(x):
     ret = []
     for col in x:
@@ -243,6 +259,7 @@ def date1(x):
         ret.append(n)
     return ret
 
+##filters out groups of circles that follow the criteria for gender which is 2 circles within a certain vertical threshold
 def gender(x):
     ret = []
     for col in x:
@@ -268,7 +285,8 @@ def gender(x):
         ret.append(n)
     return ret
 
-#@jit(nopython=True)
+#inner function of filterDublicates
+@jit(nopython=True)
 def fd(cir, centers):
     filt = []
     visited = []
@@ -281,11 +299,13 @@ def fd(cir, centers):
                     if abs(y[0] - b[0]) < (imgW*0.00910194) and abs(y[1] - b[1]) < (imgH*0.01172):
                         visited.append(b)
     return filt
-    
+
+#filters out circles with the centers within a certain distance of each other
 def filterDublicates(cir):
     centers = center(cir)
     return fd(cir, centers)
 
+#filters out contours that follow the criteria of circle
 def findCircles(contour):
     cir = []
     for cont in contour:
@@ -298,6 +318,7 @@ def findCircles(contour):
                 cir.append(cont)
     return cir
 
+#finds the darkest bubble of each question group but if the question group does not have a full 5 circles then -1 is added to the list(subject to change)
 def findSelectedQ(qG):
     bubbled = []
     for i,row in enumerate(qG):
@@ -319,6 +340,7 @@ def findSelectedQ(qG):
                 bubbled[i][j] = (0, -1)
     return bubbled
 
+#finds the darkest bubble of the vertical groups
 def findSelected(g):
     bubbled = []
     for i,col in enumerate(g):
@@ -339,23 +361,23 @@ def findSelected(g):
 
 start = time.time()
 
-questionN = 100
-fileName = "scan.jpg" #SKM_C55819022211330.pdf-1
+#default comand line argument values
+fileName = "scan.jpg"
 
+#parse command line arguments
 try:
-    opts, args = getopt.getopt(sys.argv[1:], "hf:n:", ["file=","number="])
+    opts, args = getopt.getopt(sys.argv[1:], "hf:", ["file="])
 except getopt.GetoptError:
-    print("-f filename, -n number of questions")
+    print("-f filename)
     sys.exit(2)
 for opt, arg in opts:
     if opt == "-h":
-        print("-f filename, -n number of questions")
+        print("-f filename")
         system.exit()
     elif opt in ("-f", "--file"):
         fileName = arg
-    elif opt in ("-n", "--number"):
-        questionN = arg
 
+#load images and apply filters
 img = cv2.imread(fileName)
 imgW = img.shape[1]
 imgH = img.shape[0]
@@ -381,14 +403,16 @@ edges = cv2.Canny(img, 1, 60)
 edges = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, kernel)
 img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
 
+#finds the edges of the images
 con = cv2.findContours(img, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)[0]
 contours = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)[0]
 co = cv2.findContours(dark, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)[0]
 
+#puts all contours in a single list
 contours = np.append(contours, co, axis=0)
 contours = np.append(contours, con, axis=0)
 
-img1 = cv2.imread(fileName)
+#img1 = cv2.imread(fileName)
 #img1 = cv2.resize(img1, (imgW, imgH), interpolation = cv2.INTER_AREA)
 #cv2.drawContours(img1, contours, -1, (0, 250, 250), 2)
 
@@ -445,49 +469,71 @@ genderGroup = gender(columns)
 
 bubbledQue = findSelectedQ(queGroup)
 
+bubbledName = findSelected(nameGroup)
+
+bubbledEDU = findSelected(eduGroup)
+
+bubbledMonth = findSelected(monthGroup)
+
+bubbledDate = findSelected(dateGroup)
+
+bubbledDateID = findSelected(dateIDGroup)
+
+bubbledGender = findSelected(genderGroup)
+
+#prints out values but if there is an no selected circle or error in question selection then -1 is printed out
+for z in bubbledName:
+    for w in z:
+        if w[1]:
+            print(str(w[1]))
+        else:
+            print("-1")
+
+for z in bubbledGender:
+    for w in z:
+        if w[1]:
+            print(str(w[1]))
+        else:
+            print("-1")
+
+for z in bubbledEDU:
+    for w in z:
+        if w[1]:
+            print(str(w[1]))
+        else:
+            print("-1")
+
+for z in bubbledMonth:
+    for w in z:
+        if w[1]:
+            print(str(w[1]))
+        else:
+            print("-1")
+
+for z in bubbledDate:
+    for w in z:
+        if w[1]:
+            print(str(w[1]))
+        else:
+            print("-1")
+
+for z in bubbledDateID:
+    for w in z:
+        if w[1]:
+            print(str(w[1]))
+        else:
+            print("-1")
+
 i = -1
 for z in bubbledQue:
     if z:
         i += 1
         for j,w in enumerate(z):
-            print(str(i) + "-" + str(j) + " " + str(w[1]))
-
-bubbledName = findSelected(nameGroup)
-
-for z in bubbledName:
-    for w in z:
-        print("name " + str(w[1]))
-
-bubbledEDU = findSelected(eduGroup)
-
-for z in bubbledEDU:
-    for w in z:
-        print("EDUgrade " + str(w[1]))
-
-bubbledMonth = findSelected(monthGroup)
-
-for z in bubbledMonth:
-    for w in z:
-        print("month " + str(w[1]))
-
-bubbledDate = findSelected(dateGroup)
-
-for z in bubbledDate:
-    for w in z:
-        print("date " + str(w[1]))
-
-bubbledDateID = findSelected(dateIDGroup)
-
-for z in bubbledDateID:
-    for w in z:
-        print("dateID " + str(w[1]))
-
-bubbledGender = findSelected(genderGroup)
-
-for z in bubbledGender:
-    for w in z:
-        print("gender " + str(w[1]))
-
+            if w[1]:
+                print(str(i) + "-" + str(j) + " " + str(w[1]))
+            else:
+                print(str(i) + "-" + str(j) + " -1")
+          
 ##cv2.namedWindow("edges", cv2.WINDOW_NORMAL)
 ##cv2.imshow("edges", img1)
 ##cv2.namedWindow("edges1", cv2.WINDOW_NORMAL)
