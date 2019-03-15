@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import logo from '../assets/logo.svg';
 import '../css/App.css';
-import alert from '../assets/logo.svg'
 import Exam from "./Exam";
 import ExamList from "./ExamList"
 
