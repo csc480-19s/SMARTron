@@ -1,0 +1,208 @@
+package com.company;
+
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.math.BigDecimal;
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        int examCount = 1000;
+        int questionCount = 200;
+
+        Scanner kb = new Scanner(System.in);
+
+        List<List<String>> exams = new ArrayList<>();
+        List<Short> scores;
+        List<String> answerKey = examGenerator(questionCount);
+        List<Byte> weight = weightGenerator(questionCount);
+
+        int max = 0;
+        for (byte c : weight) {
+            max += ((int) c);
+        }
+        System.out.println("Exam high score is " + max);
+
+        for (int i = 0; i < examCount; i++) {
+            exams.add(examGenerator(questionCount));
+        }
+
+        scores = examGrader(exams, answerKey, weight);
+        System.out.println("ready");
+        kb.nextLine();
+
+        List<List<Byte>> gradesByQuestion = gradesByQuestion(exams, answerKey, weight);
+        List<BigDecimal> meanByQuestion = meanByQuestion(gradesByQuestion);
+        for(BigDecimal c : meanByQuestion) {
+            System.out.println(c);
+        }
+        //for (int i = 0; i < meanByQuestion.size(); i++) {
+        //    System.out.println("question " + i + " mean " + meanByQuestion.get(i));
+        //}
+
+    }
+
+    static List<String> examGenerator(int questionCount) {
+        String answerChoices = "ABCDE";
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ ";
+        Random r = new Random();
+        List<String> exam = new ArrayList<>();
+        String sex = "MF";
+
+        for (int i = 0; i < 20; i++) {
+            exam.add("" + alphabet.charAt(r.nextInt(alphabet.length())));
+        }
+
+        for (int i = 0; i < 10; i++) {
+            exam.add("" + r.nextInt(10));
+        }
+
+        exam.add("" + r.nextInt(2));
+        if ("1".equals("" + exam.get(30))) {
+            exam.add("" + r.nextInt(3));
+        } else {
+            exam.add("" + r.nextInt(10));
+        }
+        exam.add("" + r.nextInt(4));
+        if ("3".equals(exam.get(32) + "")) {
+            exam.add("" + r.nextInt(2));
+        } else {
+            exam.add("" + r.nextInt(10));
+        }
+        for (int i = 0; i < 2; i++) {
+            exam.add("" + r.nextInt(10));
+        }
+
+        for (int i = 0; i < 6; i++) {
+            exam.add("" + r.nextInt(10));
+        }
+
+        exam.add("" + sex.charAt(r.nextInt(sex.length())));
+
+        exam.add("" + r.nextInt(2));
+        if ("1".equals("" + exam.get(43))) {
+            exam.add("" + r.nextInt(7));
+        } else {
+            exam.add("" + r.nextInt(10));
+        }
+
+        for (int i = 0; i < questionCount; i++) {
+            exam.add("" + answerChoices.charAt(r.nextInt(answerChoices.length())));
+        }
+        return exam;
+    }
+
+    static List<Short> examGrader(List<List<String>> exams, List<String> answerKey, List<Byte> weight) {
+        List<Short> examScores = new ArrayList<>();
+        for (int i = 0; i < exams.size(); i++) {
+            short examScore = 0;
+            for (int j = 45; j < answerKey.size(); j++) {
+                if (exams.get(i).get(j).equals(answerKey.get(j))) {
+                    examScore += weight.get(j - 45);
+                }
+            }
+            examScores.add(examScore);
+        }
+        return examScores;
+    }
+
+    static List<Byte> weightGenerator(int questionCount) {
+        Random r = new Random();
+        List<Byte> weight = new ArrayList<>();
+        for (int i = 0; i < questionCount; i++) {
+            weight.add((byte)(r.nextInt(5) + 1));
+        }
+        return weight;
+    }
+
+    static BigDecimal meanShort(List<Short> scores) {
+        int total = 0;
+        for (short score : scores) {
+            total += score;
+        }
+        return BigDecimal.valueOf(total).divide(BigDecimal.valueOf(scores.size()));
+    }
+
+    static BigDecimal meanDecimal(List<BigDecimal> scores) {
+        BigDecimal total = BigDecimal.ZERO;
+        for (BigDecimal score : scores) {
+            total = total.add(score);
+        }
+        return total.divide(BigDecimal.valueOf(scores.size()));
+    }
+
+    static BigDecimal meanByte(List<Byte> scores) {
+        int total = 0;
+        for (Byte score : scores) {
+            total += score;
+        }
+        return BigDecimal.valueOf(total).divide(BigDecimal.valueOf(scores.size()),64, RoundingMode.HALF_UP);
+    }
+
+    static BigDecimal overallVariance(List<Short> scores) {
+        BigDecimal mean = meanShort(scores);
+        List<BigDecimal> squaredDifference = new ArrayList<>();
+        for(Short score : scores) {
+            squaredDifference.add(mean.subtract(BigDecimal.valueOf(score)).pow(2));
+        }
+        return meanDecimal(squaredDifference);
+    }
+
+    static List<List<Byte>> gradesByQuestion(List<List<String>> exams, List<String> answerKey, List<Byte> weight) {
+        List<List<Byte>> examGradesByQuestion = new ArrayList<>();
+        for (int i = 0; i < exams.size(); i++) {
+            List<Byte> examScore = new ArrayList<>();
+            for (int j = 45; j < answerKey.size(); j++) {
+                if (exams.get(i).get(j).equals(answerKey.get(j))) {
+                    examScore.add(weight.get(j-45));
+                } else {
+                    examScore.add((byte)0);
+                }
+            }
+            examGradesByQuestion.add(examScore);
+        }
+        return examGradesByQuestion;
+    }
+
+    static List<BigDecimal> meanByQuestion(List<List<Byte>> gradesByQuestion) {
+        List<BigDecimal> meanByQuestion = new ArrayList<>();
+        for (int j = 0; j < gradesByQuestion.get(0).size(); j++) {
+            List<Byte> questionScores = new ArrayList<>();
+            for (int i = 0; i < gradesByQuestion.size(); i++) {
+                questionScores.add(gradesByQuestion.get(i).get(j));
+            }
+            meanByQuestion.add(meanByte(questionScores));
+        }
+        return meanByQuestion;
+    }
+
+    static List<BigDecimal> individualVariance(List<Byte> weight, List<String> answerKey, List<List<String>> exams) {
+
+        List<BigDecimal> individualVariances = new ArrayList<>();
+
+        for (int i = 45; i < exams.get(0).size(); i++) {
+            System.out.println("Exam's size is " + (exams.get(0).size()-45));
+
+            List<Byte> additionOfScores = new ArrayList<>();
+            for (int j = 0; j < exams.get(0).size()-45; j++) {
+                additionOfScores.add((byte)0);
+            }
+            System.out.println("additionofscores size " + additionOfScores.size());
+
+            for (int j = 0; j < exams.size(); j++) {
+                System.out.println("Comparing question " + (i-44) + " on exam number " + j);
+                System.out.println(exams.get(j).get(i) + " " + answerKey.get(i));
+                if (exams.get(j).get(i).equals(answerKey.get(i))) {
+                    byte tempAdd = (byte)(additionOfScores.get(i-45) + weight.get(i-45));
+                    additionOfScores.set((i-45), tempAdd);
+                    System.out.println("Addition of scores list at position " + (i-45) + " is now " + additionOfScores.get(i));
+                }
+            }
+        }
+        return individualVariances;
+    }
+}
