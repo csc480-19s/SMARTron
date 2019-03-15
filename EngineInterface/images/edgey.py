@@ -318,14 +318,14 @@ def findCircles(contour):
                 cir.append(cont)
     return cir
 
-#finds the darkest bubble of each question group but if the question group does not have a full 5 circles then -1 is added to the list(subject to change)
+#finds the darkest bubble of each question group but if the question group does not have a full 5 circles then "error" is added to the list(subject to change)
 def findSelectedQ(qG):
     bubbled = []
     for i,row in enumerate(qG):
         bubbled.append([])
         for j,group in enumerate(row):
             group.sort(key = first)
-            bubbled[i].append((0,None))
+            bubbled[i].append((0,-1))
             if (len(group) == 5) :
                 for k,c in enumerate(group):
                     mask = np.zeros(img.shape, dtype="uint8")
@@ -337,7 +337,7 @@ def findSelectedQ(qG):
                     if total > bubbled[i][j][0] and total > (imgW*imgH*0.000036):
                         bubbled[i][j] = (total, k)
             else:
-                bubbled[i][j] = (0, -1)
+                bubbled[i][j] = (0, "error")
     return bubbled
 
 #finds the darkest bubble of the vertical groups
@@ -347,7 +347,7 @@ def findSelected(g):
         bubbled.append([])
         for j,group in enumerate(col):
             group.sort(key = first1)
-            bubbled[i].append((0,None))
+            bubbled[i].append((0,-1))
             for k,c in enumerate(group):
                 mask = np.zeros(img.shape, dtype="uint8")
                 cv2.drawContours(mask, [c], -1, 255, -1)
@@ -368,7 +368,7 @@ fileName = "scan.jpg"
 try:
     opts, args = getopt.getopt(sys.argv[1:], "hf:", ["file="])
 except getopt.GetoptError:
-    print("-f filename)
+    print("-f filename")
     sys.exit(2)
 for opt, arg in opts:
     if opt == "-h":
@@ -481,58 +481,38 @@ bubbledDateID = findSelected(dateIDGroup)
 
 bubbledGender = findSelected(genderGroup)
 
-#prints out values but if there is an no selected circle or error in question selection then -1 is printed out
+#prints out values but if there is an no selected circle in question selection then -1 is printed out
+#error is printed out for an error reading questions
 for z in bubbledName:
     for w in z:
-        if w[1]:
-            print(str(w[1]))
-        else:
-            print("-1")
+        print(str(w[1]))
 
 for z in bubbledGender:
     for w in z:
-        if w[1]:
-            print(str(w[1]))
-        else:
-            print("-1")
+        print(str(w[1]))
 
 for z in bubbledEDU:
     for w in z:
-        if w[1]:
-            print(str(w[1]))
-        else:
-            print("-1")
+        print(str(w[1]))
 
 for z in bubbledMonth:
     for w in z:
-        if w[1]:
-            print(str(w[1]))
-        else:
-            print("-1")
+        print(str(w[1]))
 
 for z in bubbledDate:
     for w in z:
-        if w[1]:
-            print(str(w[1]))
-        else:
-            print("-1")
+        print(str(w[1]))
 
 for z in bubbledDateID:
     for w in z:
-        if w[1]:
-            print(str(w[1]))
-        else:
-            print("-1")
+        print(str(w[1]))
 
 i = -1
 for z in bubbledQue:
     if z:
         i += 1
         for j,w in enumerate(z):
-            if w[1]:
-                print(str(i) + "-" + str(j) + " " + str(w[1]))
-            else:
-                print(str(i) + "-" + str(j) + " -1")
+            print(str(i) + "-" + str(j) + " " + str(w[1]))
           
 ##cv2.namedWindow("edges", cv2.WINDOW_NORMAL)
 ##cv2.imshow("edges", img1)
