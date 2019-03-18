@@ -1,6 +1,6 @@
 package Main;
 
-public class Student {
+public class Student { // VV all the attributes of a scantron.
 
     private String name;
 
@@ -20,7 +20,9 @@ public class Student {
 
     private Tools t;
 
-    public Student(String[] s){
+// when a student object is made, 
+
+    public Student(String[] s){ //Fancy for loop assigns all of these values to the indivigual varables in the student object from the correct indexes.
         t = new Tools();
         answers = s;
         String temp = "";
@@ -65,21 +67,4 @@ public class Student {
     public String[] getAnswers(){
         return this.answers;
     }
-    
-    public void setGrade(float f){
-        this.examGrade = f;
-        this.grade = f + "";
-    } 
-
-
-public String getName(){
-    return this.name;
-}
-
-public String getBirth(){
-    return this.birthday;
-}
-
-
-
 }

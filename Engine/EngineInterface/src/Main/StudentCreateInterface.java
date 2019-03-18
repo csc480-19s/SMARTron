@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 public class StudentCreateInterface {
     ArrayList<Student> rawScores;
-
-    public StudentCreateInterface(){
+//This is one of the forst major classes used for grading StudentCreateInterface > Grader > []Student
+    public StudentCreateInterface(String[][] tt){
         rawScores = new ArrayList<>();
 
-        //
-        /*
+        // The python script puts the data in an out of order format, its easyer to handle the data once it is collected as a multidimenitnal array 
+        /* Indexing test data for multi dimentinal arrays
         String[][] stu = {
                 {"1", "11", "21", "31", "41"},
                 {"2", "12", "22", "32", "42"},
@@ -33,8 +33,8 @@ public class StudentCreateInterface {
                 {"60", "70", "80", "90", "100"}
         };
         */
-        
-
+        /* 
+//more test data
         String[][] stu = {
                 {"1", "2", "1", "4", "0"},
                 {"1", "2", "1", "4", "0"},
@@ -85,28 +85,29 @@ public class StudentCreateInterface {
                 {"1", "2", "1", "4", "0"},
                 {"1", "2", "1", "4", "0"}
         };
+        */
 
         String[] key43 = {"11", "5", "25", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1"};
-        //String[] stu43 = {"13", "1", "20", "20", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "1", "15", "3", "2", "1", "9", "8", "8", "0", "4", "8", "4", "6", "8", "5", "9", "-1", "-1", "-1", "-1", "-1", "-1", "-1"};
-        //        
+        String[] stu43 = {"13", "1", "20", "20", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "1", "15", "3", "2", "1", "9", "8", "8", "0", "4", "8", "4", "6", "8", "5", "9", "-1", "-1", "-1", "-1", "-1", "-1", "-1"};
+        //more test data        
 //
-        addStudent(key, key43);
-        addStudent(stu, stu43);
-        Grader g = new Grader(rawScores);
-        
+        addStudent(tt, key43);
+        addStudent(tt, stu43); //<info passed into grader
+        Grader g = new Grader(rawScores); // <-- constructor for grader gets the ball rolling
         g.gradeTests();
 
 
     }
-
-    public void gimmieTheLoot(String[] s, String[] first43){
+//This method is the second part of the add student method
+//It constructs the data from the two string arrays put inside it and makes one big string array
+    public void gimmieTheLoot(String[] s, String[] first43){ //Yeah its a stupid method name, too much astroworld I guess..
         //Student ss = new Student(s); //clone?
         String[] temp = new String[43 + s.length];
         for (int i = 0; i < temp.length; i++){
-            if(i < 43){
+            if(i < 43){//43 is used for a constant for all the datapoints on a scantron that are not questions
                 temp[i] = first43[i];
             }else{
-                temp[i] = s[i - 43];
+                temp[i] = s[i - 43]; //adjust the index for the question
             }
         }
         Student ss = new Student(temp);
@@ -115,18 +116,18 @@ public class StudentCreateInterface {
     }
 
     public void addStudent(String[][] s, String[] first43){
-        ArrayList<String> temp = new ArrayList<>();
+        ArrayList<String> temp = new ArrayList<>(); 
         int pos = 0;
         for(int i = 0; i < 5; i++){
             for(int j = 0; j < 10; j++){
                 temp.add(pos++, s[j][i]);
-                temp.add(temp.size(), s[j+10][i]);
+                temp.add(temp.size(), s[j+10][i]); //all this method does is convert the multidimentinal array (seen above) and make it into a single array to be used later
             }
         }
 
         String[] temp2 = new String[temp.size()];
         temp2 = temp.toArray(temp2);
-        gimmieTheLoot(temp2, first43);
+        gimmieTheLoot(temp2, first43); //This method has a second part
 
 
 
