@@ -1,3 +1,5 @@
+package SMARTron.DbConnector.src;
+
 import java.sql.SQLException;
 
 public class tester {
