@@ -34,9 +34,11 @@ class Exam extends Component{
                     <p className={"fir"}>{this.state.title1}
                         <a className={"editName"}><img src={logo} height={25} /></a>
                     </p>
-                    {this.props.problem ? <img className={"alert"} src={alert} height={25} /> : null}
-                    <button onClick={this.navAnswerKey}>Edit Answer Key</button>
                     <button onClick={this.navResults}>View Results</button>
+                    <button onClick={this.navAnswerKey}>Edit Answer Key</button>
+
+                    {this.props.problem ? <img className={"alert"} src={alert} height={25} /> : null}
+
                 </div>
             </div>
 
