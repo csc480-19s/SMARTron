@@ -1,12 +1,7 @@
 package SMARTron
 
-import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation
 
-import javax.sql.DataSource
-import groovy.sql.Sql
-import spock.lang.*
-
-import java.sql.SQLException
+import spock.lang.Specification
 
 class AnswerKeyDaoTest extends Specification{
 
@@ -80,6 +75,20 @@ class AnswerKeyDaoTest extends Specification{
         def result = gd.select("SELECT * FROM scantron.answerkey WHERE exam_id = 'Midterm' AND instructor_id = 'MATT';")
         result == 1
         akd.deleteAnswerKey("Midterm")
+    }
+
+    def "test deletion of an exam"() {
+
+        when:
+        akd.addAnswerKey("Midterm", "MATT")
+
+        and:
+        akd.deleteAnswerKey("Midterm")
+
+        then:
+        def result = gd.select("SELECT * FROM scantron.answerkey WHERE exam_id = 'Midterm' AND instructor_id = 'MATT';")
+        result == 0
+
     }
 
 }
