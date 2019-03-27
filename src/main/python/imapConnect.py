@@ -72,7 +72,7 @@ class FetchEmail():
                             continue
                         fileName = part.get_filename()
                         if bool(fileName):
-                            filePath = os.path.join('ENTER DOWNLOAD FOLDER DIRECTORY ADDRESS HERE', fileName)
+                            filePath = os.path.join('Macintosh\ HD/Users/jondntryniski/480_emails', fileName)
                             if not os.path.isfile(filePath) :
                                 fp = open(filePath, 'wb')
                                 fp.write(part.get_payload(decode=True))
