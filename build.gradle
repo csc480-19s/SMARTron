@@ -17,7 +17,7 @@ plugins {
     id 'groovy'
 
     // Applies the npm plugin
-    id "com.moowork.node" version "0.11"
+    id "com.moowork.node" version "1.3.1"
 }
 
 ext {
@@ -54,12 +54,21 @@ dependencies {
 
 }
 
+npm_run_build {
+    inputs.files fileTree("smartron/public")
+    inputs.files fileTree("smartron")
+    inputs.file 'smartron/package.json'
+    inputs.file 'smartron/package-lock.json'
+    outputs.dir 'build'
+}
+
 node {
-    version = '10.15.1'
-    npmVersion = '3.8.0'
+    version = '10.15.3'
+    npmVersion = '6.4.1'
     download = true
     distBaseUrl = 'https://nodejs.org/dist'
-    workDir = file('smartron')
+    workDir = file('smartron/nodejs')
+    npmWorkDir = file('smartron/npm')
     nodeModulesDir = file('smartron/')
 }
 
