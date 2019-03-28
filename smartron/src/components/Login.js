@@ -4,10 +4,14 @@ import '../css/App.css';
 import {GoogleLogin} from "react-google-login";
 
 class Login extends Component {
+    constructor(props) {
+        super(props);
+
+    }
 
     responseGoogleSucc = (response) => {
         console.log(response.getBasicProfile().getEmail())
-        this.props.history.push("/home");
+        this.props.history.push({pathname:"/home", state:{loginName:response.getBasicProfile().getName(), email:response.getBasicProfile().getEmail()}});
     }
 
     responseGoogleFail = (response) => {
