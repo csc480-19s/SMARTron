@@ -13,6 +13,7 @@ class Exam extends Component{
         console.log(props.problem)
 
         this.navResults = this.navResults.bind(this);
+        this.navAnswerKey = this.navAnswerKey.bind(this);
     }
 
 
@@ -22,6 +23,10 @@ class Exam extends Component{
         // createBrowserHistory().push("/results");
         this.props.history.push("/results");
     }
+    
+    navAnswerKey(){
+      this.props.history.push("/answerKey");
+    }
     render() {
         return(
             <div>
@@ -29,9 +34,11 @@ class Exam extends Component{
                     <p className={"fir"}>{this.state.title1}
                         <a className={"editName"}><img src={logo} height={25} /></a>
                     </p>
-                    {this.props.problem ? <img className={"alert"} src={alert} height={25} /> : null}
-                    <button>Edit Answer Key</button>
                     <button onClick={this.navResults}>View Results</button>
+                    <button onClick={this.navAnswerKey}>Edit Answer Key</button>
+
+                    {this.props.problem ? <img className={"alert"} src={alert} height={25} /> : null}
+
                 </div>
             </div>
 

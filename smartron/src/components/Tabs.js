@@ -1,61 +1,136 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import SwipeableViews from 'react-swipeable-views';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import {Cell, Pie, PieChart, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend} from "recharts";
+import StudentTable from './StudentTable';
+import Center from 'react-center';
+import QuestionTable from "./QuestionTable";
 
-import Tab from './Tab';
+function TabContainer({ children, dir }) {
+    return (
+        <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
+            {children}
+        </Typography>
+    );
+}
 
-class Tabs extends Component {
-    static propTypes = {
-        children: PropTypes.instanceOf(Array).isRequired,
+const data = [
+    {"name": "A", "value": 10},
+    {"name": "B", "value": 20},
+    {"name": "C", "value": 5},
+    {"name": "D", "value": 2},
+    {"name": "E", "value": 1}
+];
+
+const data1 = [
+    {
+        "grade": "A",
+        "percent": 10
+    },
+    {
+        "grade": "B",
+        "percent": 20
+    },
+    {
+        "grade": "C",
+        "percent": 5
+    },
+    {
+        "grade": "D",
+        "percent": 2
+    },
+    {
+        "grade": "E",
+        "percent": 1
     }
+]
 
-    constructor(props) {
-        super(props);
+TabContainer.propTypes = {
+    children: PropTypes.node.isRequired,
+    dir: PropTypes.string.isRequired,
+};
 
-        this.state = {
-            activeTab: this.props.children[0].props.label,
-        };
-    }
+const styles = theme => ({
+    root: {
+        backgroundColor: '#fff',
+        width: 1000,
+    },
+});
 
-    onClickTabItem = (tab) => {
-        this.setState({ activeTab: tab });
-    }
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#E6E6FA'];
+
+class CenteredTabs extends React.Component {
+    state = {
+        value: 0,
+    };
+
+    handleChange = (event, value) => {
+        this.setState({ value });
+    };
 
     render() {
-        const {
-            onClickTabItem,
-            props: {
-                children,
-            },
-            state: {
-                activeTab,
-            }
-        } = this;
+        const { classes, theme } = this.props;
 
         return (
-            <div className="tabs">
-                <ol className="tab-list">
-                    {children.map((child) => {
-                        const { label } = child.props;
-
-                        return (
-                            <Tab
-                                activeTab={activeTab}
-                                key={label}
-                                label={label}
-                                onClick={onClickTabItem}
-                            />
-                        );
-                    })}
-                </ol>
-                <div className="tab-content">
-                    {children.map((child) => {
-                        if (child.props.label !== activeTab) return undefined;
-                        return child.props.children;
-                    })}
-                </div>
+            <div className={classes.root}>
+                <AppBar position="static" color="#fff">
+                    <Tabs
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        variant="fullWidth"
+                    >
+                        <Tab label="Statistics Report" />
+                        <Tab label="By Question" />
+                        <Tab label="By Student" />
+                    </Tabs>
+                </AppBar>
+                <SwipeableViews
+                    axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                    index={this.state.value}
+                    onChangeIndex={this.handleChange}
+                >
+                    <TabContainer dir={theme.direction}>
+                        <BarChart width={700} height={200} data={data1}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="grade" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar data={data1} dataKey="grade" dataKey="percent" fill="#000000">
+                                {
+                                    data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+                                }
+                            </Bar>
+                        </BarChart>
+                    </TabContainer>
+                    <TabContainer dir={theme.direction}>
+                        <QuestionTable/>
+                        <PieChart width={700} height={200}>
+                            <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" fill="#82ca9d" label>
+                                {
+                                    data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+                                }
+                            </Pie>
+                        </PieChart>
+                    </TabContainer>
+                    <TabContainer dir={theme.direction}>
+                        <Center><StudentTable/></Center>
+                    </TabContainer>
+                </SwipeableViews>
             </div>
         );
     }
 }
 
-export default Tabs;
+CenteredTabs.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles, { withTheme: true })(CenteredTabs);

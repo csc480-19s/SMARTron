@@ -3,6 +3,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Home from './Home';
 import Results from "./Results";
 import Login from "./Login";
+import AnswerKey from "./AnswerKey";
 
 class Router extends Component {
     render() {
@@ -12,6 +13,7 @@ class Router extends Component {
                     <Route exact path="/" component={Login} />
                     <Route path="/home" component={Home} />
                     <Route exact path="/results" component={Results} />
+                    <Route exact path="/answerKey" component={AnswerKey}/>
                 </div>
             </BrowserRouter>
         )
