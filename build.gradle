@@ -15,6 +15,13 @@ plugins {
 
     // Apply the groovy plugin to also add support for Groovy (needed for Spock)
     id 'groovy'
+
+    // Applies the npm plugin
+    id "com.moowork.node" version "0.11"
+}
+
+ext {
+    pdfboxVersion = '2.0.8'
 }
 
 repositories {
@@ -24,6 +31,17 @@ repositories {
 }
 
 dependencies {
+    //This is for pdfbox
+    compile "org.apache.pdfbox:pdfbox:2.0.14"
+    compile "org.apache.pdfbox:preflight:2.0.14"
+    compile "org.apache.pdfbox:xmpbox:2.0.14"
+    compile "org.apache.pdfbox:pdfbox-tools:2.0.14"
+
+    runtime "mysql:mysql-connector-java:5.1.37"
+
+    compile "commons-io:commons-io:2.5"
+    compile 'com.github.jai-imageio:jai-imageio-core:1.3.1'
+
     // This dependency is found on compile classpath of this component and consumers.
     implementation 'com.google.guava:guava:27.0.1-jre'
 
@@ -33,7 +51,18 @@ dependencies {
     // Use the awesome Spock testing and specification framework even with Java
     testImplementation 'org.spockframework:spock-core:1.2-groovy-2.5'
     testImplementation 'junit:junit:4.12'
+
 }
 
+node {
+    version = '10.15.1'
+    npmVersion = '3.8.0'
+    download = true
+    distBaseUrl = 'https://nodejs.org/dist'
+    workDir = file('smartron')
+    nodeModulesDir = file('smartron/')
+}
+
+
 // Define the main class for the application
-mainClassName = 'SMARTron.App'
+mainClassName = 'SMARTron.main'
