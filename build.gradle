@@ -55,7 +55,7 @@ dependencies {
 }
 
 node {
-    version = '5.8.0'
+    version = '10.15.1'
     npmVersion = '3.8.0'
     download = true
     distBaseUrl = 'https://nodejs.org/dist'
