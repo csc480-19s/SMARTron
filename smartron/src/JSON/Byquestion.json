@@ -1,0 +1,35 @@
+{
+	
+	
+		"examName":"Exam 1",
+		"examID":"SDDSE",
+		"questionlist": [
+		
+		{
+			"questionNumber":1,
+			"correct":"B",
+			"data":	[
+				{"name": "A", "value": 10},
+  				{"name": "B", "value": 20},
+   				{"name": "C", "value": 5},
+   				{"name": "E", "value": 1}
+			]
+		},
+		
+		{
+			"questionNumber":2,
+			"correct":"A",
+			"data": [
+				{"name": "A", "value": 50},
+                                {"name": "B", "value": 2},
+                                {"name": "C", "value": 33},
+                                {"name": "D", "value": 8},
+				{"name": "E", "value": 7}
+
+
+			]
+		}
+	
+	
+	
+}
