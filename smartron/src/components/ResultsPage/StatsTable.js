@@ -7,32 +7,33 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import questionJSON from '../JSON/Byquestion';
+import statsJSON from '../../JSON/Statistics';
 
 const styles = theme => ({
     root: {
-        width: '40%',
+        width: '50%',
+        marginTop: theme.spacing.unit * 3,
         overflowX: 'auto',
     },
     table: {
-        minWidth: 50,
+        minWidth: 100,
     },
 });
 
 let id = 0;
-function createData(number, response, percent) {
+function createData(grade, percent) {
     id += 1;
-    return { number, response, percent };
+    return { grade, percent };
 }
 
-const rows = [];
-questionJSON.questionlist.forEach((question) => {
-    question.data.forEach((q) => {
-        rows.push(createData(question.questionNumber, q.name, q.value));
-    });
+const data = [];
+
+statsJSON.gradeDistribution.forEach((stat) => {
+    data.push(createData(stat.grade, stat.percent));
 });
 
-function QuestionTable(props) {
+function StatsTable(props) {
+
     const { classes } = props;
 
     return (
@@ -40,17 +41,15 @@ function QuestionTable(props) {
             <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
-                        <TableCell >QTest</TableCell>
-                        <TableCell >Response</TableCell>
-                        <TableCell >Percent</TableCell>
+                        <TableCell align="center">Grade</TableCell>
+                        <TableCell align="center">Percent Score</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map(row => (
+                    {data.map(row => (
                         <TableRow key={row.id}>
-                            <TableCell>{row.number}</TableCell>
                             <TableCell component="th" scope="row">
-                                {row.response}
+                                {row.grade}
                             </TableCell>
                             <TableCell align="center">{row.percent}</TableCell>
                         </TableRow>
@@ -61,8 +60,8 @@ function QuestionTable(props) {
     );
 }
 
-QuestionTable.propTypes = {
+StatsTable.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(QuestionTable);
+export default withStyles(styles)(StatsTable);

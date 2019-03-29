@@ -6,11 +6,12 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import {Cell, Pie, PieChart, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend} from "recharts";
+import { Cell, Pie, PieChart, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "recharts";
 import StudentTable from './StudentTable';
 import Center from 'react-center';
 import QuestionTable from "./QuestionTable";
-import statsJSON from '../JSON/Statistics';
+import statsJSON from '../../JSON/Statistics';
+import StatsTable from './StatsTable';
 
 function TabContainer({ children, dir }) {
     return (
@@ -21,11 +22,11 @@ function TabContainer({ children, dir }) {
 }
 
 const data = [
-    {"name": "A", "value": 10},
-    {"name": "B", "value": 20},
-    {"name": "C", "value": 5},
-    {"name": "D", "value": 2},
-    {"name": "E", "value": 1}
+    { "name": "A", "value": 10 },
+    { "name": "B", "value": 20 },
+    { "name": "C", "value": 5 },
+    { "name": "D", "value": 2 },
+    { "name": "E", "value": 1 }
 ];
 
 let id = 0;
@@ -87,31 +88,37 @@ class CenteredTabs extends React.Component {
                     onChangeIndex={this.handleChange}
                 >
                     <TabContainer dir={theme.direction}>
-                        <BarChart width={700} height={200} data={data1}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="grade" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            <Bar data={data1} dataKey="grade" dataKey="percent" fill="#000000">
-                                {
-                                    data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
-                                }
-                            </Bar>
-                        </BarChart>
+                        <Center><StatsTable /></Center>
+                        <p> </p>
+                        <Center>
+                            <BarChart width={700} height={200} data={data1}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="grade" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar data={data1} dataKey="grade" dataKey="percent" fill="#000000">
+                                    {
+                                        data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+                                    }
+                                </Bar>
+                            </BarChart>
+                        </Center>
                     </TabContainer>
                     <TabContainer dir={theme.direction}>
-                        <QuestionTable />
-                        <PieChart width={700} height={200}>
-                            <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" fill="#82ca9d" label>
-                                {
-                                    data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
-                                }
-                            </Pie>
-                        </PieChart>
+                        <Center>
+                            <QuestionTable />
+                            <PieChart width={500} height={200}>
+                                <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" fill="#82ca9d" label>
+                                    {
+                                        data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+                                    }
+                                </Pie>
+                            </PieChart>
+                        </Center>
                     </TabContainer>
                     <TabContainer dir={theme.direction}>
-                        <Center><StudentTable/></Center>
+                        <Center><StudentTable /></Center>
                     </TabContainer>
                 </SwipeableViews>
             </div>

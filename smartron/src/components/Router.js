@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import Home from './Home';
-import Results from "./Results";
+import Results from "./ResultsPage/Results";
 import Login from "./Login";
 import AnswerKey from "./AnswerKey";
 
