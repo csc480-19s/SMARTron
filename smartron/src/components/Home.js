@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import logo from '../assets/logo.svg';
 import '../css/App.css';
-import alert from '../assets/logo.svg'
 import Exam from "./Exam";
 import ExamList from "./ExamList"
 
 
 class Home extends Component {
+    //Constructor binds methods and creates an exam list used by the ExamList component
     constructor(props) {
         super()
         this.state = {
-            title1: "Exam 2",
-            title2: "Exam 1",
             exams:[<Exam problem={true} text={"Exam 0"} history={props.history}/>]
         }
 
@@ -19,19 +17,14 @@ class Home extends Component {
         this.launchExam = this.launchExam.bind(this)
     }
 
-    sort = () => {
-        var swap = this.state.title1
-        this.setState({ title1: this.state.title2 })
-        this.setState({ title2: swap })
-    }
 
 
-
+    //Navigates to results page
     navResults(){
-        // createBrowserHistory().push("/results");
         this.props.history.push("/results");
     }
 
+    //Creates a new exam via popup dialog
     launchExam(){
         this.state.exams.push(<Exam problem={false} text={"Exam " + this.state.exams.length} history={this.props.history}/>)
         this.setState(this.state)
@@ -58,7 +51,3 @@ class Home extends Component {
 }
 
 export default Home;
-
-
-/*                    {this.state.show2 ? <p  className={"sec"}>{this.state.title2}  <a onClick={this.showbutton(2)} className={"editName"}><img src={logo} height={25}/></a> </p>:null } {this.state.show2 == false ? <form> <input formAction={this.showbutton(2)} defaultValue={this.state.title2}  type="text"/> <input type="submit"/></form>:null}<img className={"alert"} src={alert} height={25}/><button>Edit Answer Key</button><button>View Results</button>
-*/

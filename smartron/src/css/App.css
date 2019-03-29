@@ -52,7 +52,15 @@
 }
 
 
+
 /* Home page style*/
+.Home{
+    min-width: 630px;
+    overflow: scroll;
+    position: absolute;
+}
+
+
 .topBar{
   position: fixed;
   align-content: center;
@@ -95,56 +103,44 @@
   display: table;
   position: absolute;
   top: 300%;
-  left: 25%;
+  right: 25%;
 }
 .buttons button{
   display: inline-block;
-  position: absolute;
+  position: relative;
   float: right;
-  width: 150px;
+  width: 50%;
   height: 50px;
   padding-left: 20px;
   padding-right: 20px;
   background-color: #60f3ab ;
   color:  #003C60;
   border-radius: 5px;
-  height: 50px;
-  left: 645px;
 
 }
 .buttons select{
-  position: absolute;
-  float: left;
-  height: 50px;
-  margin: 0 auto;
-  left:515px;
-
-
-}
-
-.topBar button {
   display: inline-block;
+  position: relative;
   float: right;
-  padding-left: 20px;
-  padding-right: 20px;
-  background-color: #60f3ab  ;
-  color: #003C60;
-  border-radius: 10px;
   height: 50px;
+    width: 50%;
+
+
+
+
+
 }
-button:hover{
-  background-color: white;
-  color: #003C60;
+.alert{
+    display: inline-block;
+    float: right;
+
 }
+
+
 
 .logout{
   float: right;
   padding-top: 25px;
-}
-.alert{
-  float: left;
-  padding-left: 300px;
-  padding-top: 12px;
 }
 
 
