@@ -18,6 +18,8 @@ def center(cir):
         cx = int(M["m10"]/M["m00"])
         cy = int(M["m01"]/M["m00"])
         centers.append((cx,cy))
+##        (x,y), radius = cv2.minEnclosingCircle(c)
+##        centers.append((int(x), int(y)))
     return centers
 
 #helper function for sorting lists
@@ -125,8 +127,9 @@ def questions(x):
                         for x in tempvisit:
                             done.append(x)
                         n.append(temp)
-        n.sort(key = sec1)
-        ret.append(n)
+        if n:
+            n.sort(key = sec1)
+            ret.append(n)
     return ret
 
 #filters out groups of circles that follow the criteria for names which is 27 circles within a certain vertical threshold
@@ -152,7 +155,23 @@ def names(x):
                     for x in tempvisit:
                         done.append(x)
                     n.append(temp)
-        ret.append(n)
+        for co, c in zip(col, centers):
+            if c not in done:
+                temp = []
+                tempvisit = []
+                tempvisit.append(c)
+                temp.append(co)
+                for coo,cc in zip(col, centers):
+                    if cc not in tempvisit and cc not in done:
+                        if abs(c[1] - cc[1]) < (imgH*0.2667995):
+                            temp.append(coo)
+                            tempvisit.append(cc)
+                if (len(temp) == 26) or (len(temp) == 25):
+                    for x in tempvisit:
+                        done.append(x)
+                    n.append(temp)
+        if n:
+            ret.append(n)
     return ret
 
 #filters out groups of circles that follow the criteria for grade/EDU level which is 17 circles within a certain vertical threshold
@@ -178,33 +197,68 @@ def gradeEDU(x):
                     for x in tempvisit:
                         done.append(x)
                     n.append(temp)
-        ret.append(n)
-    return ret
-
-#filters out groups of circles that follow the criteria for month of the date which is 12 circles within a certain vertical threshold
-def month(x):
-    ret = []
-    for col in x:
-        n = []
-        visited = []
-        centers = center(col)
         for co, c in zip(col, centers):
-            if c not in visited and c not in done:
+            if c not in done:
                 temp = []
                 tempvisit = []
-                visited.append(c)
                 tempvisit.append(c)
                 temp.append(co)
                 for coo,cc in zip(col, centers):
                     if cc not in tempvisit and cc not in done:
-                        if abs(c[1] - cc[1]) < (imgH*0.12305):
+                        if abs(c[1] - cc[1]) < (imgH*0.16797):
                             temp.append(coo)
                             tempvisit.append(cc)
-                if (len(temp) == 12):
+                if (len(temp) == 16) or (len(temp) == 15):
                     for x in tempvisit:
                         done.append(x)
                     n.append(temp)
-        ret.append(n)
+        if n:
+            ret.append(n)
+    return ret
+
+#filters out groups of circles that follow the criteria for month of the date which is 12 circles within a certain vertical threshold
+#insures that there will be only one month
+def month(x):
+    ret = []
+    for col in x:
+        if not ret:
+            n = []
+            visited = []
+            centers = center(col)
+            for co, c in zip(col, centers):
+                if c not in visited and c not in done:
+                    temp = []
+                    tempvisit = []
+                    visited.append(c)
+                    tempvisit.append(c)
+                    temp.append(co)
+                    for coo,cc in zip(col, centers):
+                        if cc not in tempvisit and cc not in done:
+                            if abs(c[1] - cc[1]) < (imgH*0.1222):
+                                temp.append(coo)
+                                tempvisit.append(cc)
+                    if (len(temp) == 12):
+                        for x in tempvisit:
+                            done.append(x)
+                        n.append(temp)
+            if not n:
+                for co, c in zip(col, centers):
+                    if c not in done:
+                        temp = []
+                        tempvisit = []
+                        tempvisit.append(c)
+                        temp.append(co)
+                        for coo,cc in zip(col, centers):
+                            if cc not in tempvisit and cc not in done:
+                                if abs(c[1] - cc[1]) < (imgH*0.1222):
+                                    temp.append(coo)
+                                    tempvisit.append(cc)
+                        if (len(temp) == 11):
+                            for x in tempvisit:
+                                done.append(x)
+                            n.append(temp)
+            if n:
+                ret.append(n)
     return ret
 
 #filters out groups of circles that follow the criteria for the normal date and ID which is 10 circles within a certain vertical threshold
@@ -230,7 +284,23 @@ def dateID(x):
                     for x in tempvisit:
                         done.append(x)
                     n.append(temp)
-        ret.append(n)
+        for co, c in zip(col, centers):
+            if c not in done:
+                temp = []
+                tempvisit = []
+                tempvisit.append(c)
+                temp.append(co)
+                for coo,cc in zip(col, centers):
+                    if cc not in tempvisit and cc not in done:
+                        if abs(c[1] - cc[1]) < (imgH*0.1015):
+                            temp.append(coo)
+                            tempvisit.append(cc)
+                if (len(temp) == 9) or (len(temp) == 8):
+                    for x in tempvisit:
+                        done.append(x)
+                    n.append(temp)
+        if n:
+            ret.append(n)
     return ret
 
 #filters out groups of circles that follow the criteria for the ten group of the day from the date which is 4 circles within a certain vertical threshold
@@ -256,10 +326,26 @@ def date1(x):
                     for x in tempvisit:
                         done.append(x)
                     n.append(temp)
-        ret.append(n)
+        for co, c in zip(col, centers):
+            if c not in done:
+                temp = []
+                tempvisit = []
+                tempvisit.append(c)
+                temp.append(co)
+                for coo,cc in zip(col, centers):
+                    if cc not in tempvisit and cc not in done:
+                        if abs(c[1] - cc[1]) < (imgH*0.041):
+                            temp.append(coo)
+                            tempvisit.append(cc)
+                if (len(temp) == 3):
+                    for x in tempvisit:
+                        done.append(x)
+                    n.append(temp)
+        if n:
+            ret.append(n)
     return ret
 
-##filters out groups of circles that follow the criteria for gender which is 2 circles within a certain vertical threshold
+#filters out groups of circles that follow the criteria for gender which is 2 circles within a certain vertical threshold
 def gender(x):
     ret = []
     for col in x:
@@ -275,14 +361,15 @@ def gender(x):
                 temp.append(co)
                 for coo,cc in zip(col, centers):
                     if cc not in tempvisit and cc not in done:
-                        if abs(c[1] - cc[1]) < (imgH*0.021484):
+                        if abs(c[1] - cc[1]) < (imgH*0.021486):
                             temp.append(coo)
                             tempvisit.append(cc)
                 if (len(temp) == 2):
                     for x in tempvisit:
                         done.append(x)
                     n.append(temp)
-        ret.append(n)
+        if n:
+            ret.append(n)
     return ret
 
 #inner function of filterDublicates
@@ -311,14 +398,14 @@ def findCircles(contour):
     for cont in contour:
         approx = cv2.approxPolyDP(cont, 0.0303*cv2.arcLength(cont, True), True)
         area = cv2.contourArea(cont)
-        if ((len(approx) > 6) and (area > (imgW*imgH*0.000065))):
+        if ((len(approx) > 6) and (area > (imgW*imgH*0.00007))):#0.000065
             (x,y,w,h) = cv2.boundingRect(cont)
             ratio = float(w)/ float(h)
             if ((ratio >= .833) and (ratio <= 1.267)):
                 cir.append(cont)
     return cir
 
-#finds the darkest bubble of each question group but if the question group does not have a full 5 circles then "error" is added to the list(subject to change)
+#finds the darkest bubble of each question group but if the question group does not have a full 5 circles then "error" is added to the list
 def findSelectedQ(qG):
     bubbled = []
     for i,row in enumerate(qG):
@@ -334,7 +421,7 @@ def findSelectedQ(qG):
                     mask = cv2.bitwise_and(img, img, mask=mask)
                     total = cv2.countNonZero(mask)
 
-                    if total > bubbled[i][j][0] and total > (imgW*imgH*0.000036):
+                    if total > bubbled[i][j][0] and total > (cv2.contourArea(c) * .8): #total > (imgW*imgH*0.000036)
                         bubbled[i][j] = (total, k)
             else:
                 bubbled[i][j] = (0, "error")
@@ -348,15 +435,18 @@ def findSelected(g):
         for j,group in enumerate(col):
             group.sort(key = first1)
             bubbled[i].append((0,-1))
-            for k,c in enumerate(group):
-                mask = np.zeros(img.shape, dtype="uint8")
-                cv2.drawContours(mask, [c], -1, 255, -1)
+            if (len(group) == 27) or (len(group) == 17) or (len(group) == 12) or (len(group) == 10) or (len(group) == 4) or (len(group) == 2):
+                for k,c in enumerate(group):
+                    mask = np.zeros(img.shape, dtype="uint8")
+                    cv2.drawContours(mask, [c], -1, 255, -1)
 
-                mask = cv2.bitwise_and(img, img, mask=mask)
-                total = cv2.countNonZero(mask)
+                    mask = cv2.bitwise_and(img, img, mask=mask)
+                    total = cv2.countNonZero(mask)
 
-                if total > bubbled[i][j][0] and total > (imgW*imgH*0.000065):
-                    bubbled[i][j] = (total, k)
+                    if total > bubbled[i][j][0] and total > (cv2.contourArea(c) * .8): #total > (imgW*imgH*0.000065)
+                        bubbled[i][j] = (total, k)
+            else:
+                bubbled[i][j] = (0, "error")
     return bubbled
 
 start = time.time()
@@ -412,8 +502,8 @@ co = cv2.findContours(dark, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)[0]
 contours = np.append(contours, co, axis=0)
 contours = np.append(contours, con, axis=0)
 
-#img1 = cv2.imread(fileName)
-#img1 = cv2.resize(img1, (imgW, imgH), interpolation = cv2.INTER_AREA)
+##img1 = cv2.imread(fileName)
+##img1 = cv2.resize(img1, (imgW, imgH), interpolation = cv2.INTER_AREA)
 #cv2.drawContours(img1, contours, -1, (0, 250, 250), 2)
 
 circles = findCircles(contours)
@@ -483,29 +573,43 @@ bubbledGender = findSelected(genderGroup)
 
 #prints out values but if there is an no selected circle in question selection then -1 is printed out
 #error is printed out for an error reading questions
+#makes sure no more than 43 items are printed out because the other components break when more than 43 are given
+count = 0
 for z in bubbledName:
     for w in z:
-        print(str(w[1]))
+        if count < 43:
+            print(w[1])
+            count += 1
 
 for z in bubbledGender:
     for w in z:
-        print(str(w[1]))
+        if count < 43:
+            print(w[1])
+            count += 1
 
 for z in bubbledEDU:
     for w in z:
-        print(str(w[1]))
+        if count < 43:
+            print(w[1])
+            count += 1
 
 for z in bubbledMonth:
     for w in z:
-        print(str(w[1]))
+        if count < 43:
+            print(w[1])
+            count += 1
 
 for z in bubbledDate:
     for w in z:
-        print(str(w[1]))
+        if count < 43:
+            print(w[1])
+            count += 1
 
 for z in bubbledDateID:
     for w in z:
-        print(str(w[1]))
+        if count < 43:
+            print(w[1])
+            count += 1
 
 i = -1
 for z in bubbledQue:
@@ -517,7 +621,7 @@ for z in bubbledQue:
 ##cv2.namedWindow("edges", cv2.WINDOW_NORMAL)
 ##cv2.imshow("edges", img1)
 ##cv2.namedWindow("edges1", cv2.WINDOW_NORMAL)
-##cv2.imshow("edges1", dark)
+##cv2.imshow("edges1", img)
 ##cv2.namedWindow("edges2", cv2.WINDOW_NORMAL)
 ##cv2.imshow("edges2", edges)
 
