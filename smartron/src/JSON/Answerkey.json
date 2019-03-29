@@ -1,0 +1,42 @@
+{
+	"examName":"Exam 3",
+	"examID":"JKSDE",
+	"answersList":[
+		{
+  		"questionId": 1,
+  		"answerKeys": [
+    		"C"
+  		]
+		},
+
+	       	{
+  		"questionId": 2,
+  		"answerKeys": [
+    		"C"
+  		]
+		},
+	       	
+		{
+  		"questionId": 3,
+  		"answerKeys": [
+    		"C"
+  		]
+		},
+	       
+		{
+  		"questionId": 4,
+  		"answerKeys": [
+    			"C",
+			"D"
+  		]
+		},
+	       
+		{
+  		"questionId": 5,
+  		"answerKeys": [
+    			"C"
+  		]
+		}
+	
+	]
+}
