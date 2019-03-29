@@ -16,9 +16,7 @@
 		{"grade":"A","percent":"10"},
 		{"grade":"B", "percent":"30"},
 		{"grade":"C","percent":"30"},
-                {"grade":"D", "percent":"20"},
+        {"grade":"D", "percent":"20"},
 		{"grade":"D", "percent":"10"}
-
-	
 	]
 }

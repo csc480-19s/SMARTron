@@ -7,6 +7,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import studentJSON from '../JSON/Bystudent';
+
 const styles = theme => ({
     root: {
         width: '80%',
@@ -24,14 +26,14 @@ function createData(student, grade, total_points, percent) {
     return { student, grade, total_points, percent };
 }
 
-const rows = [
-    createData('Sushmita Banerjee', 'A', 98, 98),
-    createData('Nicholas Esposito', 'A', 97, 97),
-    createData('Narayan Neopane', 'A', 96, 96),
-    createData('Kristen Ray', 'A', 95, 95),
-];
+const rows = [];
+
+studentJSON.students.forEach((student) => {
+    rows.push(createData(student.name, student.grade, student.points, student.percent));
+});
 
 function StudentTable(props) {
+
     const { classes } = props;
 
     return (

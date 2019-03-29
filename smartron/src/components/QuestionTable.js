@@ -7,30 +7,30 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import questionJSON from '../JSON/Byquestion';
+
 const styles = theme => ({
     root: {
-        width: '25%',
-        marginTop: theme.spacing.unit * 3,
+        width: '40%',
         overflowX: 'auto',
     },
     table: {
-        minWidth: 100,
+        minWidth: 50,
     },
 });
 
 let id = 0;
-function createData(response, percent) {
+function createData(number, response, percent) {
     id += 1;
-    return { response, percent};
+    return { number, response, percent };
 }
 
-const rows = [
-    createData('A', '10'),
-    createData('B', '20'),
-    createData('C', '5'),
-    createData('D', '2'),
-    createData('E', '1'),
-];
+const rows = [];
+questionJSON.questionlist.forEach((question) => {
+    question.data.forEach((q) => {
+        rows.push(createData(question.questionNumber, q.name, q.value));
+    });
+});
 
 function QuestionTable(props) {
     const { classes } = props;
@@ -40,16 +40,15 @@ function QuestionTable(props) {
             <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Question 1:</TableCell>
-                    </TableRow>
-                    <TableRow>
+                        <TableCell >QTest</TableCell>
                         <TableCell >Response</TableCell>
-                        <TableCell align="center">Percent</TableCell>
+                        <TableCell >Percent</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {rows.map(row => (
                         <TableRow key={row.id}>
+                            <TableCell>{row.number}</TableCell>
                             <TableCell component="th" scope="row">
                                 {row.response}
                             </TableCell>

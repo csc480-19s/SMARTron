@@ -5,15 +5,6 @@ import {Link} from "react-router-dom";
 import Tabs from './Tabs';
 import Center from 'react-center';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
-const data = [
-    {"name": "Group A", "value": 10},
-    {"name": "Group B", "value": 20},
-    {"name": "Group C", "value": 5},
-    {"name": "Group D", "value": 2}
-];
-
 class Results extends Component {
 
     render() {

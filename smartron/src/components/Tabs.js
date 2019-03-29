@@ -10,6 +10,7 @@ import {Cell, Pie, PieChart, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip
 import StudentTable from './StudentTable';
 import Center from 'react-center';
 import QuestionTable from "./QuestionTable";
+import statsJSON from '../JSON/Statistics';
 
 function TabContainer({ children, dir }) {
     return (
@@ -27,28 +28,17 @@ const data = [
     {"name": "E", "value": 1}
 ];
 
-const data1 = [
-    {
-        "grade": "A",
-        "percent": 10
-    },
-    {
-        "grade": "B",
-        "percent": 20
-    },
-    {
-        "grade": "C",
-        "percent": 5
-    },
-    {
-        "grade": "D",
-        "percent": 2
-    },
-    {
-        "grade": "E",
-        "percent": 1
-    }
-]
+let id = 0;
+function createData(grade, percent) {
+    id += 1;
+    return { grade, percent };
+}
+
+const data1 = [];
+
+statsJSON.gradeDistribution.forEach((stat) => {
+    data1.push(createData(stat.grade, stat.percent));
+});
 
 TabContainer.propTypes = {
     children: PropTypes.node.isRequired,
@@ -111,7 +101,7 @@ class CenteredTabs extends React.Component {
                         </BarChart>
                     </TabContainer>
                     <TabContainer dir={theme.direction}>
-                        <QuestionTable/>
+                        <QuestionTable />
                         <PieChart width={700} height={200}>
                             <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" fill="#82ca9d" label>
                                 {
