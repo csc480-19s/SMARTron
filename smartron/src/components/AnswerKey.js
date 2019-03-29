@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../css/answerkey.css';
+import Header from '../components/Header';
 class AnswerKey extends Component{
 constructor(){
   super();
@@ -40,16 +41,19 @@ handleSubmit(e){
 
   render(){
     return (
+      <div>
+        <div>
+          <Header />
+        </div>
       <div align = "right">
-        <div className = "scrollable">
-          <h1 align = "left">AnswerKey</h1>
-          <h1 align = "left">Exam 101</h1>
+          <h1 className = "answerKeyTitle" align = "center">Answer Key</h1>
+          <h1 className = "examName" align = "center">Exam 101</h1>
             <div className = "items">
               {this.state.answerKeys.map( item => (
                 <div className = "item">
                   <div key ={item.questionId}>
                     <div className="keyBox">
-                      <span>
+                      <span className="questionId">
                         {item.questionId}
                       </span>
                         {this.state.list.map(k =>(
@@ -69,10 +73,10 @@ handleSubmit(e){
                       </div>
                     ))}
                   </div>
-                </div>
-              <input type = "submit"
-                     onClick={() => this.handleSubmit()}/>
+              <button className= "float"
+                     onClick={() => this.handleSubmit()}>Submit</button>
             </div>
+          </div>
           );
         }
 }
