@@ -28,14 +28,14 @@
 .loginButton{
   position: absolute;
   width: 400px;
-  height: 500px;
+  height: 600px;
   text-align: center;
   top: 25%;
   left: 50%;
   transform: translate(-50%, -25%);
   padding: 50px;
   border-radius: 25px;
-  border: 2px solid #60f3ab;
+  border: 2px solid #003C60;
 }
 .loginButton p{
   font-family: "Helvetica Neue";

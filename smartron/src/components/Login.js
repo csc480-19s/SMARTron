@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from '../assets/logo.svg';
+import logo from '../assets/smartron-logo.png';
 import '../css/App.css';
 import {GoogleLogin} from "react-google-login";
 
@@ -21,7 +21,7 @@ class Login extends Component {
     render() {
         return (
             <div className={"loginButton"}>
-                <img src={logo}/>
+                <img src={logo} height={400}/>
                 <p>Welcome to SMARTron, please login with your LakerNet account</p>
                 <GoogleLogin
                     clientId="121480712018-0f6fb2fh7kbms55bno97g3hiju99n8oo.apps.googleusercontent.com"
