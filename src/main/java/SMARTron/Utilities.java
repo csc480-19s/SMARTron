@@ -24,7 +24,7 @@ public class Utilities {
 
         String pdfFilename;
         String line;
-        String command = "python images/imapConnect.py";
+        String command = "python src/main/python/imapConnect.py";
         //^^Alter this script based on server directories
         try {
             Process p = Runtime.getRuntime().exec(command);
@@ -76,6 +76,7 @@ public class Utilities {
         }
     }
 
+    //Legacy version of orienting images no need to test
     public void orient() {
         int width = 963;    //width of the image
         int height = 640;   //height of the image
@@ -182,6 +183,7 @@ public class Utilities {
 
     }
 
+    //leagacy version no need to test
     public static BufferedImage rotateClockwise90(BufferedImage src) {
         int width = src.getWidth();
         int height = src.getHeight();
@@ -202,21 +204,18 @@ public class Utilities {
         String array[][] = new String[filesInDir.length][143];
         int i = 0;
         for (int j = 0; j < filesInDir.length; j++) {
-
             String line;
-            String command = "python images/edgey.py -f images/jpgs/" + filesInDir[j]; //
+            String command = "python src/main/python/edgey.py -f images/jpgs/" + filesInDir[j]; //
             try {
                 Process p = Runtime.getRuntime().exec(command);
-                BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-
-                //for(
-                while ((line = error.readLine()) != null) {
-                    System.out.println(line);
-                }
-                BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                                BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
                 while ((line = input.readLine()) != null && i < 143) {
                     array[j][i] = line;
                     i++;
+                }
+                BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+                while ((line = error.readLine()) != null) {
+                    System.out.println(line);
                 }
                 error.close();
                 input.close();
@@ -252,8 +251,8 @@ public class Utilities {
         String[][] array = new String[20][5];
         int f, j;
         int count = 0;
-        for (int i = 0; i < a.length; i++) {
-            if (a[i] == "null") {
+        for (int i = 43; i < a.length; i++) {
+            if (a[i] == null) {
                 i = a.length;
             } else {
                 count++;

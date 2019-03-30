@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 public class StudentCreateInterface {
     ArrayList<Student> rawScores;
+    Grader g;
 //This is one of the forst major classes used for grading StudentCreateInterface > Grader > []Student
-    public StudentCreateInterface(String[][] tt){
+    public StudentCreateInterface(){//String[][] tt
         rawScores = new ArrayList<>();
 
         // The python script puts the data in an out of order format, its easyer to handle the data once it is collected as a multidimenitnal array 
@@ -87,16 +88,14 @@ public class StudentCreateInterface {
         };
         */
 
-        String[] key43 = {"11", "5", "25", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1"};
-        String[] stu43 = {"13", "1", "20", "20", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "1", "15", "3", "2", "1", "9", "8", "8", "0", "4", "8", "4", "6", "8", "5", "9", "-1", "-1", "-1", "-1", "-1", "-1", "-1"};
+        //String[] key43 = {"11", "5", "25", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1"};
+        //String[] stu43 = {"13", "1", "20", "20", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "1", "15", "3", "2", "1", "9", "8", "8", "0", "4", "8", "4", "6", "8", "5", "9", "-1", "-1", "-1", "-1", "-1", "-1", "-1"};
         //more test data        
 //
-        addStudent(tt, key43);
-        addStudent(tt, stu43); //<info passed into grader
-        Grader g = new Grader(rawScores); // <-- constructor for grader gets the ball rolling
-        g.gradeTests();
-
-
+        //addStudent(tt, key43);
+        //addStudent(tt, stu43); //<info passed into grader
+        //Grader g = new Grader(rawScores); // <-- constructor for grader gets the ball rolling
+        //g.gradeTests();
     }
 //This method is the second part of the add student method
 //It constructs the data from the two string arrays put inside it and makes one big string array
@@ -112,7 +111,6 @@ public class StudentCreateInterface {
         }
         Student ss = new Student(temp);
         rawScores.add(ss);
-
     }
 
     public void addStudent(String[][] s, String[] first43){
@@ -128,9 +126,12 @@ public class StudentCreateInterface {
         String[] temp2 = new String[temp.size()];
         temp2 = temp.toArray(temp2);
         gimmieTheLoot(temp2, first43); //This method has a second part
-
-
-
+    }
+    
+    public void runGrades() {
+        Grader temp = new Grader(rawScores);
+        temp.gradeTests();
+        g = temp;
     }
 }
 
