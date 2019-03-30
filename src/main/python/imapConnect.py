@@ -7,11 +7,11 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 
-def sendEmail():
+def sendEmail(emailAddress):
     fromaddr = 'smartron@cs.oswego.edu'
 
     # email address the email will be sent to
-    toaddrs  = '#ENTER ADDRESS HERE'
+    toaddrs  = emailAddress
     type(toaddrs)
     msg = MIMEMultipart()
     msg['Subject'] = 'Test'
@@ -72,7 +72,7 @@ class FetchEmail():
                             continue
                         fileName = part.get_filename()
                         if bool(fileName):
-                            filePath = os.path.join('C:/Users/natha/Downloads', fileName)
+                            filePath = os.path.join('ENTER DOWNLOAD FOLDER DIRECTORY ADDRESS HERE', fileName)
                             if not os.path.isfile(filePath) :
                                 fp = open(filePath, 'wb')
                                 fp.write(part.get_payload(decode=True))
@@ -86,7 +86,7 @@ class FetchEmail():
             print("Failed to retreive emails.")
             self.connection.close()
         if count > 0:
-            sendEmail()
+            sendEmail('ENTER EMAIL ADDRESS HERE')
 
     
             

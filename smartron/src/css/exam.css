@@ -1,0 +1,23 @@
+.exam{
+    position: relative;
+    align-content: center;
+    width: 40%;
+    left: 25%;
+    top: 25%;
+    margin: 25px;
+    padding: 50px;
+    border: 2px solid black;
+    border-radius: 25px;
+
+}
+.exam p{
+    display: inline-block;
+    float: left;
+    font-size: 14pt;
+    color: #0081A1;
+
+
+}
+.exam p:hover{
+    color: #035B8F;
+}
