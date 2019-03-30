@@ -32,32 +32,36 @@ public class Student { // VV all the attributes of a scantron.
         answers = s;
         String temp = "";
         for(int i = 0; i < 20; i++){
-           temp = temp + t.alphaConverter(answers[i]);
+            if (answers[i] != null && !answers[i].equals("error")) {
+                temp = temp + t.alphaConverter(answers[i]);
+            } else {
+                temp = temp + "-";
+            }
         }
         name = temp;
         temp = "";
-        if(!answers[20].equals("-1")) {
+        if(answers[20] != null && !answers[20].equals("-1")) {
             sex = answers[20];
         }
-        if(!answers[21].equals("-1")) {
+        if(answers[21] != null && !answers[21].equals("-1")) {
             grade = answers[21];
         }
         for(int i = 22; i < 27; i++){
-            if(!answers[i].equals("-1")) {
+            if(answers[i] != null && !answers[i].equals("-1")) {
                 temp = temp + answers[i];
             }
         }
         birthday = temp;
         temp = "";
         for(int i = 26; i < 37; i++){
-            if(!answers[i].equals("-1")) {
+            if(answers[i] != null && !answers[i].equals("-1")) {
                 temp = temp + answers[i];
             }
         }
         id = temp;
         temp = "";
         for(int i = 36; i < 43; i++){
-            if(!answers[i].equals("-1")) {
+            if(answers[i] != null && !answers[i].equals("-1")) {
                 temp = temp + answers[i];
             }
         }
@@ -66,10 +70,37 @@ public class Student { // VV all the attributes of a scantron.
 
 
     //public void printStudent(){
-        //System.out.println("Name: " + this.name + " | " + "Id: " + this.id);
+    //System.out.println("Name: " + this.name + " | " + "Id: " + this.id);
     //}
 
     public String[] getAnswers(){
         return this.answers;
+    }
+
+    public String getSex(){
+        return this.sex;
+    }
+
+    public String getBirthday(){
+        return this.birthday;
+    }
+
+    public String getGrade(){
+        return this.grade;
+    }
+
+    public float getExamGrade(){
+        return this.examGrade;
+    }
+
+    public void setExamGrade(float g){
+        this.examGrade = g;
+    }
+
+    public String getID(){
+        return this.id;
+    }
+    public String getCode(){
+        return this.code;
     }
 }

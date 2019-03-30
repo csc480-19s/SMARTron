@@ -4,11 +4,12 @@ import java.util.ArrayList;
 
 public class StudentCreateInterface {
     ArrayList<Student> rawScores;
-//This is one of the forst major classes used for grading StudentCreateInterface > Grader > []Student
-    public StudentCreateInterface(String[][] tt){
+    Grader g;
+    //This is one of the forst major classes used for grading StudentCreateInterface > Grader > []Student
+    public StudentCreateInterface(){//String[][] tt
         rawScores = new ArrayList<>();
 
-        // The python script puts the data in an out of order format, its easyer to handle the data once it is collected as a multidimenitnal array 
+        // The python script puts the data in an out of order format, its easyer to handle the data once it is collected as a multidimenitnal array
         /* Indexing test data for multi dimentinal arrays
         String[][] stu = {
                 {"1", "11", "21", "31", "41"},
@@ -33,7 +34,7 @@ public class StudentCreateInterface {
                 {"60", "70", "80", "90", "100"}
         };
         */
-        /* 
+        /*
 //more test data
         String[][] stu = {
                 {"1", "2", "1", "4", "0"},
@@ -57,7 +58,6 @@ public class StudentCreateInterface {
                 {"1", "2", "1", "4", "0"},
                 {"1", "2", "1", "4", "0"}
         };
-
         //                Name start                                                                                                   Name End |sex |Grade|B-day Start    B-dayEnd|  id Start                                 id End   Code Start               Code end
         //                 V                                                                                                                 V   V     V    V                    V    V                                             V     V                             V
         String[] stu43 = {"13", "1", "20", "20", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "1", "15", "3", "2", "1", "9", "8", "8", "0", "4", "8", "4", "6", "8", "5", "9", "-1", "-1", "-1", "-1", "-1", "-1", "-1"};
@@ -87,18 +87,16 @@ public class StudentCreateInterface {
         };
         */
 
-        String[] key43 = {"11", "5", "25", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1"};
-        String[] stu43 = {"13", "1", "20", "20", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "1", "15", "3", "2", "1", "9", "8", "8", "0", "4", "8", "4", "6", "8", "5", "9", "-1", "-1", "-1", "-1", "-1", "-1", "-1"};
-        //more test data        
+        //String[] key43 = {"11", "5", "25", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1"};
+        //String[] stu43 = {"13", "1", "20", "20", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1", "1", "15", "3", "2", "1", "9", "8", "8", "0", "4", "8", "4", "6", "8", "5", "9", "-1", "-1", "-1", "-1", "-1", "-1", "-1"};
+        //more test data
 //
-        addStudent(tt, key43);
-        addStudent(tt, stu43); //<info passed into grader
-        Grader g = new Grader(rawScores); // <-- constructor for grader gets the ball rolling
-        g.gradeTests();
-
-
+        //addStudent(tt, key43);
+        //addStudent(tt, stu43); //<info passed into grader
+        //Grader g = new Grader(rawScores); // <-- constructor for grader gets the ball rolling
+        //g.gradeTests();
     }
-//This method is the second part of the add student method
+    //This method is the second part of the add student method
 //It constructs the data from the two string arrays put inside it and makes one big string array
     public void gimmieTheLoot(String[] s, String[] first43){ //Yeah its a stupid method name, too much astroworld I guess..
         //Student ss = new Student(s); //clone?
@@ -112,11 +110,10 @@ public class StudentCreateInterface {
         }
         Student ss = new Student(temp);
         rawScores.add(ss);
-
     }
 
     public void addStudent(String[][] s, String[] first43){
-        ArrayList<String> temp = new ArrayList<>(); 
+        ArrayList<String> temp = new ArrayList<>();
         int pos = 0;
         for(int i = 0; i < 5; i++){
             for(int j = 0; j < 10; j++){
@@ -128,18 +125,19 @@ public class StudentCreateInterface {
         String[] temp2 = new String[temp.size()];
         temp2 = temp.toArray(temp2);
         gimmieTheLoot(temp2, first43); //This method has a second part
+    }
 
-
-
+    public void runGrades() {
+        Grader temp = new Grader(rawScores);
+        temp.gradeTests();
+        g = temp;
     }
 }
 
 
 /*
 Parts of the scantron:
-
 Section, number of entries, array range, scope
-
 1. Name - Last, First, Middle: 20|0-19|0-26
 2. Sex: 1|19-20|0-2
 3. Grade: 1|20-21|0-17*
@@ -147,6 +145,5 @@ Section, number of entries, array range, scope
 5. Id: 10|26-36|0-10*
 6. Code: 6|36-42|0-10*
 7. Questions: 200|42-242|0-5
-
 *1 = 0, the 0 is used as nul
  */
