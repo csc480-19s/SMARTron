@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/480-SMARTron.iml" filepath="$PROJECT_DIR$/.idea/modules/480-SMARTron.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SMARTron.iml" filepath="$PROJECT_DIR$/SMARTron.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/smartron/SMARTron-SMARTron.iml" filepath="$PROJECT_DIR$/.idea/modules/smartron/SMARTron-SMARTron.iml" group="SMARTron" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SMARTron_main.iml" filepath="$PROJECT_DIR$/.idea/modules/SMARTron_main.iml" group="SMARTron" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SMARTron_test.iml" filepath="$PROJECT_DIR$/.idea/modules/SMARTron_test.iml" group="SMARTron" />
+    </modules>
+  </component>
+</project>

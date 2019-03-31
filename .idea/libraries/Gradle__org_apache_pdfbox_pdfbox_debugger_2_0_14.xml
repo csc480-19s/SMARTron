@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.apache.pdfbox:pdfbox-debugger:2.0.14">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.pdfbox/pdfbox-debugger/2.0.14/e6eefb31536d568de2de969d5501b1e785a65ad2/pdfbox-debugger-2.0.14.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.pdfbox/pdfbox-debugger/2.0.14/a156bc8f254dc98582b22c7680da78c67798e1c2/pdfbox-debugger-2.0.14-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
