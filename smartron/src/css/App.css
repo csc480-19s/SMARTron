@@ -143,5 +143,20 @@
   padding-top: 25px;
 }
 
+.modal h1{
+  text-align: center;
+  font-family: "Helvetica Neue";
+  padding-bottom: 5%;
+  color: #003C60;
+}
+.modal label{
+  justify-content: center;
+  font-family: "Helvetica Neue";
+  color: #003C60;
+}
+.modal button{
+  float: right;
+  width: 25%;
+}
 
 

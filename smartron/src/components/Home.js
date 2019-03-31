@@ -4,7 +4,7 @@ import '../css/App.css';
 import Exam from "./Exam";
 import ExamList from "./ExamList"
 import examJSON from "../JSON/Mainpage"
-
+import Popup from "reactjs-popup";
 
 class Home extends Component {
     //Constructor binds methods and creates an exam list used by the ExamList component
@@ -12,11 +12,17 @@ class Home extends Component {
         super()
 
         this.state = {
-            exams:[]
+            exams:[],
+            random:"",
+            newName:"",
+            newNum:"",
         }
 
         this.navResults = this.navResults.bind(this);
         this.launchExam = this.launchExam.bind(this)
+        this.generateCode =this.generateCode.bind(this)
+        this.handleName = this.handleName.bind(this)
+        this.handleNum = this.handleNum.bind(this)
 
     }
     componentDidMount() {
@@ -33,9 +39,26 @@ class Home extends Component {
     }
 
     //Creates a new exam via popup dialog
-    launchExam(){
-        this.state.exams.push(<Exam problem={false} text={"Exam " + this.state.exams.length} history={this.props.history}/>)
+    launchExam(name,id){
+
+        this.state.exams.push(<Exam problem={false} text={name} id={id} history={this.props.history}/>)
         this.setState(this.state)
+    }
+    generateCode(){
+        var id = ""
+        var poss = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        for (let i = 0; i < 5; i++) {
+            id += poss.charAt(Math.floor(Math.random()*25))
+        }
+        console.log(id)
+        this.state.random = id
+        this.setState(this.state)
+    }
+    handleName(event) {
+        this.setState({newName: event.target.value});
+    }
+    handleNum(event) {
+        this.setState({newNum: event.target.value});
     }
 
     render() {
@@ -46,7 +69,29 @@ class Home extends Component {
                 <img className={"logout"} src={logo} height={40} />
                 <h1 className={"welcome"}> Welcome, {this.props.location.state.loginName}</h1>
                 <div className={"buttons"}>
-                    <button onClick={this.launchExam} className={"scanButton"}>New Test Scan</button>
+                    <Popup  onClose={()=>{this.setState(this.state)}} onOpen={this.generateCode} modal trigger={<button   className={"scanButton"}>New Test Scan</button>}>
+                        {close =>
+                            <div className={"modal"}>
+
+                                <h1> New Test Scan</h1>
+                                <form>
+                                    <label> Enter name of test: <input name={"newName"} value={this.state.newName}
+                                                                       onChange={this.handleName}/></label> <br/>
+                                    <label> Enter number of questions: <input name={"newNum"} value={this.state.newNum}
+                                                                              onChange={this.handleNum}/></label>
+                                </form>
+
+                                <Popup onOpen={this.generateCode} modal trigger={<button>Submit</button>}>
+                                    <h1>{this.state.random}</h1>
+                                    <button onClick={() => {
+                                        this.state.exams.push(<Exam problem={false} text={this.state.newName} id={this.state.random} numQuest={this.state.newNum} history={this.props.history}/>);
+                                        close()
+                                    }}>Ok
+                                    </button>
+                                </Popup>
+                            </div>
+                        }
+                    </Popup>
                     <select className={"select"} onChange={this.sort}><option value={"recent"}>Most Recent </option> <option value={"alpha"}>Alphanumeric</option></select>
                 </div>
                 <ExamList exams={this.state.exams} history={this.props.history}/>
@@ -59,4 +104,3 @@ class Home extends Component {
 }
 
 export default Home;
-/*<Exam problem={true} text={"Exam 0"} history={props.history}/>*/
