@@ -15,9 +15,9 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 
 //packages
-
 public class Utilities {
 
     public void RetrieveEmails() throws IOException {
@@ -198,34 +198,38 @@ public class Utilities {
         return dest;
     }
 
-    public String[][] runGrader() {            //Runs Python Script which analyzes a single Scantron. Returns MultiDimensional Array of Integers which are currently just the answers. No other Data.
+    public String[][] runScanner() {            //Runs Python Script which analyzes a single Scantron. Returns MultiDimensional Array of Integers which are currently just the answers. No other Data.
         File dir = new File("images/jpgs");
         String[] filesInDir = dir.list();
         String array[][] = new String[filesInDir.length][143];
         int i = 0;
+        int count = 0;
         for (int j = 0; j < filesInDir.length; j++) {
-            String line;
-            String command = "python src/main/python/edgey.py -f images/jpgs/" + filesInDir[j]; //
-            try {
-                Process p = Runtime.getRuntime().exec(command);
-                BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                while ((line = input.readLine()) != null && i < 143) {
-                    array[j][i] = line;
-                    i++;
+            if (filesInDir[j].contains("front")) {
+                String line;
+                String command = "python src/main/python/edgey.py -f images/jpgs/" + filesInDir[j]; //
+                try {
+                    Process p = Runtime.getRuntime().exec(command);
+                    BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                    while ((line = input.readLine()) != null && i < 143) {
+                        array[count][i] = line;
+                        i++;
+                    }
+                    BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+                    while ((line = error.readLine()) != null) {
+                        System.out.println(line);
+                    }
+                    error.close();
+                    input.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
-                BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-                while ((line = error.readLine()) != null) {
-                    System.out.println(line);
-                }
-                error.close();
-                input.close();
-            } catch (Exception ex) {
-                ex.printStackTrace();
+                count++;
+                i = 0;
             }
-            i = 0;
         }
 
-        return array;
+        return Arrays.copyOfRange(array, 0, count);
     }
 
     public String[] getAnswers(int[][] a) {  //Takes MultiDimensional Array initiated by runGrader and puts it into a single String of Answers.
@@ -269,8 +273,10 @@ public class Utilities {
             if (line.contains("-") && line.length() > 2) {
                 if (line.indexOf("-") != -1) {
                     f = Integer.parseInt(line.substring(0, line.indexOf("-")));
-                    j = Integer.parseInt(line.substring(line.indexOf("-") + 1, line.indexOf("-") + 2));
-                    array[f][j] = (line.substring(line.indexOf(" ") + 1, line.length()));
+                    if (f < 20) {
+                        j = Integer.parseInt(line.substring(line.indexOf("-") + 1, line.indexOf("-") + 2));
+                        array[f][j] = (line.substring(line.indexOf(" ") + 1, line.length()));
+                    }
                 }
             }
         }
