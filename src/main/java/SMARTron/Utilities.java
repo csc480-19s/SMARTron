@@ -15,13 +15,13 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 
 //packages
-
 public class Utilities {
-
+    
     public void RetrieveEmails() throws IOException {
-
+        
         String pdfFilename;
         String line;
         String command = "python src/main/python/imapConnect.py";
@@ -41,12 +41,12 @@ public class Utilities {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
+        
     }
 
     //Changes Directory based on whether the item is a pdf extension.
     public void changeDirectory() throws IOException {
-
+        
         File file2 = new File("images/");
         String[] arraytemp = file2.list();
         for (int a = 0; a < arraytemp.length; a++) {
@@ -58,7 +58,7 @@ public class Utilities {
             }
         }
     }
-
+    
     public void pdf2jpeg() throws IOException { //png, jpg, pdf, tiff, pnp
 
         File file = new File("images/pdfTest/");
@@ -141,9 +141,9 @@ public class Utilities {
                     newImage = rotateClockwise90(newImage);
                     System.out.println("Rotate 180 degrees");
                 }
-
+                
                 ImageIO.write(newImage, "JPG", testImage);
-
+                
                 int count1 = 0;
                 for (int i = 7 * newImage.getWidth() / 11; i < 10 * newImage.getWidth() / 11; i++) {
 
@@ -152,7 +152,7 @@ public class Utilities {
                         count1 = count1 + 1;
                     }
                 }
-               // System.out.println("Count: " + count);
+                // System.out.println("Count: " + count);
                 // System.out.println("Count1: " + count1);
 
                 // strip extension off file name
@@ -165,69 +165,73 @@ public class Utilities {
                 // Check for front or back and rename file
 
                 if (count1 > 0) {
-
+                    
                     File frontName = new File(file + "_front_" + x + ".jpg");
                     testImage.renameTo(frontName);
                     x++;
-
+                    
                 } else {
                     File backName = new File(file + "_back_" + y + ".jpg");
                     testImage.renameTo(backName);
                     y++;
                 }
-
+                
             }
         } catch (IOException e) {
             System.out.println("Error: " + e);
         }
-
+        
     }
 
     //leagacy version no need to test
     public static BufferedImage rotateClockwise90(BufferedImage src) {
         int width = src.getWidth();
         int height = src.getHeight();
-
+        
         BufferedImage dest = new BufferedImage(height, width, src.getType());
-
+        
         Graphics2D graphics2D = dest.createGraphics();
         graphics2D.translate((height - width) / 2, (height - width) / 2);
         graphics2D.rotate(Math.PI / 2, height / 2, width / 2);
         graphics2D.drawRenderedImage(src, null);
-
+        
         return dest;
     }
-
-    public String[][] runGrader() {            //Runs Python Script which analyzes a single Scantron. Returns MultiDimensional Array of Integers which are currently just the answers. No other Data.
+    
+    public String[][] runScanner() {            //Runs Python Script which analyzes a single Scantron. Returns MultiDimensional Array of Integers which are currently just the answers. No other Data.
         File dir = new File("images/jpgs");
         String[] filesInDir = dir.list();
         String array[][] = new String[filesInDir.length][143];
         int i = 0;
+        int count = 0;
         for (int j = 0; j < filesInDir.length; j++) {
-            String line;
-            String command = "python src/main/python/edgey.py -f images/jpgs/" + filesInDir[j]; //
-            try {
-                Process p = Runtime.getRuntime().exec(command);
-                                BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                while ((line = input.readLine()) != null && i < 143) {
-                    array[j][i] = line;
-                    i++;
+            if (filesInDir[j].contains("front")) {
+                String line;
+                String command = "python src/main/python/edgey.py -f images/jpgs/" + filesInDir[j]; //
+                try {
+                    Process p = Runtime.getRuntime().exec(command);
+                    BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                    while ((line = input.readLine()) != null && i < 143) {
+                        array[count][i] = line;
+                        i++;
+                    }
+                    BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+                    while ((line = error.readLine()) != null) {
+                        System.out.println(line);
+                    }
+                    error.close();
+                    input.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
-                BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-                while ((line = error.readLine()) != null) {
-                    System.out.println(line);
-                }
-                error.close();
-                input.close();
-            } catch (Exception ex) {
-                ex.printStackTrace();
+                count++;
+                i = 0;
             }
-            i = 0;
         }
-
-        return array;
+        
+        return Arrays.copyOfRange(array, 0, count);
     }
-
+    
     public String[] getAnswers(int[][] a) {  //Takes MultiDimensional Array initiated by runGrader and puts it into a single String of Answers.
         int k = 0;
         for (int l = 0; l < a.length; l++) {
@@ -235,18 +239,18 @@ public class Utilities {
                 k++;
             }
         }
-
+        
         String studentAnswers[] = new String[k];
         k = 0;
         for (int l = 0; l < a.length; l++) {
             for (int f = 0; f < a[l].length; f++) {
                 studentAnswers[k] = Integer.toString(a[l][f]);
-
+                
             }
         }
         return studentAnswers;
     }
-
+    
     public String[][] multi(String[] a) {
         String[][] array = new String[20][5];
         int f, j;
@@ -261,16 +265,18 @@ public class Utilities {
         String[] temp = new String[count];
         for (int i = 0; i < count; i++) {
             temp[i] = a[i];
-
+            
         }
-
+        
         for (int i = 0; i < temp.length; i++) {
             String line = temp[i];
             if (line.contains("-") && line.length() > 2) {
                 if (line.indexOf("-") != -1) {
                     f = Integer.parseInt(line.substring(0, line.indexOf("-")));
-                    j = Integer.parseInt(line.substring(line.indexOf("-") + 1, line.indexOf("-") + 2));
-                    array[f][j] = (line.substring(line.indexOf(" ") + 1, line.length()));
+                    if (f < 20) {
+                        j = Integer.parseInt(line.substring(line.indexOf("-") + 1, line.indexOf("-") + 2));
+                        array[f][j] = (line.substring(line.indexOf(" ") + 1, line.length()));
+                    }
                 }
             }
         }
