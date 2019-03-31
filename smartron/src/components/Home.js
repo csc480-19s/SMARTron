@@ -82,7 +82,16 @@ class Home extends Component {
                                 </form>
 
                                 <Popup onOpen={this.generateCode} modal trigger={<button>Submit</button>}>
-                                    <h1>{this.state.random}</h1>
+                                    <h1 className={"id"}>{this.state.random}</h1>
+                                    <p className={"scanCode"}>Scan Code</p>
+                                    <p>
+
+                                        1. Enter this code in the NAME FIELD of the ANSWER KEY scantron <br/>
+
+                                        3. Place ANSWER KEY scantron on the TOP of each pile of answer sheets <br/>
+
+                                        2. Only enter 25 SCANTRONS in the scanner at a time <br/>
+                                    </p>
                                     <button onClick={() => {
                                         this.state.exams.push(<Exam problem={false} text={this.state.newName} id={this.state.random} numQuest={this.state.newNum} history={this.props.history}/>);
                                         close()

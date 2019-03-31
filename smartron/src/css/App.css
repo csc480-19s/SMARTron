@@ -99,6 +99,7 @@
 }
 
 
+
 .buttons{
   display: table;
   position: absolute;
@@ -146,7 +147,7 @@
 .modal h1{
   text-align: center;
   font-family: "Helvetica Neue";
-  padding-bottom: 5%;
+  padding-bottom: 1%;
   color: #003C60;
 }
 .modal label{
@@ -159,4 +160,12 @@
   width: 25%;
 }
 
-
+.id{
+  padding-bottom: 1%;
+}
+.scanCode {
+  position: relative;
+  text-align: center;
+  font-weight: bold;
+  font-size: large;
+}
