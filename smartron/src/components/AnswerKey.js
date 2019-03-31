@@ -8,6 +8,9 @@ constructor(){
     answerKeys: [],
     list: ["A", "B", "C", "D", "E"],
     chkbox: false,
+      examList:[],
+      loginName:"",
+      email:"",
   };
   this.handleClick = this.handleClick.bind(this);
   this.handleSubmit = this.handleSubmit.bind(this);
@@ -37,6 +40,7 @@ handleClick(item, index){
 
 handleSubmit(e){
   console.log("handle on submit here")
+   // this.props.history.push({pathname:"/home", state:{loginName:this.props.location.state.loginName, email:this.props.location.state.email,examList:this.props.location.state.examList}});
 }
 
   render(){

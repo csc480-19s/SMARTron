@@ -94,7 +94,7 @@ class Home extends Component {
                     </Popup>
                     <select className={"select"} onChange={this.sort}><option value={"recent"}>Most Recent </option> <option value={"alpha"}>Alphanumeric</option></select>
                 </div>
-                <ExamList exams={this.state.exams} history={this.props.history}/>
+                <ExamList loginName={this.props.location.state.loginName} email={this.props.location.state.email} exams={this.state.exams} history={this.props.history}>{this.state.exams}</ExamList>
 
 
             </div>

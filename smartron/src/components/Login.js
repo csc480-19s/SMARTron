@@ -11,7 +11,7 @@ class Login extends Component {
 
     responseGoogleSucc = (response) => {
         console.log(response.getBasicProfile().getEmail())
-        this.props.history.push({pathname:"/home", state:{loginName:response.getBasicProfile().getName(), email:response.getBasicProfile().getEmail()}});
+        this.props.history.push({pathname:"/home", state:{loginName:response.getBasicProfile().getName(), email:response.getBasicProfile().getEmail(),examList:[]}});
     }
 
     responseGoogleFail = (response) => {
