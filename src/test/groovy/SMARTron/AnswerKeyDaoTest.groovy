@@ -1,22 +1,30 @@
 package SMARTron
 
-
+import SMARTron.Database.*
 import spock.lang.Specification
 
 class AnswerKeyDaoTest extends Specification{
 
+    AnswerKeyDao answerKeyDao
     AnswerKeyDao akd = new AnswerKeyDao()
-    GenericDao gd = new GenericDao()
 
+    //for mocking later, just need working tests for now
+    /*def setup() {
+
+
+        answerKeyDao = Mock(AnswerKeyDao)
+
+    }*/
 
 
     def "correct addition of an answerkey"() {
 
         when:
-        akd.addAnswerKey("Midterm", "MATT")
+        akd.addAnswerKey('Midterm', 'MATT', 'abcd')
+
 
         then:
-        def result = gd.select("SELECT * FROM scantron.answerkey WHERE exam_id = 'Midterm' AND instructor_id = 'MATT';")
+        def result = akd.selectAnswerKey("SELECT * FROM scantron.answerkey WHERE exam_id = 'Midterm' AND instructor_id = 'MATT';")
         result == 1
         //Cleanup of the insert
         akd.deleteAnswerKey("Midterm")
