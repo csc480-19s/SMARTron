@@ -13,37 +13,52 @@ class Home extends Component {
 
         this.state = {
             exams:[],
+            exams2:[],
             random:"",
             newName:"",
             newNum:"",
+            swap:false
         }
 
-        this.navResults = this.navResults.bind(this);
-        this.launchExam = this.launchExam.bind(this)
         this.generateCode =this.generateCode.bind(this)
         this.handleName = this.handleName.bind(this)
         this.handleNum = this.handleNum.bind(this)
+        this.sort = this.sort.bind(this)
 
     }
     componentDidMount() {
-        examJSON.examList.forEach((exam)=>
-            this.state.exams.push(<Exam problem={false} text={exam.examName} scanCode={exam.scanCode} history={this.props.history}/>)
-    );
-        this.setState(this.state)
+        if(this.props.location.state.exams.length>0){
+            this.state.exams = this.props.location.state.exams
+            this.setState(this.state)
+        }else {
+
+            this.setState(this.state)
+            var ex1 = []
+            var ex2 = []
+            examJSON.examList.forEach((exam) =>
+                this.state.exams.push(<Exam problem={false} loginName={this.props.location.state.loginName} list={[]}
+                               email={this.props.location.state.email} text={exam.examName} scanCode={exam.scanCode}
+                               history={this.props.history}/>)
+            );
+            this.setState(this.state)
+
+            this.state.exams.forEach((exam) =>
+               ex2.push(<Exam problem={false} loginName={this.props.location.state.loginName} list={[]}
+                              email={this.props.location.state.email} text={exam.props.text} scanCode={exam.props.scanCode}
+                              history={this.props.history}/>)
+
+            );
+
+            this.state.exams = ex2
+            this.state.exams2= ex2.reverse()
+                this.setState(this.state)
+        }
     }
 
 
-    //Navigates to results page
-    navResults(){
-        this.props.history.push("/results");
-    }
 
-    //Creates a new exam via popup dialog
-    launchExam(name,id){
 
-        this.state.exams.push(<Exam problem={false} text={name} id={id} history={this.props.history}/>)
-        this.setState(this.state)
-    }
+
     generateCode(){
         var id = ""
         var poss = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -59,6 +74,11 @@ class Home extends Component {
     }
     handleNum(event) {
         this.setState({newNum: event.target.value});
+    }
+    sort(){
+        var tmp = this.state.swap
+        this.state.swap = !tmp
+        this.setState(this.state)
     }
 
     render() {
@@ -93,7 +113,7 @@ class Home extends Component {
                                         2. Only enter 25 SCANTRONS in the scanner at a time <br/>
                                     </p>
                                     <button onClick={() => {
-                                        this.state.exams.push(<Exam problem={false} text={this.state.newName} id={this.state.random} numQuest={this.state.newNum} history={this.props.history}/>);
+                                        this.state.exams.push(<Exam problem={false} loginName={this.props.location.state.loginName} email={this.props.location.state.email} list={[]} text={this.state.newName} id={this.state.random} numQuest={this.state.newNum} history={this.props.history}/>); this.setState(this.state)
                                         close()
                                     }}>Ok
                                     </button>
@@ -103,7 +123,7 @@ class Home extends Component {
                     </Popup>
                     <select className={"select"} onChange={this.sort}><option value={"recent"}>Most Recent </option> <option value={"alpha"}>Alphanumeric</option></select>
                 </div>
-                <ExamList loginName={this.props.location.state.loginName} email={this.props.location.state.email} exams={this.state.exams} history={this.props.history}>{this.state.exams}</ExamList>
+                {this.state.swap ? <ExamList loginName={this.props.location.state.loginName} email={this.props.location.state.email} exams={this.state.exams} history={this.props.history}>{this.state.exams}</ExamList> : <ExamList loginName={this.props.location.state.loginName} email={this.props.location.state.email} exams={this.state.exams} history={this.props.history}>{this.state.exams2}</ExamList>}
 
 
             </div>

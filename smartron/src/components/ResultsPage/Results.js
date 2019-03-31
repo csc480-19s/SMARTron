@@ -4,15 +4,16 @@ import'../../css/styles.css';
 import {Link} from "react-router-dom";
 import Tabs from './Tabs';
 import Center from 'react-center';
+import Header from "../Header";
 
 class Results extends Component {
 
     render() {
         return (
             <div>
-                <div style={{background: '#f2f2f2'}}><h1 style={{ paddingLeft: '50px',color: '#003C60', fontFamily:"Helvetica Neue"}}>SMART<span style={{color:'#00CCBC', fontFamily:"Helvetica Neue"}}>RON</span></h1></div>
+                <Header email={this.props.location.state.email}/>
                 <h1 style={{ color: '#00ccbc', paddingLeft: '50px' }}>Results</h1>
-                <p style={{ color: '#00ccbc', paddingLeft: '50px' }}>Final - 11250 05152018 13:06</p>
+                <p style={{ color: '#00ccbc', paddingLeft: '50px' }}>{this.props.location.state.text}</p>
                 <Center><Tabs /></Center>
             </div>
 
