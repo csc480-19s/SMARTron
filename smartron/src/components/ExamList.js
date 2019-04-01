@@ -3,18 +3,32 @@ import Exam from "./Exam";
 
 class ExamList extends Component{
     constructor(props) {
-        super(props);
+        super();
         this.state ={
-            list:props.exams
+            list:props.exams,
+            loginName:props.loginName,
+            email:props.email
+
         }
 
     }
     render() {
 
+
         return(
-            this.state.list
+            <>{this.props.children}</>
+
         )
     }
 
 }
 export default ExamList;
+/*
+*       const children =React.children.map(this.props.children,child =>{
+            return React.cloneElement(child,{
+                list:this.state.list,
+                loginName:this.state.loginName,
+                email:this.state.email
+            });
+        });
+* */

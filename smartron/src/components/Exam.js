@@ -21,11 +21,11 @@ class Exam extends Component{
 
     navResults(){
         // createBrowserHistory().push("/results");
-        this.props.history.push("/results");
+        this.props.history.push({pathname:"/results",state:{text:this.state.title1 ,loginName:this.props.loginName,exams:this.props.list,email:this.props.email}});
     }
     
     navAnswerKey(){
-      this.props.history.push("/answerKey");
+      this.props.history.push({pathname:"/answerKey",state:{text:this.state.title1, loginName:this.props.loginName,exams:this.props.list,email:this.props.email}});
     }
     render() {
         return(

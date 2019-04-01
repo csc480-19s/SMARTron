@@ -1,14 +1,14 @@
 package SMARTron
 
 import spock.lang.Specification
-
 import java.sql.SQLException
+import SMARTron.Database.*
 
 class GenericDaoTest extends Specification {
 
     def "Insert"() {
         given: "an SQL string"
-        SMARTron.GenericDao genDao = new SMARTron.GenericDao()
+        GenericDao genDao = new GenericDao()
         def SQL = "TEST213524"
         when: "the SQL string is a valid string; Test#1"
         genDao.insert(SQL)
@@ -26,7 +26,7 @@ class GenericDaoTest extends Specification {
 
     def "Delete"() {
         given: "an SQL string"
-        SMARTron.GenericDao genDao = new SMARTron.GenericDao()
+        GenericDao genDao = new GenericDao()
         def SQL = "TEST213524"
         when: "the SQL string is a valid string; Test#1"
         genDao.insert(SQL)
@@ -47,7 +47,7 @@ class GenericDaoTest extends Specification {
 
     def "Select"() {
         given: "a SQL string"
-        SMARTron.GenericDao genDao = new SMARTron.GenericDao()
+        GenericDao genDao = new GenericDao()
         when: "an instructor is added"
         def buffer = new ByteArrayOutputStream()
         System.out = new PrintStream(buffer)
