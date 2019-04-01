@@ -88,11 +88,11 @@ postAnswerKey(){
     return (
       <div>
         <div>
-          <Header />
+          <Header email={this.props.location.state.email}/>
         </div>
       <div align = "right">
           <h1 className = "answerKeyTitle" align = "center">Answer Key</h1>
-          <h1 className = "examName" align = "center">Exam 101</h1>
+          <h1 className = "examName" align = "center">{this.props.location.state.text}</h1>
             <div className = "items">
               {this.state.answerKeys.map( item => (
                 <div align = "center" className ={item.answerKey.length !== 0? "item": "itemEmpty"}>
