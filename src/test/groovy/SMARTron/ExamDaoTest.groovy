@@ -11,17 +11,14 @@ class ExamDaoTest extends Specification{
 
     def "add a course into db"() {
         when:
-        int before = genericDao.select("SELECT * FROM scantron.exam WHERE exam_id='EXAM1';")
+        List<String> before = genericDao.select("SELECT * FROM scantron.exam WHERE exam_id='EXAM1';")
         examDao.addExam("Dilbert", "Johnson", "804991926", "Spring2019",
                 "02/17/1997", "MATT", "MATT", "EXAM1")
-        //examDao.addExam("MATT", "MATT", "MATT", "MATT",
-                //"MATT", "MATT", "MATT", "MATT")
-        int after = genericDao.select("SELECT * FROM scantron.exam WHERE exam_id='EXAM1';")
-        println(after)
+        List<String> after = genericDao.select("SELECT * FROM scantron.exam WHERE exam_id='EXAM1';")
 
         then:
-        before == 0
-        after == 1
+        before.size() == 0
+        after.size() == 1
         //clean up the db
         examDao.deleteExam("EXAM1")
     }
@@ -32,14 +29,13 @@ class ExamDaoTest extends Specification{
         examDao.addExam("Dilbert", "Johnson", "804991926", "Spring2019",
                 "02/17/1997", "MATT", "MATT", "EXAM1")
 
-        int before = genericDao.select("SELECT * FROM scantron.exam WHERE exam_id='EXAM1';")
+        List<String> before = genericDao.select("SELECT * FROM scantron.exam WHERE exam_id='EXAM1';")
         examDao.deleteExam("EXAM1")
-        int after = genericDao.select("SELECT * FROM scantron.exam WHERE exam_id='EXAM1';")
-        println(after)
+        List<String> after = genericDao.select("SELECT * FROM scantron.exam WHERE exam_id='EXAM1';")
 
         then:
-        before == 1
-        after == 0
+        before.size() == 1
+        after.size() == 0
     }
 
 }

@@ -14,8 +14,6 @@ public class GenericDao {
 	PreparedStatement ps = null;
 	ResultSet rs = null;
 
-	List<String> list = new ArrayList<String>();
-
 	/**
 	 * Generic Dao object
 	 */
@@ -78,6 +76,7 @@ public class GenericDao {
 	 * @throws SQLException
 	 */
 	public List<String> select(String sql) throws Exception {
+		List<String> list = new ArrayList<String>();
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(sql);
@@ -86,9 +85,9 @@ public class GenericDao {
 				list.add(rs.getString(1));
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new Exception("Could not execute the following sql statement: " + sql);
 		}
-
 		return list;
 	}
 

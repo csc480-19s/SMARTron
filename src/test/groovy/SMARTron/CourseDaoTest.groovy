@@ -15,27 +15,25 @@ class CourseDaoTest extends Specification {
 
     def "add a course into db"() {
         when:
-        List<String> before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
+        List<String> before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
         courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "MATT")
-        List<String> after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
-        println(after)
+        List<String> after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
 
         then:
         before.size() == 0
         after.size() == 1
         //clean up the db
-        courseDao.deleteCourse("SDFGH", "800", "Spring2019")
+        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
     }
 
     def "delete a course from db"() {
         when:
         //populate the db to try deleting
-        //courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "MATT")
+        courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "MATT")
 
-        List<String> before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
-        courseDao.deleteCourse("SDFGH", "800", "Spring2019")
-        List<String> after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
-        println(after)
+        List<String> before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
+        courseDao.deleteCourse("SDFGH", "800", "Spring2019", "MATT")
+        List<String> after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
 
         then:
         before.size() == 1
@@ -45,10 +43,9 @@ class CourseDaoTest extends Specification {
     //test trying duplicates and test deleting when not in db
     def "delete a course from db when not in it"() {
         when:
-        List<String> before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
-        courseDao.deleteCourse("SDFGH", "800", "Spring2019")
-        List<String> after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
-        println(after)
+        List<String> before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
+        courseDao.deleteCourse("SDFGH", "800", "Spring2019", "MATT")
+        List<String> after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
 
         then:
         notThrown Exception
@@ -58,26 +55,25 @@ class CourseDaoTest extends Specification {
 
     def "add a duplicate course into db"() {
         when:
-        int before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
+        List<String> before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
         courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "MATT")
-        int after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
+        List<String> after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
         courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "MATT")
 
         then:
         thrown Exception
-        int after2 = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
-        before == 0
-        after == 1
-        after2 == 1
+        List<String> after2 = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
+        before.size() == 0
+        after.size() == 1
+        after2.size() == 1
         //clean up the db
-        courseDao.deleteCourse("SDFGH", "800", "Spring2019")
+        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
     }
 
     def "fail add from crn as non-string"(){
         when:
         courseDao.addCourse(12345, "Software Design", "800", "Spring2019", "MATT")
-        int result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
-        println(result)
+        List<String> result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
 
         then:
         thrown Exception
@@ -86,8 +82,7 @@ class CourseDaoTest extends Specification {
     def "fail add from crn too long"() {
         when:
         courseDao.addCourse("SDFGHTTYW", "Software Design", "800", "Spring2019", "MATT")
-        int result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGHTTYW' AND section_num='800' AND semester='Spring2019';")
-        println(result)
+        List<String> result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGHTTYW' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
 
         then:
         thrown Exception
@@ -95,26 +90,24 @@ class CourseDaoTest extends Specification {
 
     def "add with crn empty"() {
         when:
-        int before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='' AND section_num='800' AND semester='Spring2019';")
+        List<String> before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
         courseDao.addCourse("", "Software Design", "800", "Spring2019", "MATT")
-        int after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='' AND section_num='800' AND semester='Spring2019';")
-        println(after)
+        List<String> after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
 
         then:
-        before == 0
-        after == 1
+        before.size() == 0
+        after.size() == 1
         //clean up the db
-        courseDao.deleteCourse("", "800", "Spring2019")
+        courseDao.deleteCourse("", "800", "Spring2019","MATT")
     }
 
     def "fail add from course name as non-string"(){
         when:
         courseDao.addCourse("SDFGH", 42, "800", "Spring2019", "MATT")
-        int result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
-        println(result)
+        List<String> result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
 
         then:
-        result == 0
+        result == null
         thrown Exception
     }
 
@@ -127,33 +120,31 @@ class CourseDaoTest extends Specification {
                 + "it's very good. When it's bad, it's better than nothing.\""
                 + "I saw this quote online and thought y'all would get a laugh. I hope this string is long enough now."
                 , "800", "Spring2019", "MATT")
-        int result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
-        println(result)
+        List<String> result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
 
         then:
-        result == 0
+        result == null
         thrown Exception
     }
 
     def "add with empty course name"(){
         when:
-        int before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
+        List<String> before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
         courseDao.addCourse("SDFGH", "", "800", "Spring2019", "MATT")
-        int after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
+        List<String> after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
         println(after)
 
         then:
-        before == 0
-        after == 1
+        before.size() == 0
+        after.size() == 1
         //clean up the db
-        courseDao.deleteCourse("SDFGH", "800", "Spring2019")
+        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
     }
 
     def "section not string"(){
         when:
         courseDao.addCourse("SDFGH", "Software Design", 800, "Spring2019", "MATT")
-        int result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
-        println(result)
+        List<String> result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
 
         then:
         thrown Exception
@@ -162,8 +153,7 @@ class CourseDaoTest extends Specification {
     def "section too long"(){
         when:
         courseDao.addCourse("SDFGH", "Software Design", "80000000000", "Spring2019", "MATT")
-        int result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='80000000000' AND semester='Spring2019';")
-        println(result)
+        List<String> result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='80000000000' AND semester='Spring2019' AND instructor_id='MATT';")
 
         then:
         thrown Exception
@@ -171,23 +161,21 @@ class CourseDaoTest extends Specification {
 
     def "section is empty string"() {
         when:
-        int before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='' AND semester='Spring2019';")
+        List<String> before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='' AND semester='Spring2019' AND instructor_id='MATT';")
         courseDao.addCourse("SDFGH", "Software Design", "", "Spring2019", "MATT")
-        int after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='' AND semester='Spring2019';")
-        println(after)
+        List<String> after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='' AND semester='Spring2019' AND instructor_id='MATT';")
 
         then:
-        before == 0
-        after == 1
+        before.size() == 0
+        after.size() == 1
         //clean up the db
-        courseDao.deleteCourse("SDFGH", "", "Spring2019")
+        courseDao.deleteCourse("SDFGH", "", "Spring2019","MATT")
     }
 
     def "semester is too long"() {
         when:
         courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019testing", "MATT")
-        int result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019testing';")
-        println(result)
+        List<String> result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019testing' AND instructor_id='MATT';")
 
         then:
         thrown Exception
@@ -196,8 +184,7 @@ class CourseDaoTest extends Specification {
     def "semester is not a string"() {
         when:
         courseDao.addCourse("SDFGH", "Software Design", "800", 2019, "MATT")
-        int result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester=2019;")
-        println(result)
+        List<String> result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester=2019 AND instructor_id='MATT';")
 
         then:
         thrown Exception
@@ -205,23 +192,21 @@ class CourseDaoTest extends Specification {
 
     def "semester is empty string"() {
         when:
-        int before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='';")
+        List<String> before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='' AND instructor_id='MATT';")
         courseDao.addCourse("SDFGH", "Software Design", "800", "", "MATT")
-        int after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='';")
-        println(after)
+        List<String> after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='' AND instructor_id='MATT';")
 
         then:
-        before == 0
-        after == 1
+        before.size() == 0
+        after.size() == 1
         //clean up the db
-        courseDao.deleteCourse("SDFGH", "800", "")
+        courseDao.deleteCourse("SDFGH", "800", "","MATT")
     }
 
     def "instructor id not already in db"() {
         when:
         courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "DILBERT")
-        int result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
-        println(result)
+        List<String> result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='DILBERT';")
 
         then:
         thrown Exception
@@ -229,16 +214,15 @@ class CourseDaoTest extends Specification {
 
     def "instructor is empty string"() {
         when:
-        int before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
+        List<String> before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
         courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "")
-        int after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
-        println(after)
+        List<String> after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
 
         then:
-        before == 0
-        after == 1
+        before.size() == 0
+        after.size() == 1
         //clean up the db
-        courseDao.deleteCourse("SDFGH", "800", "Spring2019")
+        courseDao.deleteCourse("SDFGH", "800", "Spring2019","")
     }
 
     def "instructor is too long"() {
@@ -247,8 +231,7 @@ class CourseDaoTest extends Specification {
                 +" TO TEST AN UNBELIABLY LONG INSTRUCTOR NAME WHICH WOULD NEVER COME CLOSE TO BEING LONG ENOUGH"
                 + " FOR THIS TOO FAIL AT 200 CHARACTERS LONG. NEEDS ANOTHER 50ISH CHARACTERS..................."
                 +"..............................................................................................")
-        int result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019';")
-        println(result)
+        List<String> result = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
 
         then:
         thrown Exception
