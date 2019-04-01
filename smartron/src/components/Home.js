@@ -108,9 +108,10 @@ class Home extends Component {
 
                                         1. Enter this code in the NAME FIELD of the ANSWER KEY scantron <br/>
 
-                                        3. Place ANSWER KEY scantron on the TOP of each pile of answer sheets <br/>
 
                                         2. Only enter 25 SCANTRONS in the scanner at a time <br/>
+                                        3. Place ANSWER KEY scantron on the TOP of each pile of answer sheets <br/>
+
                                     </p>
                                     <button onClick={() => {
                                         this.state.exams.push(<Exam problem={false} loginName={this.props.location.state.loginName} email={this.props.location.state.email} list={[]} text={this.state.newName} id={this.state.random} numQuest={this.state.newNum} history={this.props.history}/>); this.setState(this.state)
