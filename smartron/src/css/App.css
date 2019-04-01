@@ -101,9 +101,8 @@
 
 
 .buttons{
-  display: table;
   position: absolute;
-  top: 300%;
+  top: 225px;
   right: 25%;
 }
 .buttons button{
