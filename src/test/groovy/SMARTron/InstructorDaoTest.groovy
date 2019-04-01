@@ -1,13 +1,13 @@
 package SMARTron
 
 import spock.lang.Specification
-
 import java.sql.SQLException
+import SMARTron.Database.*
 
 class   InstructorDaoTest extends Specification {
     def "AddInstructor"() {
         given: "an instructors information"
-            SMARTron.InstructorDao instDao = new SMARTron.InstructorDao()
+            InstructorDao instDao = new InstructorDao()
             def instID = "TESTID213524"
             def instFName = "Bastian"
             def instLName = "Tenbergen"
@@ -27,7 +27,7 @@ class   InstructorDaoTest extends Specification {
 
     def "DeleteInstructor"() {
         given: "an instructors ID"
-            SMARTron.InstructorDao instDao = new SMARTron.InstructorDao()
+            InstructorDao instDao = new InstructorDao()
             def instID = "TESTID213524"
         when: "the ID is a valid string"
             instDao.deleteInstructor(instID)
@@ -47,7 +47,7 @@ class   InstructorDaoTest extends Specification {
     //theoretically works
     def "SelectInstructor"() {
         given: "an instructor ID"
-            SMARTron.InstructorDao instDao = new SMARTron.InstructorDao()
+            InstructorDao instDao = new InstructorDao()
         when: "an instructor is added"
             def buffer = new ByteArrayOutputStream()
             System.out = new PrintStream(buffer)

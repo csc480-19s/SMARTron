@@ -1,6 +1,7 @@
 package SMARTron
 
 import spock.lang.*
+import SMARTron.Engine.*
 
 class ToolsTest extends Specification {
 
