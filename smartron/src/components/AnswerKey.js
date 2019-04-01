@@ -88,7 +88,6 @@ postAnswerKey(){
     return (
       <div>
         <div>
-          <Header email={this.props.location.state.email}/>
         </div>
       <div align = "right">
           <h1 className = "answerKeyTitle" align = "center">Answer Key</h1>
@@ -121,7 +120,10 @@ postAnswerKey(){
               <button className= "float"
                      onClick={() => this.handleSubmit()}>Submit</button>
             </div>
-          </div>
+          <Header email={this.props.location.state.email}/>
+
+      </div>
+
           );
         }
 }
