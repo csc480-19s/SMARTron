@@ -62,6 +62,7 @@ public class CourseDao {
 			ps.setString(5, instId);
 			ps.execute();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new Exception("Could not add the course for crn " + courseCrn);
 		} finally {
 			closeConnections();
