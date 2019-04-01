@@ -23,7 +23,7 @@ class Exam extends Component{
         // createBrowserHistory().push("/results");
         this.props.history.push({pathname:"/results",state:{text:this.state.title1 ,loginName:this.props.loginName,exams:this.props.list,email:this.props.email}});
     }
-    
+
     navAnswerKey(){
       this.props.history.push({pathname:"/answerKey",state:{text:this.state.title1, loginName:this.props.loginName,exams:this.props.list,email:this.props.email}});
     }
@@ -31,9 +31,8 @@ class Exam extends Component{
         return(
             <div>
                 <div className={"exam"}>
-                    <p className={"fir"}>{this.state.title1}
-                        <a className={"editName"}><img src={logo} height={25} /></a>
-                    </p>
+                    {this.state.title1}
+                    <a className={"editName"}><img src={logo} height={25} /></a>
                     <button onClick={this.navResults}>View Results</button>
                     <button onClick={this.navAnswerKey}>Edit Answer Key</button>
 

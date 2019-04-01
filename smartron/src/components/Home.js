@@ -5,6 +5,7 @@ import Exam from "./Exam";
 import ExamList from "./ExamList"
 import examJSON from "../JSON/Mainpage"
 import Popup from "reactjs-popup";
+import Header from "./Header";
 
 class Home extends Component {
     //Constructor binds methods and creates an exam list used by the ExamList component
@@ -83,10 +84,7 @@ class Home extends Component {
 
     render() {
         return (
-            <div className={"topBar"}>
-                <h1 className={"leftA"}>SMART</h1><h1 className={"leftB"}>RON</h1>
-                <h1 className={"right"}>{this.props.location.state.email} </h1>
-                <img className={"logout"} src={logo} height={40} />
+            <div>
                 <h1 className={"welcome"}> Welcome, {this.props.location.state.loginName}</h1>
                 <div className={"buttons"}>
                     <Popup  onClose={()=>{this.setState(this.state)}} onOpen={this.generateCode} modal trigger={<button   className={"scanButton"}>New Test Scan</button>}>
@@ -126,7 +124,7 @@ class Home extends Component {
                 </div>
                 {this.state.swap ? <ExamList loginName={this.props.location.state.loginName} email={this.props.location.state.email} exams={this.state.exams} history={this.props.history}>{this.state.exams}</ExamList> : <ExamList loginName={this.props.location.state.loginName} email={this.props.location.state.email} exams={this.state.exams} history={this.props.history}>{this.state.exams2}</ExamList>}
 
-
+                <Header email={this.props.location.state.email}/>
             </div>
         );
     }
