@@ -1,4 +1,4 @@
-package SMARTron
+package SMARTron.Database
 
 import SMARTron.Database.ExamDao
 import SMARTron.Database.GenericDao
