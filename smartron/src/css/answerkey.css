@@ -33,6 +33,15 @@
 	width: 25%;
   box-sizing: border-box;
   padding: 10px;
+  position: relative;
+}
+.items .itemEmpty {
+	float: left;
+	width: 25%;
+  box-sizing: border-box;
+  padding: 10px;
+  background: #ffb3b3;
+  position: relative;
 }
 .scrollable {
     width: auto;
@@ -68,4 +77,7 @@
 .questionId:after{
   font-weight: bold;
   content: "."
+}
+.div{
+  background-color: red;
 }

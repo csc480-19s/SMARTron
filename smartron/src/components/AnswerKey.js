@@ -6,18 +6,23 @@ constructor(){
   super();
   this.state = {
     answerKeys: [],
-    list: ["A", "B", "C", "D", "E"],
+    keyOptions: ["A", "B", "C", "D", "E"],
     chkbox: false,
-      examList:[],
-      loginName:"",
-      email:"",
+    updateAnswerKey: [],
+    copyOfAnswerKey: [],
+    makeCopy: true,
+    examList:[],
+    loginName:"",
+    email:""
   };
   this.handleClick = this.handleClick.bind(this);
   this.handleSubmit = this.handleSubmit.bind(this);
+  this.copyAnswerKey = this.copyAnswerKey.bind(this);
+  this.postAnswerKey = this.postAnswerKey.bind(this);
 }
 
 componentDidMount(){
-  fetch('./answerkey.json')
+  fetch('https://642b4d9c-37ba-432e-823a-30c17de3fb13.mock.pstmn.io/answerKey')
   .then(response => response.json())
   .then(result => {
     const keys = result.map(item => {
@@ -29,38 +34,73 @@ componentDidMount(){
   });
 }
 
-handleClick(item, index){
-  var i = item.answerKey.indexOf(index);
-  if(item.answerKey.includes(index)){
-    item.answerKey.splice(i,1);
-  }else{
-    item.answerKey.push(index);
+copyAnswerKey(){
+  let dupeAnswerKey = JSON.parse(JSON.stringify(this.state.answerKeys));
+  this.setState({
+    makeCopy:false,
+    copyOfAnswerKey:dupeAnswerKey
+  });
+}
+
+handleClick(item, key){
+  if(this.state.makeCopy){
+    this.copyAnswerKey();
   }
+  var index = item.answerKey.indexOf(key);
+    if(item.answerKey.includes(key)){
+      item.answerKey.splice(index,1);
+    }else{
+      item.answerKey.push(key);
+    }
+    console.log();
+  if(this.state.updateAnswerKey.length === 0){
+    this.state.updateAnswerKey.push(item);
+  }
+
+  let updateList = this.state.updateAnswerKey;
+  updateList = updateList.filter(function( obj ){
+  return obj.questionId !== item.questionId});
+
+  let anserKeyObj = this.state.copyOfAnswerKey
+    .find(obj => obj.questionId === item.questionId);
+    item.answerKey.sort();
+
+  if(JSON.stringify(item) !== JSON.stringify(anserKeyObj)){
+    updateList.push(item);
+  }
+  this.setState({
+    updateAnswerKey:updateList
+  });
 }
 
 handleSubmit(e){
+  this.props.history.push({pathname:"/home", state:{loginName:this.props.location.state.loginName, email:this.props.location.state.email,exams:this.props.location.state.exams}});
   console.log("handle on submit here")
-    this.props.history.push({pathname:"/home", state:{loginName:this.props.location.state.loginName, email:this.props.location.state.email,exams:this.props.location.state.exams}});
+  console.log(this.state.copyOfAnswerKey);
+  console.log(this.state.updateAnswerKey);
+  this.postAnswerKey();
 }
 
+postAnswerKey(){
+  //send answerkey to backend
+}
   render(){
     return (
       <div>
         <div>
-          <Header email={this.props.location.state.email} />
         </div>
       <div align = "right">
           <h1 className = "answerKeyTitle" align = "center">Answer Key</h1>
           <h1 className = "examName" align = "center">{this.props.location.state.text}</h1>
             <div className = "items">
               {this.state.answerKeys.map( item => (
-                <div className = "item">
+                <div align = "center" className ={item.answerKey.length !== 0? "item": "itemEmpty"}>
                   <div key ={item.questionId}>
                     <div className="keyBox">
                       <span className="questionId">
                         {item.questionId}
                       </span>
-                        {this.state.list.map(k =>(
+                        {this.state.keyOptions.map(k =>(
                           <span>
                             <input
                               type="checkbox"
@@ -80,7 +120,10 @@ handleSubmit(e){
               <button className= "float"
                      onClick={() => this.handleSubmit()}>Submit</button>
             </div>
-          </div>
+          <Header email={this.props.location.state.email}/>
+
+      </div>
+
           );
         }
 }
