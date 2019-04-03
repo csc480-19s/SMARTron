@@ -108,13 +108,18 @@ class CenteredTabs extends React.Component {
                     <TabContainer dir={theme.direction}>
                         <Center>
                             <QuestionTable />
-                            <PieChart width={500} height={200}>
-                                <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" fill="#82ca9d" label>
+                            <BarChart width={400} height={200} data={data1}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="grade" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar data={data1} dataKey="grade" dataKey="percent" fill="#000000">
                                     {
                                         data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
                                     }
-                                </Pie>
-                            </PieChart>
+                                </Bar>
+                            </BarChart>
                         </Center>
                     </TabContainer>
                     <TabContainer dir={theme.direction}>
