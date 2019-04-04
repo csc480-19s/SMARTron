@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../css/App.css';
 import'../../css/styles.css';
-import {Link} from "react-router-dom";
+//import {Link} from "react-router-dom";
 import Tabs from './Tabs';
 import Center from 'react-center';
 import Header from "../Header";
