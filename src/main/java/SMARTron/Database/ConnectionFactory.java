@@ -10,8 +10,8 @@ public class ConnectionFactory {
 	// to work
 	private String driverClass = "com.mysql.cj.jdbc.Driver";
 	private String url = "jdbc:mysql://129.3.20.26:3306/scantron?useSSL=false&allowPublicKeyRetrieval=true&useLegacyDatetimeCode=false&serverTimezone=EST";
-	private String user = "areynol3";
-	private String password = "scantron";
+	private String user = "";
+	private String password = "";
 
 	private static ConnectionFactory connectionFactory = null;
 
