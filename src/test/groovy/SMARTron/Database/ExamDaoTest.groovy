@@ -1,7 +1,5 @@
 package SMARTron.Database
 
-import SMARTron.Database.ExamDao
-import SMARTron.Database.GenericDao
 import spock.lang.Specification
 
 class ExamDaoTest extends Specification{
