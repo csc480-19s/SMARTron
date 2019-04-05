@@ -22,7 +22,7 @@ constructor(){
 }
 
 componentDidMount(){
-  fetch('https://642b4d9c-37ba-432e-823a-30c17de3fb13.mock.pstmn.io/answerKey')
+  fetch('http://localhost:8080/SMARTron/smartron/answerkey')
   .then(response => response.json())
   .then(result => {
     const keys = result.map(item => {

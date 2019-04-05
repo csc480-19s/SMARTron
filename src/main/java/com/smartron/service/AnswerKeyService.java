@@ -1,5 +1,8 @@
 package com.smartron.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -8,9 +11,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import SMARTron.Database.AnswerKeyDao;
+import entity.AnswerKey;
 
 @Path("/")
 public class AnswerKeyService {
+	private static String[] optionAnswerKey = {"-1","0","1","2","3","4","error","null"};
 	AnswerKeyDao akDao = new AnswerKeyDao();
 	
 	@Path("{example}")
@@ -26,12 +31,31 @@ public class AnswerKeyService {
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response index() {
 		Object obj = null;
+		List<AnswerKey> keyList = new ArrayList<>();
+		AnswerKey anserKey;
 		try {
+			int idCounter = 1;
 			obj = akDao.selectAnswerKey("asdfg", "123456789");
-			System.out.println(obj.toString());
+			String[] answerKeyStr = obj.toString().split(",");
+			System.out.println(answerKeyStr);
+			for(String key: answerKeyStr) {
+				anserKey = new AnswerKey();
+				anserKey.setQuestionId(idCounter);
+				String[] keys = {convertCodeToAnsewekey(key.trim())};
+				anserKey.setAnswerKey(keys);
+				keyList.add(anserKey);
+				idCounter++;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		for(AnswerKey k: keyList) {
+			System.out.println("questionId: "+ k.getQuestionId());
+			for(String str : k.getAnswerKey()) {
+				System.out.println(str);
+			}
+		}
+		//header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
 	    return Response
 	      .status(200)
 	      .header("Access-Control-Allow-Origin", "*")
@@ -39,108 +63,32 @@ public class AnswerKeyService {
 	      .header("Access-Control-Allow-Headers",
 	        "origin, content-type, accept, authorization")
 	      .header("Access-Control-Allow-Methods", 
-	        "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-	      .entity("[{\n" + 
-					"  \"questionId\": 1,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 2,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 3,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 4,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 5,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 6,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 7,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 8,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 9,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 10,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 11,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 12,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 13,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"D\",\n" + 
-					"    \"E\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 14,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 15,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 16,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 17,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 18,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"D\",\n" + 
-					"    \"E\"\n" + 
-					"  ]\n" + 
-					"}, {\n" + 
-					"  \"questionId\": 19,\n" + 
-					"  \"answerKey\": [\n" + 
-					"    \"C\"\n" + 
-					"  ]\n" + 
-					"}]\n" + 
-					"")
+	        "GET")
+	      .entity(keyList)
 	      .build();
 	}
-	
 
+	// for test only
+	public String convertCodeToAnsewekey(String key) {
+		String answerKey;
+		if(key.equals(optionAnswerKey[0])|| key.equals(optionAnswerKey[7])) {
+			answerKey = "Err";
+		}else if(key.equals(optionAnswerKey[1])) {
+			answerKey = "A";
+
+		}else if(key.equals(optionAnswerKey[2])) {
+			answerKey = "B";
+
+		}else if(key.equals(optionAnswerKey[3])) {
+			answerKey = "C";
+
+		}else if (key.equals(optionAnswerKey[4])) {
+			answerKey = "D";
+		}else if (key.equals(optionAnswerKey[5])) {
+			answerKey = "E";
+		}else {
+			answerKey = "Err";
+		}
+		return answerKey;
+	}
 }
