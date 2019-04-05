@@ -236,4 +236,18 @@ class CourseDaoTest extends Specification {
         then:
         thrown Exception
     }
+
+    def "select a course"(){
+        when:
+        List<String> before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
+        courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "MATT")
+        List<String> after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
+
+        then:
+        before.size() == 0
+        after.size() == 1
+        //clean up the db
+        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
+    }
+
 }
