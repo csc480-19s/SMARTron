@@ -26,6 +26,7 @@ function createData(number, response, percent) {
 }
 
 const rows = [];
+
 questionJSON.questionlist.forEach((question) => {
     question.data.forEach((q) => {
         rows.push(createData(question.questionNumber, q.name, q.value));
@@ -40,15 +41,17 @@ function QuestionTable(props) {
             <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
-                        <TableCell >QTest</TableCell>
+                        <TableCell >Question Number</TableCell>
+                        <TableCell >1</TableCell>
+                    </TableRow>
+                    <TableRow>
                         <TableCell >Response</TableCell>
-                        <TableCell >Percent</TableCell>
+                        <TableCell >Frequency</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {rows.map(row => (
                         <TableRow key={row.id}>
-                            <TableCell>{row.number}</TableCell>
                             <TableCell component="th" scope="row">
                                 {row.response}
                             </TableCell>
