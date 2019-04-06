@@ -1,4 +1,4 @@
-package SMARTron.Database;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,13 +11,13 @@ public class AnswerKeyDao {
 
 	// Query Strings for the methods
 	private static String INSERT_ANSWER_KEY = "insert into answerkey (exam_id, instructor_id, answers) " + "values (?, ?, ?)";
-
+	
 	private static String UPDATED_ANSWER_KEY = "update answerkey set updated_answers = ? where exam_id = ?";
 
 	private static String DELETE_ANSWER_KEY = "delete from answerkey where exam_id = ?";
 
 	private static String SELECT_ANSWER_KEY = "select answers from answerkey where exam_id = ? and instructor_id = ?";
-
+	
 	private static String SELECT_UPDATED_ANSWER_KEY = "select updated_answers from answerkey where exam_id = ? and "
 			+ "instructor_id = ?";
 
@@ -37,9 +37,9 @@ public class AnswerKeyDao {
 
 	/**
 	 * Gets the connection to the database through the Connection Factory
-	 *
+	 * 
 	 * @return
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	private Connection getConnection() throws Exception {
 		return ConnectionFactory.getInstance().getConnection();
@@ -47,12 +47,12 @@ public class AnswerKeyDao {
 
 	/**
 	 * Add an answer key to the database. examId and instId are both foreign keys.
-	 *
+	 * 
 	 * This will be updated with the new schema changes that will be out shortly
-	 *
+	 * 
 	 * @param examId
 	 * @param instId
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	public void addAnswerKey(String examId, String instId, String answers) throws Exception {
 		try {
@@ -68,14 +68,14 @@ public class AnswerKeyDao {
 			closeConnections();
 		}
 	}
-
+	
 	/**
 	 * Adds an updated answer key to the table
-	 *
+	 * 
 	 * @param examId
 	 * @param instId
 	 * @param updatedAnswers
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	public void addUpdatedAnswerKey(String examId, String updatedAnswers) throws Exception {
 		try {
@@ -93,9 +93,9 @@ public class AnswerKeyDao {
 
 	/**
 	 * Delete an answer key from the database using the examId
-	 *
+	 * 
 	 * @param examId
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	public void deleteAnswerKey(String examId) throws Exception {
 		try {
@@ -112,11 +112,11 @@ public class AnswerKeyDao {
 
 	/**
 	 * Returns the answer key
-	 *
+	 * 
 	 * @param examId
 	 * @param instId
 	 * @return
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	public List<String> selectAnswerKey(String examId, String instId) throws Exception {
 		try {
@@ -137,11 +137,11 @@ public class AnswerKeyDao {
 
 	/**
 	 * Returns the updated answer key
-	 *
+	 * 
 	 * @param examId
 	 * @param instId
 	 * @return
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	public List<String> selectUpdatedAnswerKey(String examId, String instId) throws Exception {
 		try {
@@ -159,10 +159,10 @@ public class AnswerKeyDao {
 
 		return list;
 	}
-
+	
 	/**
 	 * Closes the connections after a transaction has been committed
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	private void closeConnections() throws Exception {
 		try {

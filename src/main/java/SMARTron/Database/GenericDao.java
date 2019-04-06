@@ -1,4 +1,4 @@
-package SMARTron.Database;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +15,7 @@ public class GenericDao {
 	ResultSet rs = null;
 
 	List<String> list = new ArrayList<String>();
-
+	
 	/**
 	 * Generic Dao object
 	 */
@@ -25,9 +25,9 @@ public class GenericDao {
 
 	/**
 	 * Gets the connection to the database through the Connection Factory
-	 *
+	 * 
 	 * @return
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	private Connection getConnection() throws Exception {
 		return ConnectionFactory.getInstance().getConnection();
@@ -35,9 +35,9 @@ public class GenericDao {
 
 	/**
 	 * Inserts into the database using sql code passed in as a string
-	 *
+	 * 
 	 * @param sql
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	public void insert(String sql) throws Exception {
 		try {
@@ -53,9 +53,9 @@ public class GenericDao {
 
 	/**
 	 * Deletes from the database using sql code passed in as a string
-	 *
+	 * 
 	 * @param sql
-	 * @throws Exception
+	 * @throws Exception 
 	 * @throws SQLException
 	 */
 	public void delete(String sql) throws Exception {
@@ -72,29 +72,32 @@ public class GenericDao {
 
 	/**
 	 * Selects from the database using sql code passed in as a string
-	 *
+	 * 
 	 * @param sql
-	 * @throws Exception
+	 * @throws Exception 
 	 * @throws SQLException
 	 */
-	public List<String> select(String sql) throws Exception {
+	public List<String> selectFirst(String sql) throws Exception {
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				list.add(rs.getString(1));
+				list.add(rs.getString(1) + "," +"m" + "," + "junior" + "," + "now" + "," + rs.getString(3) +"," + rs.getString(7) + "," + rs.getString(10).substring(1,rs.getString(10).length()));
 			}
 		} catch (SQLException e) {
+                        System.out.println(e);
 			throw new Exception("Could not execute the following sql statement: " + sql);
 		}
-
+		
 		return list;
 	}
+        
+        	/**
 
 	/**
 	 * Closes the connections after a transaction has been committed
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	private void closeConnections() throws Exception {
 		try {
