@@ -1,44 +1,37 @@
-
-package SMARTron.Engine;
-
 import java.util.ArrayList;
+import java.util.List;
 
 public class Grader {
 
-    Student key;
-    ArrayList<Student> students;
-    int[] points;
-    int allPoints;
+    private List<Question> questions = new ArrayList<>();
 
-    public Grader(ArrayList<Student> stu) {
-        key = stu.get(0);
-        stu.remove(0);
-        students = stu; //The first element in the array becomes the key, the rest are  students
-        points = new int[key.getAnswers().length - 43];
-        allPoints = 0;
-        for (int i = 0; i < points.length; i++) {
-            if (key.getAnswers() != null && key.getAnswers()[i] != null && !key.getAnswers()[i].equals("-1") && !key.getAnswers()[i].equals("error")) {
-                points[i] = 1;
-                allPoints += 1;
-            }
-        } //This is for the point system later, an array is used because we need point values for each question
-    }
+    public List<Float> getGrades(List<Student> studentExams, Student key){
+        List<Float> grades = new ArrayList<>();
+        this.initializeStatsByQuestion(key.getAnswers());
+        //studentExams.remove(0);
+        int numPoints;
 
-    public void gradeTests() {
-        for (int i = 0; i < students.size(); i++) {
-            int numRight = 0;
-            for (int j = 43; j < key.getAnswers().length; j++) {
-                if (key.getAnswers() != null && students.get(i).getAnswers() != null && key.getAnswers()[j] != null && students.get(i).getAnswers()[j] != null) {
-                    if (key.getAnswers()[j].equals(students.get(i).getAnswers()[j])) {
-                        numRight = numRight + points[j - 43];
-                    } //this counts the ammount of questions that are right and increments numRight every time by the ammounnt of points the question is worth.
+        for (Student studentExam : studentExams) {
+            numPoints = 0;
+            for (int j = 0; j < studentExam.getAnswers().size(); j++) {
+                if (key.getAnswers().get(j).contains(studentExam.getAnswers().get(j)) && !key.getAnswers().get(j).contains("-1")) {
+                    numPoints++;
                 }
-            }
-            float numRight2 = (float) numRight;
-            float grade = numRight2 / allPoints * 100;
-            students.get(i).setExamGrade(grade); //A grade is found by deviding allPoints by numRight points and mutplying by 100.
-        }
+                questions.get(j).increment(studentExam.getAnswers().get(j));
 
+            }
+            grades.add((float) numPoints / key.getAnswers().size() * 100);
+        }
+        return grades;
     }
 
+    private void initializeStatsByQuestion(List<String> key){
+        for(int i = 0; i < key.size(); i++){
+            questions.add(new Question());
+        }
+    }
+
+    public List<Question> getStatsByQuestion(){
+        return this.questions;
+    }
 }

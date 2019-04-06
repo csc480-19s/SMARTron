@@ -1,4 +1,6 @@
-package SMARTron.Engine;
+
+
+import java.util.ArrayList;
 
 public class Tools {
 
@@ -10,7 +12,9 @@ public class Tools {
             return String.valueOf(cc);
         }
 
-        return " ";
+        return "";
     } //This is my pride and joy, This method makes me very happy.
 //It takes in a string such as "1" and converts it to the indexed alpha character that corasponds: "A"
+
+
 }
