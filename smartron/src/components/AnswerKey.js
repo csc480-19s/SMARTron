@@ -8,6 +8,9 @@ constructor(){
     answerKeys: [],
     list: ["A", "B", "C", "D", "E"],
     chkbox: false,
+      examList:[],
+      loginName:"",
+      email:"",
   };
   this.handleClick = this.handleClick.bind(this);
   this.handleSubmit = this.handleSubmit.bind(this);
@@ -37,17 +40,18 @@ handleClick(item, index){
 
 handleSubmit(e){
   console.log("handle on submit here")
+    this.props.history.push({pathname:"/home", state:{loginName:this.props.location.state.loginName, email:this.props.location.state.email,exams:this.props.location.state.exams}});
 }
 
   render(){
     return (
       <div>
         <div>
-          <Header />
+          <Header email={this.props.location.state.email} />
         </div>
       <div align = "right">
           <h1 className = "answerKeyTitle" align = "center">Answer Key</h1>
-          <h1 className = "examName" align = "center">Exam 101</h1>
+          <h1 className = "examName" align = "center">{this.props.location.state.text}</h1>
             <div className = "items">
               {this.state.answerKeys.map( item => (
                 <div className = "item">

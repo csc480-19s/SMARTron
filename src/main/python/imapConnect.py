@@ -21,7 +21,7 @@ def sendEmail(emailAddress):
     part = MIMEText(text, 'plain')
     msg.attach(part)
     username = 'smartron'
-    password = ""
+    password = ''
     server = smtplib.SMTP('cs.oswego.edu')
     server.ehlo()
     server.starttls()

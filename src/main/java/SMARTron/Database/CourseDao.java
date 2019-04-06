@@ -1,3 +1,4 @@
+package SMARTron.Database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,9 +32,9 @@ public class CourseDao {
 
 	/**
 	 * Gets the connection to the database through the Connection Factory
-	 * 
+	 *
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private Connection getConnection() throws Exception {
 		return ConnectionFactory.getInstance().getConnection();
@@ -42,13 +43,13 @@ public class CourseDao {
 	/**
 	 * Adds a course to the database. CourseCrn is the primary key and instId is a
 	 * foreign key
-	 * 
+	 *
 	 * @param courseCrn
 	 * @param courseName
 	 * @param secNum
 	 * @param sem
 	 * @param instId
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void addCourse(String courseCrn, String courseName, String secNum, String sem, String instId) throws Exception {
 		try {
@@ -61,6 +62,7 @@ public class CourseDao {
 			ps.setString(5, instId);
 			ps.execute();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new Exception("Could not add the course for crn " + courseCrn);
 		} finally {
 			closeConnections();
@@ -70,11 +72,11 @@ public class CourseDao {
 	/**
 	 * Deletes a course from the database using the crn, section number, and
 	 * semester
-	 * 
+	 *
 	 * @param courseCrn
 	 * @param secNum
 	 * @param sem
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void deleteCourse(String courseCrn, String secNum, String sem, String instId) throws Exception {
 		try {
@@ -112,7 +114,7 @@ public class CourseDao {
 
 	/**
 	 * Closes the connections after a transaction has been committed
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void closeConnections() throws Exception {
 		try {
