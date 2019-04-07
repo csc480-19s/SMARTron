@@ -47,11 +47,13 @@ handleClick(item, key){
     this.copyAnswerKey();
   }
   var index = item.answerKey.indexOf(key);
-    if(item.answerKey.includes(key)){
-      item.answerKey.splice(index,1);
-    }else{
-      item.answerKey.push(key);
-    }
+  item.answerKey = [];
+  item.answerKey.push(key);
+//    if(item.answerKey.includes(key)){
+//      item.answerKey.splice(index,1);
+//    }else{
+//      item.answerKey.push(key);
+//    }
     console.log();
   if(this.state.updateAnswerKey.length === 0){
     this.state.updateAnswerKey.push(item);
@@ -82,8 +84,22 @@ handleSubmit(e){
 }
 
 postAnswerKey(){
-  //send answerkey to backend
+var data = JSON.stringify(this.state.answerKeys);
+console.log(data);
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = false;
+
+xhr.addEventListener("readystatechange", function () {
+  if (this.readyState === 4) {
+    console.log(this.responseText);
+  }
+});
+
+xhr.open("POST", "http://localhost:8080/SMARTron/smartron/updateAnswerKey");
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.send(data);
 }
+
   render(){
     return (
       <div>
