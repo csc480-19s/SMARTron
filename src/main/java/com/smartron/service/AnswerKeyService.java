@@ -1,47 +1,60 @@
 package com.smartron.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.smartron.entity.AnswerKey;
+
 import SMARTron.Database.AnswerKeyDao;
-import entity.AnswerKey;
 
 @Path("/")
 public class AnswerKeyService {
-	private static String[] optionAnswerKey = {"-1","0","1","2","3","4","error","null"};
+	
+	private static HashMap<String, String> optionAnswerKey = new HashMap<>();
 	AnswerKeyDao akDao = new AnswerKeyDao();
 	
-	@Path("{example}")
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public String example(@PathParam("example") String example) {
-		return example;
+	public static void buildKeys() {
+		optionAnswerKey.put("-1", "-1");
+		optionAnswerKey.put("0", "A");
+		optionAnswerKey.put("1", "B");
+		optionAnswerKey.put("2", "C");
+		optionAnswerKey.put("3", "D");
+		optionAnswerKey.put("4", "E");
+		optionAnswerKey.put("error", "error");
+		// remove after grader fix
+		optionAnswerKey.put("null", "null");
 	}
-	
 	
 	@GET
 	@Path("answerkey")
 	@Produces({MediaType.APPLICATION_JSON})
-	public Response index() {
-		Object obj = null;
+	public Response getAnswerKeys() {
+		List<String> obj = null;
 		List<AnswerKey> keyList = new ArrayList<>();
 		AnswerKey anserKey;
 		try {
 			int idCounter = 1;
-			obj = akDao.selectAnswerKey("asdfg", "123456789");
+			obj = akDao.selectUpdatedAnswerKey("asdfg", "123456789");
+			if(obj.isEmpty()) {
+				obj = akDao.selectAnswerKey("asdfg", "123456789");				
+			}
 			String[] answerKeyStr = obj.toString().split(",");
-			System.out.println(answerKeyStr);
+			buildKeys();
 			for(String key: answerKeyStr) {
+				System.out.println(key);
 				anserKey = new AnswerKey();
 				anserKey.setQuestionId(idCounter);
-				String[] keys = {convertCodeToAnsewekey(key.trim())};
+				String[] keys = {optionAnswerKey.get(key.trim())};
 				anserKey.setAnswerKey(keys);
 				keyList.add(anserKey);
 				idCounter++;
@@ -49,46 +62,42 @@ public class AnswerKeyService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		for(AnswerKey k: keyList) {
-			System.out.println("questionId: "+ k.getQuestionId());
-			for(String str : k.getAnswerKey()) {
-				System.out.println(str);
-			}
-		}
-		//header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
 	    return Response
 	      .status(200)
-	      .header("Access-Control-Allow-Origin", "*")
-	      .header("Access-Control-Allow-Credentials", "true")
-	      .header("Access-Control-Allow-Headers",
-	        "origin, content-type, accept, authorization")
-	      .header("Access-Control-Allow-Methods", 
-	        "GET")
 	      .entity(keyList)
 	      .build();
 	}
-
-	// for test only
-	public String convertCodeToAnsewekey(String key) {
-		String answerKey;
-		if(key.equals(optionAnswerKey[0])|| key.equals(optionAnswerKey[7])) {
-			answerKey = "Err";
-		}else if(key.equals(optionAnswerKey[1])) {
-			answerKey = "A";
-
-		}else if(key.equals(optionAnswerKey[2])) {
-			answerKey = "B";
-
-		}else if(key.equals(optionAnswerKey[3])) {
-			answerKey = "C";
-
-		}else if (key.equals(optionAnswerKey[4])) {
-			answerKey = "D";
-		}else if (key.equals(optionAnswerKey[5])) {
-			answerKey = "E";
-		}else {
-			answerKey = "Err";
+	
+	@POST
+	@Path("updateAnswerKey")
+	@Consumes({MediaType.APPLICATION_JSON})
+	public void updateAnswers(List<AnswerKey> k) {
+		try {
+		buildKeys();
+		StringBuffer updatedAnswerKey = new StringBuffer("[");
+		for(AnswerKey akey: k) {
+			for(String key : akey.getAnswerKey()) {
+				String keyCode = getKey(optionAnswerKey,key);
+				updatedAnswerKey.append(keyCode);
+				updatedAnswerKey.append(",");
+			}
 		}
-		return answerKey;
+		updatedAnswerKey.deleteCharAt(updatedAnswerKey.length()-1);
+		updatedAnswerKey.append("]");
+
+		akDao.addUpdatedAnswerKey("asdfg",updatedAnswerKey.toString());
+		System.out.println(updatedAnswerKey);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public String getKey(Map<String, String> keyList, Object val) {
+		for(Object key: keyList.keySet()) {
+			if(keyList.get(key).equals(val)){
+				return key.toString();
+			}
+		}
+		return null;
 	}
 }
