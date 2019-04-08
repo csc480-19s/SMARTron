@@ -342,10 +342,10 @@ class ExamDaoTest extends Specification{
 
     def "fail select an exam from db from semester as not a string"() {
         when:
-        List<String> before = examDao.selectExamId("EXAM1", "123456789", "804991926", 54322, 2019)
+        List<String> before = examDao.selectExamId("EXAM1", "123456789", "804991926", "54322", 2019)
         examDao.addExam("Dilbert", "Johnson", "804991926", "2019",
                 "02/17/1997", "54322", "123456789", "EXAM1", "answers")
-        List<String> after = examDao.selectExamId("EXAM1", "123456789", "804991926", 54322, 2019)
+        List<String> after = examDao.selectExamId("EXAM1", "123456789", "804991926", "54322", 2019)
 
         then:
         thrown Exception
