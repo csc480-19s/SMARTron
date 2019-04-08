@@ -1,5 +1,7 @@
 package SMARTron.Database
 
+import SMARTron.Database.ExamDao
+import SMARTron.Database.GenericDao
 import spock.lang.Specification
 
 class ExamDaoTest extends Specification{
@@ -7,7 +9,7 @@ class ExamDaoTest extends Specification{
     ExamDao examDao = new ExamDao()
     GenericDao genericDao = new GenericDao()
 
-    def "add a course into db"() {
+    def "add an exam into db"() {
         when:
         List<String> before = genericDao.select("SELECT * FROM scantron.exam WHERE exam_id='EXAM1';")
         examDao.addExam("Dilbert", "Johnson", "804991926", "Spring2019",
@@ -21,7 +23,7 @@ class ExamDaoTest extends Specification{
         examDao.deleteExam("EXAM1")
     }
 
-    def "delete a course from db"() {
+    def "delete an exam from db"() {
         when:
         //populate the db to try deleting
         examDao.addExam("Dilbert", "Johnson", "804991926", "Spring2019",
@@ -259,7 +261,7 @@ class ExamDaoTest extends Specification{
         examDao.deleteExam("EXAM1")
     }
 
-    def "delete a exam that's not in the db"() {
+    def "delete an exam that's not in the db"() {
         when:
         List<String> before = genericDao.select("SELECT * FROM scantron.exam WHERE exam_id='EXAM1';")
         examDao.deleteExam("EXAM1")
@@ -269,6 +271,86 @@ class ExamDaoTest extends Specification{
         notThrown Exception
         before.size() == 0
         after.size() == 0
+    }
+
+    def "select an exam from db"() {
+        when:
+        List<String> before = examDao.selectExamId("EXAM1", "123456789", "804991926", "54322", "Spring2019")
+        examDao.addExam("Dilbert", "Johnson", "804991926", "Spring2019",
+                "02/17/1997", "54322", "123456789", "EXAM1", "answers")
+        List<String> after = examDao.selectExamId("EXAM1", "123456789", "804991926", "54322", "Spring2019")
+
+        then:
+        before.size() == 0
+        after.size() == 1
+        //clean up the db
+        examDao.deleteExam("EXAM1")
+    }
+
+    def "fail select an exam from db from examid not as string"() {
+        when:
+        List<String> before = examDao.selectExamId(1, "123456789", "804991926", "54322", "Spring2019")
+        examDao.addExam("Dilbert", "Johnson", "804991926", "Spring2019",
+                "02/17/1997", "54322", "123456789", "1", "answers")
+        List<String> after = examDao.selectExamId("EXAM1", "123456789", "804991926", "54322", "Spring2019")
+
+        then:
+        before.size() == 0
+        after.size() == 1
+        //clean up the db
+        examDao.deleteExam("EXAM1")
+    }
+
+    def "fail select an exam from db from instrId not as string"() {
+        when:
+        List<String> before = examDao.selectExamId("EXAM1", 123456789, "804991926", "54322", "Spring2019")
+        examDao.addExam("Dilbert", "Johnson", "804991926", "Spring2019",
+                "02/17/1997", "54322", "123456789", "EXAM1", "answers")
+        List<String> after = examDao.selectExamId("EXAM1", 123456789, "804991926", "54322", "Spring2019")
+
+        then:
+        thrown Exception
+        //clean up the db
+        examDao.deleteExam("EXAM1")
+    }
+
+    def "fail select an exam from db from stdId not as string"() {
+        when:
+        List<String> before = examDao.selectExamId("EXAM1", "123456789", 804991926, "54322", "Spring2019")
+        examDao.addExam("Dilbert", "Johnson", "804991926", "Spring2019",
+                "02/17/1997", "54322", "123456789", "EXAM1", "answers")
+        List<String> after = examDao.selectExamId("EXAM1", "123456789", 804991926, "54322", "Spring2019")
+
+        then:
+        thrown Exception
+        //clean up the db
+        examDao.deleteExam("EXAM1")
+    }
+
+    def "fail select an exam from db from crn as not a string"() {
+        when:
+        List<String> before = examDao.selectExamId("EXAM1", "123456789", "804991926", 54322, "Spring2019")
+        examDao.addExam("Dilbert", "Johnson", "804991926", "Spring2019",
+                "02/17/1997", "54322", "123456789", "EXAM1", "answers")
+        List<String> after = examDao.selectExamId("EXAM1", "123456789", "804991926", 54322, "Spring2019")
+
+        then:
+        thrown Exception
+        //clean up the db
+        examDao.deleteExam("EXAM1")
+    }
+
+    def "fail select an exam from db from semester as not a string"() {
+        when:
+        List<String> before = examDao.selectExamId("EXAM1", "123456789", "804991926", 54322, 2019)
+        examDao.addExam("Dilbert", "Johnson", "804991926", "2019",
+                "02/17/1997", "54322", "123456789", "EXAM1", "answers")
+        List<String> after = examDao.selectExamId("EXAM1", "123456789", "804991926", 54322, 2019)
+
+        then:
+        thrown Exception
+        //clean up the db
+        examDao.deleteExam("EXAM1")
     }
 
 }
