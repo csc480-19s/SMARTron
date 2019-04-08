@@ -1,4 +1,4 @@
-package SMARTron.Database;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +14,7 @@ public class InstructorDao {
 			+ " values (?, ?, ?)";
 
 	private static String DELETE_INSTRUCTOR = "delete from instructor where instructor_id = ?";
-
+	
 	private static String SELECT_INSTRUCTOR = "select instructor_id from instructor where inst_first_name = ? "
 			+ "and inst_last_name = ?";
 
@@ -24,16 +24,16 @@ public class InstructorDao {
 	ResultSet rs = null;
 
 	List<String> list = new ArrayList<String>();
-
+	
 	public InstructorDao() {
 
 	}
 
 	/**
 	 * Gets the connection to the database through the Connection Factory
-	 *
+	 * 
 	 * @return
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	private Connection getConnection() throws Exception {
 		return ConnectionFactory.getInstance().getConnection();
@@ -42,11 +42,11 @@ public class InstructorDao {
 	/**
 	 * Adds a new instructor to the database. instId is the parent key and must be
 	 * unique
-	 *
+	 * 
 	 * @param instId
 	 * @param instFirstName
 	 * @param instLastName
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	public void addInstructor(String instId, String instFirstName, String instLastName) throws Exception {
 		try {
@@ -57,6 +57,7 @@ public class InstructorDao {
 			ps.setString(3, instLastName);
 			ps.execute();
 		} catch (SQLException e) {
+                    e.printStackTrace();
 			throw new Exception("Could not add the instructor with the id " + instId);
 		} finally {
 			closeConnections();
@@ -65,9 +66,9 @@ public class InstructorDao {
 
 	/**
 	 * Deletes an instructor from the database.
-	 *
+	 * 
 	 * @param instId
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	public void deleteInstructor(String instId) throws Exception {
 		try {
@@ -85,9 +86,9 @@ public class InstructorDao {
 
 	/**
 	 * Returns an instructor and their information from the database
-	 *
+	 * 
 	 * @param instId
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	public List<String> selectInstructor(String firstName, String lastName) throws Exception {
 		try {
@@ -108,7 +109,7 @@ public class InstructorDao {
 
 	/**
 	 * Closes the connections after a transaction has been committed
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	private void closeConnections() throws Exception {
 		try {
