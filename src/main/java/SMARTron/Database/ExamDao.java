@@ -1,4 +1,4 @@
-package SMARTron.Database;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,16 +25,16 @@ public class ExamDao {
 	ResultSet rs = null;
 
 	List<String> list = new ArrayList<String>();
-
+	
 	public ExamDao() {
 
 	}
 
 	/**
 	 * Gets the connection to the database through the Connection Factory
-	 *
+	 * 
 	 * @return
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	private Connection getConnection() throws Exception {
 		return ConnectionFactory.getInstance().getConnection();
@@ -44,7 +44,7 @@ public class ExamDao {
 	 * Adds an exam to the database. InstId is a foreign key so this must be called
 	 * after there is a valid instructor in the database. Exam id is the primary
 	 * key.
-	 *
+	 * 
 	 * @param firstName
 	 * @param lastName
 	 * @param stdtId
@@ -53,10 +53,10 @@ public class ExamDao {
 	 * @param courseCrn
 	 * @param instId
 	 * @param examId
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	public void addExam(String firstName, String lastName, String stdtId, String semester, String birthDate,
-						String courseCrn, String instId, String examId, String answers) throws Exception {
+			String courseCrn, String instId, String examId, String answers) throws Exception {
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(INSERT_EXAM);
@@ -71,6 +71,7 @@ public class ExamDao {
 			ps.setString(9, answers);
 			ps.execute();
 		} catch (SQLException e) {
+                    e.printStackTrace();
 			throw new Exception("Could not add the exam with id " +  examId);
 		} finally {
 			closeConnections();
@@ -79,9 +80,9 @@ public class ExamDao {
 
 	/**
 	 * Deletes an exam from the database using the examId
-	 *
+	 * 
 	 * @param examId
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	public void deleteExam(String examId) throws Exception {
 		try {
@@ -98,10 +99,10 @@ public class ExamDao {
 
 	/**
 	 * Returns an exam from the database using the unique exam id
-	 *
+	 * 
 	 * @param examId
 	 * @return
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	public List<String> selectExamId(String examId, String instId, String stdntId, String crn, String sem)
 			throws Exception {
@@ -126,7 +127,7 @@ public class ExamDao {
 
 	/**
 	 * Closes the connections after a transaction has been committed
-	 * @throws Exception
+	 * @throws Exception 
 	 */
 	private void closeConnections() throws Exception {
 		try {

@@ -21,34 +21,13 @@
 				{
 					"name": "D",
 					"value": 1
-				}
-			]
-		},
-		{
-			"questionNumber": 2,
-			"correct": "A",
-			"data": [
-				{
-					"name": "A",
-					"value": 50
-				},
-				{
-					"name": "B",
-					"value": 2
-				},
-				{
-					"name": "C",
-					"value": 33
-				},
-				{
-					"name": "D",
-					"value": 8
 				},
 				{
 					"name": "E",
-					"value": 7
+					"value": 1
 				}
 			]
 		}
+		
 	]
 }
