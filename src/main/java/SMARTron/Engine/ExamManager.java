@@ -2,7 +2,10 @@
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class ExamManager {
+
+//This class is a high level controller for making student objects, grade them, and process them
 
     private List<Student> studentExams = new ArrayList<>();
     private List<Integer> studentGradesForStats = new ArrayList<>();
@@ -16,9 +19,45 @@ public class ExamManager {
     private String examName = "";
     private String examID = "";
 
-    public void addStudentExam(String[][] answers, String[] StudentData){
-        this.studentExams.add(studentCreater.makeStudent(answers, StudentData));
+    /**
+     *
+     *studentExams list of student objects built from database.
+     *
+     *studentGradesForStats Integer array of scores from the Grader class, used in Stats class.
+     *They are in the same indexed order as the "studentExams".
+     *
+     *studentNumberGrades Float array of scores from the Grader class, they are put into "studentExams"
+     *They are in the same indexed order as the "studentExams".
+     *
+     *studentLetterGrades String array of letter scores from grader, they are put into "studentExams"
+     * They are in the same indexed order as the "studentExams".
+     *
+     *grader Grades the "studentExams".
+     *
+     *stats Finds stats from the grades.
+     *
+     *letterConverter Returns a list of letter grades based off of "studentNumberGrades".
+     *
+     *studentCreater Makes student classes.
+     *
+     *key This is the test key, It is a student class.
+     *
+     *examName Exam Name.
+     *
+     *examID Exam ID.
+     */
+
+
+    public void addStudentExam(String[][] answers, String[] studentData){
+        this.studentExams.add(studentCreater.makeStudent(answers, studentData));
     }
+
+    /**
+     *addStudentExam() uses the StudentCreator to add a student to the studentExams
+     *answers is a multidimensional array that holds the answer data in the order it was given.
+     *studentData carries the first 43 points of information on the scantron
+    **/
+
 
     public void getGrades(){
         this.getExamGrades();
@@ -29,19 +68,27 @@ public class ExamManager {
         this.getStats();
     }
 
+    //Rns most of the important student processing methods in one go
+
     private void getExamGrades(){
         this.key = studentExams.get(0);
         this.studentNumberGrades = grader.getGrades(studentExams, key);
     }
+
+    //Calls the grader getGrades() method
 
     private void getStats(){
         this.stats.setScores(studentGradesForStats, key.getAnswers(), studentExams);
         this.stats.getStats();
     }
 
+    //Calls the stats getStats() method
+
     private void getExamLetterGrades(){
         this.studentLetterGrades = letterConverter.genLetterGrade(studentNumberGrades);
     }
+
+    //Calls the letterConverter genLetterGrade() method
 
     private void examGradeIntegerConverter(){
         for (Float i: studentNumberGrades) {
@@ -49,12 +96,10 @@ public class ExamManager {
         }
     }
 
+    //Adds values to the stats class
+
     private void getExamID(){
         this.examID = this.key.getName();
-    }
-
-    public void setExamName(String examName) {
-        this.examName = examName; //mainly for the middlewhere
     }
 
     private void assignStudentGrades(){
@@ -63,4 +108,6 @@ public class ExamManager {
             studentExams.get(i).setLetterGrade(studentLetterGrades.get(i));
         }
     }
+
+    //Assigns the grades for all the students in studentExams from "studentNumberGrades" and "studentLetterGrades"
 }

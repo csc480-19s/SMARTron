@@ -11,6 +11,9 @@ public class JSONBuilder {
     private String examID = "";
     private String examName = "";
 
+    //examID is the exam's ID
+    //examName is the exam's Name
+
     public void setExamCode(String examID){
         this.examID = examID;
     }
@@ -125,4 +128,7 @@ public class JSONBuilder {
             e.printStackTrace();
         }
     }
+
+    //All of the prior methods build JSON from the Grader, Stats, Question array, Student array, and information from database
+    //It is in the format that gui needs.
 }

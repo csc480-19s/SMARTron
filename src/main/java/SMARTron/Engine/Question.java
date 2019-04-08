@@ -27,7 +27,10 @@ public class Question {
         }
     }
 
-    public JSONArray returnList() { //for the json
+    //This method finds the question-number association (i.e. "2" -> C) and increments the
+    //corresponding variable
+
+    public JSONArray returnList() {
         JSONObject aa = new JSONObject();
         aa.put("name", "A");
         aa.put("value", this.a);
@@ -54,4 +57,6 @@ public class Question {
 
         return arr;
     }
+
+    //This builds json for the statistics by question
 }

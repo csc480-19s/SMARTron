@@ -23,6 +23,9 @@ public class StudentCreater {
         return returnStudent;
     }
 
+    //Takes a primitive multidimensional array and standard string array and converts them into a Student object
+    //(for scanner)
+
     public Student makeSecondPassStudent(String studentData) {
 
         Student returnStudent = new Student();
@@ -30,4 +33,6 @@ public class StudentCreater {
 
         return returnStudent;
     }
+
+    //Takes a primitive string array and makes a Student object (from database)
 }

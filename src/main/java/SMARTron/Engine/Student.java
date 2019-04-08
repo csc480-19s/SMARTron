@@ -26,6 +26,18 @@ public class Student {
 
     private String letterGrade = "nil";
 
+    /**
+     *name, sex, birthday, grade, id, code - all of these variables are the points
+     *of information used on every scantron sheet
+     *
+     *examGrade calculated exam grade is assigned after grader passes through
+     *answers array of all answers used for grading
+     *
+     *studentData array of all raw "first43" data-points from scantron
+     *
+     *letterGrade calculated letter grade
+     */
+
     public void initializeStudentFromStudentData(List<String> studentData) {
         this.studentData = studentData;
 
@@ -36,6 +48,9 @@ public class Student {
         findId();
         findCode();
     }
+
+    //This method is used by the StudentCreator, it takes a list of strings and runs methods responsible
+    //for finding the main points of information
 
     public void initializeStudentFromDatabaseString(String databaseString){
         this.answers.clear();
@@ -54,10 +69,15 @@ public class Student {
         }
     }
 
+    //unlike the method above this method accepts one string,
+    //it uses a delimiter to extract the information
+
     public void initializeAnswers(List<String> answers) {
         this.answers = answers;
 
     }
+
+    //initializes answer array
 
     private void findName() {
         String temp = "";
@@ -127,6 +147,8 @@ public class Student {
         this.code = temp;
     }
 
+    //all of these methods extract, and construct specifically indexed information from the string array
+
     public JSONObject genJsonData() {
 
         JSONObject obj = new JSONObject();
@@ -140,6 +162,8 @@ public class Student {
 
     }
 
+    //Constructs JSON for this individual student
+
     public String alphaConverter(String entry) {
         int c = Integer.parseInt(entry);
         if (c >= 0 && c <= 26) {
@@ -150,6 +174,8 @@ public class Student {
 
         return "";
     }
+
+    //Used to convert ints to alpha characters [i.e. 1 -> "A"]
 
     public void setExamGrade(float grade) {
         this.examGrade = grade;

@@ -29,6 +29,8 @@ public class Stats {
         //cronbach = cronbachsAlpha(exams, key, weight).round(m).toString();
     }
 
+    //This runs the stats and sets the class variables to the results
+
     public String getMax() {
         return max;
     }
@@ -79,6 +81,8 @@ public class Stats {
 
         this.key = key;
     }
+
+    //this sets the variables used by the class
 
 
     static List<String> examGenerator(int questionCount) {

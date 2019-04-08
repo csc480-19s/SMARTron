@@ -9,41 +9,30 @@ public class LetterConverter {
     private float aboveForC = 73;
     private float aboveForD = 63;
 
-    public LetterConverter(){
-
-    }
+     //*These four variables are used for assigning letter grades
+     //*This is the default scheme for how they are assigned.
 
     public List<String> genLetterGrade(List<Float> examGrade) {
 
         List<String> returnLetterGrades = new ArrayList<>();
 
+        //list of all the letter grades, this will be returned
+
         for (Float i : examGrade) {
 
             if (i >= aboveForA && i <= 100.0) {
                 returnLetterGrades.add("A");
-                //} else if (examGrade >= 90) {
-                //return "A-";
-                //} else if (examGrade >= 87) {
-                //return "B+";
             } else if (aboveForB >= i) {
                 returnLetterGrades.add("B");
-                //} else if (examGrade >= 80) {
-                //return "B-";
-                //} else if (examGrade >= 77) {
-                //return "C+";
             } else if (aboveForC >= i) {
                 returnLetterGrades.add("C");
-                //} else if (examGrade >= 70) {
-                //return "C-";
-                //} else if (examGrade >= 67) {
-                //return "D+";
             } else if (aboveForD >= i) {
                 returnLetterGrades.add("D");
-                //} else if (examGrade >= 60) {
-                //return "D-";
             } else {
                 returnLetterGrades.add("F");;
             }
+
+            //finds the letter assigned with the grade, and adds it to returnLetterGrades
         }
 
         return returnLetterGrades;
@@ -59,4 +48,6 @@ public class LetterConverter {
         this.aboveForD = Integer.parseInt(distroScanner.next());
     }
 
+    //This method accepts a String "distribution", and parces through it.
+    //It will then assign the class variables to the Integer.parseInt() of that section of the parced String
 }
