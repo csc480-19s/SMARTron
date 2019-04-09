@@ -8,7 +8,7 @@ import AnswerKey from "./AnswerKey";
 class Router extends Component {
     render() {
         return (
-            <BrowserRouter>
+            <BrowserRouter basename={process.env.PUBLIC_URL}>
                 <div style={{ height: "100%" }}>
                     <Route exact path="/" component={Login} />
                     <Route path="/home" component={Home} />
