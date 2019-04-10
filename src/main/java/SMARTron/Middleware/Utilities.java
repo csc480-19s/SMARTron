@@ -263,6 +263,7 @@ public class Utilities {
     public static void main(String[] args) {
         Utilities u = new Utilities();
         List<List<List<String>>> temp = u.runScanner();
+        System.out.println(temp.get(0).get(5));
         String[][] answers = u.multi(temp.get(0).get(5));
         for (int i = 0; i < answers.length; i++) {
             System.out.println(Arrays.toString(answers[i]));
