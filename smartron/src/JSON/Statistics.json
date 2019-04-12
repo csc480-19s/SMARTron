@@ -1,0 +1,22 @@
+{
+	"examName":"Exam 1",
+	"examID":"XHKLF",
+	"mean":"75.9",
+	"median":"80",
+	"max":"100",
+	"min":"0",
+	"range":"100",
+	"standardDeviation":"3.7",
+	"variance":"10.6",
+	"kr20":".74",
+	"kr21":".84",
+	"cronbach":".57",
+
+	"gradeDistribution":[
+		{"grade":"A","percent":"10"},
+		{"grade":"B", "percent":"30"},
+		{"grade":"C","percent":"30"},
+        {"grade":"D", "percent":"20"},
+		{"grade":"E", "percent":"10"}
+	]
+}

@@ -1,0 +1,170 @@
+/* Login page style*/
+.App {
+  text-align: center;
+  color: #282c34;
+  background-color: #282c34;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #003C60;
+}
+.loginButton{
+  position: absolute;
+  width: 400px;
+  height: 600px;
+  text-align: center;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -25%);
+  padding: 50px;
+  border-radius: 25px;
+  border: 2px solid #003C60;
+}
+.loginButton p{
+  font-family: "Helvetica Neue";
+  font-size: x-large;
+
+
+}
+.Exam{
+  padding: 50px;
+}
+
+.button{
+  justify-content: center;
+}
+
+
+
+/* Home page style*/
+.Home{
+    min-width: 630px;
+    overflow: scroll;
+    position: absolute;
+}
+
+
+.topBar{
+  position: fixed;
+  align-content: center;
+  top: 0;
+  margin-left: 0%;
+  margin-right: 0%;
+  height: 70px;
+  width: 100%;
+  background-color: #f2f2f2;
+}
+
+.right{
+  float: right;
+  padding: 10px;
+  font-size: x-large;
+  color: #003C60 ;
+}
+.leftA{
+  float: left;
+  padding-left: 10px;
+  color: #003C60 ;
+  font-family: "Helvetica Neue";
+}
+.leftB{
+  float: left;
+  color: #00CCBC;
+  font-family: "Helvetica Neue";
+}
+.welcome{
+  padding-top: 100px;
+  padding-left: 50px;
+  padding-bottom: 100px;
+
+  font-family: "Helvetica Neue";
+  color: #003C60 ;
+}
+
+
+
+.buttons{
+  position: absolute;
+  top: 225px;
+  right: 25%;
+}
+.buttons button{
+  display: inline-block;
+  position: relative;
+  float: right;
+  width: 50%;
+  height: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #60f3ab ;
+  color:  #003C60;
+  border-radius: 5px;
+
+}
+.buttons select{
+  display: inline-block;
+  position: relative;
+  float: right;
+  height: 50px;
+    width: 50%;
+
+
+
+
+
+}
+.alert{
+    display: inline-block;
+    float: right;
+
+}
+
+
+
+.logout{
+  float: right;
+  padding-top: 25px;
+}
+
+.modal h1{
+  text-align: center;
+  font-family: "Helvetica Neue";
+  padding-bottom: 1%;
+  color: #003C60;
+}
+.modal label{
+  justify-content: center;
+  font-family: "Helvetica Neue";
+  color: #003C60;
+}
+.modal button{
+  float: right;
+  width: 25%;
+}
+
+.id{
+  padding-bottom: 1%;
+}
+.scanCode {
+  position: relative;
+  text-align: center;
+  font-weight: bold;
+  font-size: large;
+}

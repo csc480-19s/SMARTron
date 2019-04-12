@@ -1,0 +1,33 @@
+{
+	"examName": "Exam 1",
+	"examID": "SDDSE",
+	"questionlist": [
+		{
+			"questionNumber": 1,
+			"correct": "B",
+			"data": [
+				{
+					"name": "A",
+					"value": 10
+				},
+				{
+					"name": "B",
+					"value": 20
+				},
+				{
+					"name": "C",
+					"value": 5
+				},
+				{
+					"name": "D",
+					"value": 1
+				},
+				{
+					"name": "E",
+					"value": 1
+				}
+			]
+		}
+		
+	]
+}

@@ -1,0 +1,83 @@
+.keyBox label {
+  height:40px;
+  width: 40px;
+  background-color: #e7e7e7;
+  border: 2px solid #555555;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px 5px;
+  cursor: pointer;
+}
+
+.keyBox input[type=checkbox]:checked + label {
+    background: #000000;
+    color: white;
+}
+.keyBox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+.items {
+	overflow: hidden;
+  margin-left: 10%;
+  margin-right:10%;
+}
+.items .item {
+	float: left;
+	width: 25%;
+  box-sizing: border-box;
+  padding: 10px;
+  position: relative;
+}
+.items .itemEmpty {
+	float: left;
+	width: 25%;
+  box-sizing: border-box;
+  padding: 10px;
+  background: #ffb3b3;
+  position: relative;
+}
+.scrollable {
+    width: auto;
+    height: 900px;
+    overflow: scroll
+}
+.answerKeyTitle{
+    padding-top: 60px;
+    margin: 20px;
+    color: #003C60;
+    font-family: "Helvetica Neue";
+}
+.examName{
+    margin: 20px;
+    color: #003C60;
+    font-family: "Helvetica Neue";
+}
+.float{
+	position:fixed;
+	width:120px;
+  height: 50px;
+	bottom:20px;
+	right:40px;
+  background-color: #60f3ab;
+  color: #003C60;
+  border-radius: 10px;
+	text-align:center;
+}
+.questionId{
+  font-weight: bold;
+  padding-right: 2px;
+}
+.questionId:after{
+  font-weight: bold;
+  content: "."
+}
+.div{
+  background-color: red;
+}

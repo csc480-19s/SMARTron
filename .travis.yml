@@ -1,0 +1,26 @@
+matrix:
+  include:
+  - language: python
+    python: 
+      - '3.7'
+    dist: xenial
+    sudo: true
+    before_install:
+      - sudo apt-get install build-essential
+      - sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+      - sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
+    script: 
+      - echo 'skipping tests'
+
+  - language: java
+    jdk: oraclejdk8
+    script:
+      - echo 'skipping tests'
+
+  - language: node_js
+    node_js:
+      - "stable"
+    script:
+      - echo 'skipping tests'
+      
+install: true

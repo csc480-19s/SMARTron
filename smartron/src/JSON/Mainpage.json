@@ -1,0 +1,18 @@
+{
+	"name":"Bastian Tenbergen",
+	"lakerNetID":"bastian.tenbergen@oswego.edu",
+	"examList":[
+		{
+			"examName":"CSC 212 Fall 2018 Exam 1",
+			"scanCode":"XHKLF",
+			"timeStamp":""
+		},
+		{
+			"examName":"CSC212 Spring 19 Exam 2",
+			"scanCode":"BSDFS",
+			"timeStamp":""
+		}
+	]
+
+}
+
