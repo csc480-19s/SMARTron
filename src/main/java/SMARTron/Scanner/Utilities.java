@@ -1,4 +1,4 @@
-package SMARTron;
+package SMARTron.Scanner;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;

@@ -1,5 +1,9 @@
-package SMARTron;
+package SMARTron.Scanner;
 
+import SMARTron.Database.AnswerKeyDao;
+import SMARTron.Database.CourseDao;
+import SMARTron.Database.ExamDao;
+import SMARTron.Database.InstructorDao;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;

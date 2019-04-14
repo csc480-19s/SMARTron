@@ -1,4 +1,10 @@
+package SMARTron.GUIMiddleware;
 
+import SMARTron.Database.AnswerKeyDao;
+import SMARTron.Database.CourseDao;
+import SMARTron.Database.ExamDao;
+import SMARTron.Database.GenericDao;
+import SMARTron.Database.InstructorDao;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -12,8 +18,6 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-
-     
 
         InstructorDao instDao = new InstructorDao();
         AnswerKeyDao ansKDao = new AnswerKeyDao();
