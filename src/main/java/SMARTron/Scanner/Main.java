@@ -33,10 +33,10 @@ public class Main {
         StudentCreateInterface scf = new StudentCreateInterface();
         for (int i = 0; i < arr.size(); i++) {
             String[] s = new String[43];
-            int k = 0;
-            for (int j = 0; j < 6; j++) {
-                s[k] = arr.get(i).get(j).get(k);
-                k++;
+            for (int j = 0; j < 5; j++) {
+                for (int k = 0; k < arr.get(i).get(j).size(); k++) {
+                    s[k] = arr.get(i).get(j).get(k);
+                }
             }
             scf.addStudent(u.multi(arr.get(i).get(5)), s);
         }
