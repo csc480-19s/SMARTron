@@ -217,4 +217,8 @@ public class Student {
     public String getLetterGrade() {
         return letterGrade;
     }
+    
+    public float getExamGrade() {
+        return examGrade;
+    }
 }

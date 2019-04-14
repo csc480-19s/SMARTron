@@ -233,7 +233,7 @@ public class Utilities {
                         } else if (line.startsWith("d")) {
                             arr.get(count).get(3).add(line.replace("d ", ""));
                         } else if (line.startsWith("i")) {
-                            if (num > 3 || arr.get(count).get(3).isEmpty()) {
+                            if (num > 2 || arr.get(count).get(3).isEmpty()) {
                                 arr.get(count).get(4).add(line.replace("i ", ""));
                             } else {
                                 num++;

@@ -29,7 +29,7 @@ public class Main {
 
 
 
-        ls = gen.selectFirst("SELECT * FROM exam");
+        //ls = gen.selectFirst("SELECT * FROM exam");
         MiddlewareInterface mi = new MiddlewareInterface();
         for (int i = 1; i < ls.size(); i++) {
             mi.addStudentExam(ls.get(i));

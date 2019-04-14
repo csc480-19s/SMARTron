@@ -111,4 +111,8 @@ public class ExamManager {
     }
 
     //Assigns the grades for all the students in studentExams from "studentNumberGrades" and "studentLetterGrades"
+    
+    public List<Student> getStudents() {
+        return studentExams;
+    }
 }
