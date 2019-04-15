@@ -8,7 +8,7 @@
 
  */
 
-package SMARTron;
+package SMARTron.Scanner;
 
 
 
