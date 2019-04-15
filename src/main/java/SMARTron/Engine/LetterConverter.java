@@ -1,3 +1,5 @@
+package SMARTron.Engine;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -20,13 +22,13 @@ public class LetterConverter {
 
         for (Float i : examGrade) {
 
-            if (i >= aboveForA && i <= 100.0) {
+            if (i >= aboveForA) {
                 returnLetterGrades.add("A");
-            } else if (aboveForB >= i) {
+            } else if (i >= aboveForB) {
                 returnLetterGrades.add("B");
-            } else if (aboveForC >= i) {
+            } else if (i >= aboveForC) {
                 returnLetterGrades.add("C");
-            } else if (aboveForD >= i) {
+            } else if (i >= aboveForD) {
                 returnLetterGrades.add("D");
             } else {
                 returnLetterGrades.add("F");;
@@ -38,7 +40,7 @@ public class LetterConverter {
         return returnLetterGrades;
     }
 
-    public void letterDistribution(String distribution){
+    public void setLetterBreakpoints(String distribution){
         Scanner distroScanner = new Scanner(distribution);
         distroScanner.useDelimiter(",");
 
@@ -47,7 +49,24 @@ public class LetterConverter {
         this.aboveForC = Integer.parseInt(distroScanner.next());
         this.aboveForD = Integer.parseInt(distroScanner.next());
     }
-
+    //this reads a csv string of 4 ints to apply the custom numerical letter breakpoints
     //This method accepts a String "distribution", and parces through it.
     //It will then assign the class variables to the Integer.parseInt() of that section of the parced String
+
+    public float getAboveForA() {
+        return aboveForA;
+    }
+
+    public float getAboveForB() {
+        return aboveForB;
+    }
+
+    public float getAboveForC() {
+        return aboveForC;
+    }
+
+    public float getAboveForD() {
+        return aboveForD;
+    }
+
 }
