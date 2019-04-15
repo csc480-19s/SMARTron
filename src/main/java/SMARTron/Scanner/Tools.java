@@ -1,4 +1,4 @@
-package SMARTron;
+package SMARTron.Scanner;
 
 public class Tools {
 

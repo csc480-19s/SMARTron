@@ -1,4 +1,4 @@
-package com.company;
+package SMARTron.GUIMiddleware;
 
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -8,54 +8,84 @@ import java.util.Random;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
-public class Main {
+public class Stats {
 
-    public static void main(String[] args) {
+    private List<List<String>> exams = new ArrayList<>();
+    private List<Integer> scores = new ArrayList<>();
+    private List<String> key = new ArrayList<>();
+    private List<Integer> weight = new ArrayList<>();
+    private String min, max, mean, range, median, variance, standardDeviation, kr20, kr21, cronbach = "";
 
-          /*********************************************************************************************************
-          *Everything here in the main method is just stuff for generating random data to test the statistics over.*
-          *********************************************************************************************************/
+    public void getStats(){
+        min = Integer.toString(lowestScore(scores));
+        max = Integer.toString(highestScore(scores));
+        mean = meanInteger(scores).toString();
+        range = Integer.toString(rangeOfScores(scores));
+        median = Integer.toString(median(scores));
+        //variance = overallVariance(scores).toString();
 
-        int examCount = 1000;
-        int questionCount = 200;
+        MathContext m = new MathContext(2);
 
-        Scanner kb = new Scanner(System.in);
-
-        List<List<String>> exams = new ArrayList<>();
-        List<Integer> scores;
-        List<String> answerKey = examGenerator(questionCount);
-        List<Integer> weight = weightGenerator(questionCount);
-
-        int max = 0;
-        for (Integer c : weight) {
-            max += ((int) c);
-        }
-        System.out.println("Exam max score is " + max);
-
-        for (int i = 0; i < examCount; i++) {
-            exams.add(examGenerator(questionCount));
-        }
-
-        scores = examGrader(exams, answerKey, weight);
-        System.out.println("Lowest score: " + lowestScore(scores) + " Highest Score: " + highestScore(scores) + " Average: " + meanInteger(scores) + " Median: " + median(scores) + " Range: " + rangeOfScores(scores));
-        System.out.println();
-        System.out.println("Cronbach's Alpha: " + cronbachsAlpha(exams, answerKey, weight).round(MathContext.DECIMAL32));
-        System.out.println("KR-21: " + kuderRichardson21(exams, answerKey, weight).round(MathContext.DECIMAL32));
-        System.out.println("KR-20: " + kuderRichardson20(exams, answerKey, weight).round(MathContext.DECIMAL32));
-/*
-        System.out.println();
-        for(String a : answerKey) {
-            System.out.print(a);
-        }
-        System.out.println();
-        for(List<String> a : exams) {
-            for(String b : a) {
-                System.out.print(b);
-            }
-            System.out.println();
-        }
-*/
+        //kr20 = kuderRichardson20(exams, key, weight).round(m).toString();
+        //kr21 = kuderRichardson21(exams, key, weight).round(m).toString();
+        //cronbach = cronbachsAlpha(exams, key, weight).round(m).toString();
     }
+
+    //This runs the stats and sets the class variables to the results
+
+    public String getMax() {
+        return max;
+    }
+
+    public String getMin() {
+        return min;
+    }
+
+    public String getMean() {
+        return mean;
+    }
+
+    public String getMedian() {
+        return median;
+    }
+
+    public String getRange() {
+        return range;
+    }
+
+    public String getVariance() {
+        return variance;
+    }
+
+    public String getKr20(){
+        return kr20;
+    }
+
+    public String getKr21(){
+        return kr21;
+    }
+
+    public String getCronbach(){
+        return cronbach;
+    }
+
+    public void setScores(List<Integer> scores, List<String> key, List<Student> students){
+        this.scores = scores;
+        this.weight.clear();
+
+        for(int i = 0; i < key.size(); i++){
+            this.weight.add(1);
+        }
+
+        for(int i = 0; i < students.size(); i++){
+            this.exams.add(students.get(i).getAnswers());
+        }
+
+        this.key = key;
+    }
+
+    //this sets the variables used by the class
+
 
     static List<String> examGenerator(int questionCount) {
         String answerChoices = "ABCDE";
@@ -122,9 +152,9 @@ public class Main {
         List<Integer> examScores = new ArrayList<>();
         for (int i = 0; i < exams.size(); i++) {
             int examScore = 0;
-            for (int j = 45; j < answerKey.size(); j++) {
+            for (int j = 0; j < answerKey.size(); j++) {
                 if (exams.get(i).get(j).equals(answerKey.get(j))) {
-                    examScore += weight.get(j - 45);
+                    examScore += weight.get(j);
                 }
             }
             examScores.add(examScore);
@@ -259,7 +289,7 @@ public class Main {
     static List<BigDecimal> divisionOfData(List<BigDecimal> input, int divisor) {
         List<BigDecimal> output = new ArrayList<>();
         for (int i = 0; i < input.size(); i++) {
-            output.add(input.get(i).divide(BigDecimal.valueOf(divisor)));
+            output.add(input.get(i).divide(BigDecimal.valueOf(divisor), 16384, RoundingMode.HALF_UP));
         }
         return output;
     }
@@ -285,7 +315,7 @@ public class Main {
 
         BigDecimal sigmaVI = summationOfList(varianceIndividual);
         BigDecimal vTest = overallVariance(examGrader(exams, answerKey, weight));
-        BigDecimal numberOfQuestions = BigDecimal.valueOf(exams.get(0).size()).subtract(BigDecimal.valueOf(45));
+        BigDecimal numberOfQuestions = BigDecimal.valueOf(exams.get(0).size()).subtract(BigDecimal.valueOf(0));
 
         BigDecimal rightHand = BigDecimal.ONE.subtract((sigmaVI.divide(vTest,RoundingMode.HALF_UP)));
         BigDecimal leftHand = numberOfQuestions.divide((numberOfQuestions.subtract(BigDecimal.ONE)), 32768, RoundingMode.HALF_UP);
@@ -351,7 +381,7 @@ public class Main {
                     currentProportion = (currentProportion.add(BigDecimal.ONE));
                 }
             }
-            proportionPassingByQuestion.add(currentProportion.divide(BigDecimal.valueOf(exams.size())));
+            proportionPassingByQuestion.add(currentProportion.divide(BigDecimal.valueOf(exams.size()), 16384, RoundingMode.HALF_UP));
         }
         return proportionPassingByQuestion;
     }
@@ -369,7 +399,7 @@ public class Main {
                     currentProportion = (currentProportion.add(BigDecimal.ONE));
                 }
             }
-            proportionFailingByQuestion.add((currentProportion.divide((BigDecimal.valueOf(exams.size())))));
+            proportionFailingByQuestion.add((currentProportion.divide((BigDecimal.valueOf(exams.size())), 16384, RoundingMode.HALF_UP)));
         }
         return proportionFailingByQuestion;
     }
@@ -378,7 +408,7 @@ public class Main {
      * that question was answered incorrectly */
 
     static BigDecimal kuderRichardson21 (List<List<String>> exams, List<String> answerKey, List<Integer> weight) {
-        BigDecimal numberOfQuestions = BigDecimal.valueOf(exams.get(0).size()-45);
+        BigDecimal numberOfQuestions = BigDecimal.valueOf(exams.get(0).size()-0);
         BigDecimal overallVariance = overallVariance(examGrader(exams, answerKey, weight));
         BigDecimal meanScore = meanInteger(examGrader(exams, answerKey, weight));
         BigDecimal meanWeight = meanInteger(weight);
@@ -400,7 +430,7 @@ public class Main {
      * Should be a value between 0 and 1 but can be negative when fed a very terrible exam */
 
     static BigDecimal kuderRichardson20 (List<List<String>> exams, List<String> answerKey, List<Integer> weight) {
-        BigDecimal numberOfQuestions = BigDecimal.valueOf(exams.get(0).size()-45);
+        BigDecimal numberOfQuestions = BigDecimal.valueOf(exams.get(0).size()-0);
         BigDecimal overallVariance = overallVariance(examGrader(exams, answerKey, weight));
         List<BigDecimal> proportionPassingList = proportionPassingByQuestion(exams, answerKey, weight);
         List<BigDecimal> proportionFailingList = proportionFailingByQuestion(exams, answerKey, weight);
