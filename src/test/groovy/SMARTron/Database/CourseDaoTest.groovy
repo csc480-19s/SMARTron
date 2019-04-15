@@ -232,17 +232,65 @@ class CourseDaoTest extends Specification {
         thrown Exception
     }
 
-    def "select a course"(){
+    def "select a course from db"() {
         when:
-        List<String> before = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
+        List<String> before = courseDao.selectCourse("SDFGH", "800", "Spring2019", "MATT")
         courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "MATT")
-        List<String> after = genericDao.select("SELECT * FROM scantron.course WHERE course_crn='SDFGH' AND section_num='800' AND semester='Spring2019' AND instructor_id='MATT';")
+        List<String> after = courseDao.selectCourse("SDFGH", "800", "Spring2019", "MATT")
 
         then:
         before.size() == 0
         after.size() == 1
         //clean up the db
         courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
+    }
+
+    def "fail select a course from db from crn not a string"() {
+        when:
+        List<String> before = courseDao.selectCourse(6, "800", "Spring2019", "MATT")
+        courseDao.addCourse("6", "Software Design", "800", "Spring2019", "MATT")
+        List<String> after = courseDao.selectCourse(6, "800", "Spring2019", "MATT")
+
+        then:
+        thrown Exception
+        //clean up the db
+        courseDao.deleteCourse("6", "800", "Spring2019","MATT")
+    }
+
+    def "fail select a course from db from section not a string"() {
+        when:
+        List<String> before = courseDao.selectCourse("SDFGH", 800, "Spring2019", "MATT")
+        courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "MATT")
+        List<String> after = courseDao.selectCourse("SDFGH", 800, "Spring2019", "MATT")
+
+        then:
+        thrown Exception
+        //clean up the db
+        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
+    }
+
+    def "fail select a course from db from semester not a string"() {
+        when:
+        List<String> before = courseDao.selectCourse("SDFGH", "800", 2019, "MATT")
+        courseDao.addCourse("SDFGH", "Software Design", "800", "2019", "MATT")
+        List<String> after = courseDao.selectCourse("SDFGH", "800", 2019, "MATT")
+
+        then:
+        thrown Exception
+        //clean up the db
+        courseDao.deleteCourse("SDFGH", "800", "2019","MATT")
+    }
+
+    def "fail select a course from db from instructor id not a string"() {
+        when:
+        List<String> before = courseDao.selectCourse("SDFGH", "800", "Spring2019", 1212121)
+        courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "1212121")
+        List<String> after = courseDao.selectCourse("SDFGH", "800", "Spring2019", 1212121)
+
+        then:
+        thrown Exception
+        //clean up the db
+        courseDao.deleteCourse("SDFGH", "800", "Spring2019","1212121")
     }
 
 }
