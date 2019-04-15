@@ -126,6 +126,16 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <testSources>
+                        <testSource>
+                            <directory>${project.basedir}/src/test/java</directory>
+                            <includes>
+                                <include>groovy/**/*.groovy</include>
+                            </includes>
+                        </testSource>
+                    </testSources>
+                </configuration>
             </plugin>
         </plugins>
     </build>
