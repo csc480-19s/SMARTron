@@ -41,7 +41,7 @@ class Home extends Component {
                 .then(response => response.json())
                 .then(result =>{
                     result.examList.forEach((exam =>
-                            this.state.exams.push(<Exam problem={false} loginName={this.props.location.state.loginName} list={[]}
+                            this.state.exams.push(<Exam problem={false} loginName={this.props.location.state.loginName}  list={[]}
                                                         email={this.props.location.state.email} text={exam.examName} scanCode={exam.scanCode}
                                                         history={this.props.history}/>)
 

@@ -7,8 +7,8 @@ class Exam extends Component{
         super()
         this.state = {
             title1: props.text,
-            problem: props.problem
-
+            problem: props.problem,
+            exid: props.scanCode
         }
         console.log(props.problem)
 
@@ -21,11 +21,11 @@ class Exam extends Component{
 
     navResults(){
         // createBrowserHistory().push("/results");
-        this.props.history.push({pathname:"/results",state:{text:this.state.title1 ,loginName:this.props.loginName,exams:this.props.list,email:this.props.email}});
+        this.props.history.push({pathname:"/results",state:{id:this.state.id, text:this.state.title1 ,loginName:this.props.loginName,exams:this.props.list,email:this.props.email}});
     }
 
     navAnswerKey(){
-      this.props.history.push({pathname:"/answerKey",state:{text:this.state.title1, loginName:this.props.loginName,exams:this.props.list,email:this.props.email}});
+      this.props.history.push({pathname:"/answerKey",state:{id:this.state.id,text:this.state.title1, loginName:this.props.loginName,exams:this.props.list,email:this.props.email}});
     }
     render() {
         return(
