@@ -5,6 +5,7 @@ import Database.CourseDao;
 import Database.ExamDao;
 import Database.InstructorDao;
 import GUIMiddleware.ExamManager;
+import GUIMiddleware.Student;
 
 import java.io.IOException;
 import java.util.List;
