@@ -68,7 +68,7 @@ public class Main {
             ex.addStudentExam(u.multi(arr.get(i).get(5)), s);
         }
         ex.getGrades();
-        List<Student> exams = ex.getStudents();
+        List<GUIMiddleware.Student> exams = ex.getStudents();
         for (int i = 0; i < exams.size(); i++) {
             System.out.println(exams.get(i).getName() + " : " + exams.get(i).getExamGrade());
         }
