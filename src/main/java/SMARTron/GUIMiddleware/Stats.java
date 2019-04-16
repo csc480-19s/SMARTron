@@ -2,11 +2,9 @@ package SMARTron.GUIMiddleware;
 
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.math.BigDecimal;
-import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Stats {
 
@@ -204,6 +202,10 @@ public class Stats {
         return meanDecimal(squaredDifference);
     }
     /* Takes in a List of Integers and calculates the Variance of them, outputs a BigDecimal */
+
+    static BigDecimal overallStandardDeviation(List<Integer> scores) {
+        return babylonianSqrt(overallVariance(scores));
+    }
 
     static List<List<Integer>> gradesByQuestion(List<List<String>> exams, List<String> answerKey, List<Integer> weight) {
         List<List<Integer>> examGradesByQuestion = new ArrayList<>();
@@ -463,4 +465,77 @@ public class Stats {
      *
      * Note that this statistic is not completely accurate unless the exam is entirely 1 point questions
      * Should be between 0 and 1 but can be negative when you are a really bad test maker and your students are also really bad ツ */
+
+    /**
+     * Creates a list of quartiles for a given list of scores.
+     * @param scores list of scores to compute quartiles for
+     * @return list of [Q1, median, Q3]
+     */
+    static List<BigDecimal> quartiles(List<Integer> scores) {
+        if(scores.size() == 1) {
+            BigDecimal score = BigDecimal.valueOf(scores.get(0));
+            List<BigDecimal> result = new ArrayList<>();
+            for(int i = 0; i < 4; i++)
+                result.add(score);
+            return result;
+        }
+
+        List<Integer> sortedScores = new ArrayList<>(scores);
+        Collections.sort(sortedScores);
+
+        List<BigDecimal> result = new ArrayList<>();
+
+        int medianIndex = sortedScores.size() / 2;
+        BigDecimal median;
+        if(sortedScores.size() % 2 == 0)
+            median = BigDecimal.valueOf(sortedScores.get(medianIndex))
+                    .add(BigDecimal.valueOf(sortedScores.get(medianIndex - 1)))
+                    .divide(BigDecimal.valueOf(2));
+        else
+            median = BigDecimal.valueOf(sortedScores.get(medianIndex));
+
+        int firstQuartileIndex;
+        int thirdQuartileIndex;
+        BigDecimal firstQuartile;
+        BigDecimal thirdQuartile;
+        firstQuartileIndex = (medianIndex - 1) / 2;
+        thirdQuartileIndex = (scores.size() + medianIndex) / 2;
+        firstQuartile = BigDecimal.valueOf(sortedScores.get(firstQuartileIndex))
+                .add(BigDecimal.valueOf(sortedScores.get(firstQuartileIndex + 1)))
+                .divide(BigDecimal.valueOf(2), 1, RoundingMode.HALF_UP);
+        thirdQuartile = BigDecimal.valueOf(sortedScores.get(thirdQuartileIndex))
+                .add(BigDecimal.valueOf(sortedScores.get(thirdQuartileIndex + 1)))
+                .divide(BigDecimal.valueOf(2), 1, RoundingMode.HALF_UP);
+
+        result.add(firstQuartile);
+        result.add(median);
+        result.add(thirdQuartile);
+        return result;
+    }
+    /**
+     * Calculates an estimate of the square root of <code>s</code> within a given error threshold.
+     * @param s the number to calculate the square root of.
+     * @param threshold the threshold of acceptable error
+     * @return an estimate of the square root of <code>s</code>
+     */
+    private static BigDecimal babylonianSqrt(BigDecimal s, BigDecimal threshold) {
+        BigDecimal x = BigDecimal.valueOf(Math.sqrt(s.doubleValue())); // initial estimate
+
+        //loop while error is greater than threshold
+        while(s.subtract(x.pow(2)).divide(x.multiply(BigDecimal.valueOf(2)), 34, RoundingMode.HALF_EVEN).compareTo(threshold) > 1) {
+            x = x.add(x.add(s.divide(x))).divide(BigDecimal.valueOf(2), 34, RoundingMode.HALF_EVEN); // x_{n+1} = (1/2)(x_n + S/x_n)
+        }
+
+        return x;
+    }
+
+    /**
+     * Calculates an estimate of the square root of <code>s</code> within 10e-32.
+     * @param s the number to calculate the square root of.
+     * @return an estimate of the square root of <code>s</code>
+     */
+    private static BigDecimal babylonianSqrt(BigDecimal s) {
+        final BigDecimal THRESHOLD = new BigDecimal("10e-32");
+        return babylonianSqrt(s, THRESHOLD);
+    }
 }
