@@ -1,0 +1,17 @@
+SeleniumProject/SelProject/bin/
+
+SeleniumProject/.metadata/
+SeleniumProject/SelProject/.settings/
+
+AnswerKey.test.js
+
+App.test.js
+
+Exam.test.js
+
+ExamList.test.js
+
+Header.test.js
+Home.test.js
+
+Login.test.js
