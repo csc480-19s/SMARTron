@@ -3,7 +3,6 @@ import logo from '../assets/logo.svg';
 import '../css/App.css';
 import Exam from "./Exam";
 import ExamList from "./ExamList"
-import examJSON from "../JSON/Mainpage"
 import Popup from "reactjs-popup";
 import Header from "./Header";
 
@@ -36,19 +35,19 @@ class Home extends Component {
             this.setState(this.state)
             var ex1 = []
             var ex2 = []
-            examJSON.examList.forEach((exam) =>
-                this.state.exams.push(<Exam problem={false} loginName={this.props.location.state.loginName} list={[]}
-                               email={this.props.location.state.email} text={exam.examName} scanCode={exam.scanCode}
-                               history={this.props.history}/>)
-            );
-            this.setState(this.state)
+            const email = this.props.location.state.email
+            console.log(`http://localhost:3000/exam?em=${email}`)
+            fetch(`http://localhost:3000/exam?em=${email}`)
+                .then(response => response.json())
+                .then(result =>{
+                    result.examList.forEach((exam =>
+                            this.state.exams.push(<Exam problem={false} loginName={this.props.location.state.loginName} list={[]}
+                                                        email={this.props.location.state.email} text={exam.examName} scanCode={exam.scanCode}
+                                                        history={this.props.history}/>)
 
-            this.state.exams.forEach((exam) =>
-               ex2.push(<Exam problem={false} loginName={this.props.location.state.loginName} list={[]}
-                              email={this.props.location.state.email} text={exam.props.text} scanCode={exam.props.scanCode}
-                              history={this.props.history}/>)
-
-            );
+                    )); this.setState(this.state)
+                })
+            console.log(this.state.exams)
 
             this.state.exams = ex2
             this.state.exams2= ex2.reverse()
@@ -66,7 +65,6 @@ class Home extends Component {
         for (let i = 0; i < 5; i++) {
             id += poss.charAt(Math.floor(Math.random()*25))
         }
-        console.log(id)
         this.state.random = id
         this.setState(this.state)
     }
@@ -112,6 +110,9 @@ class Home extends Component {
 
                                     </p>
                                     <button onClick={() => {
+                                        fetch(`http://localhost:3000/exam?email=${this.props.location.state.email}&id=${this.state.random}&name=${this.state.newName}`,{
+                                            method: 'post'
+                                        })
                                         this.state.exams.push(<Exam problem={false} loginName={this.props.location.state.loginName} email={this.props.location.state.email} list={[]} text={this.state.newName} id={this.state.random} numQuest={this.state.newNum} history={this.props.history}/>); this.setState(this.state)
                                         close()
                                     }}>Ok
