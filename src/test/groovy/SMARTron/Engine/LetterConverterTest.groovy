@@ -1,15 +1,16 @@
-package SMARTron.Engine
+package Engine
 
+import GUIMiddleware.LetterConverter
 import spock.lang.Specification
 
-class LetterConverterTest extends Specification{
+class LetterConverterTest extends Specification {
 
-    LetterConverter lc = new LetterConverter();
+    LetterConverter lc = new LetterConverter()
 
     def "generate a letter grade"() {
         when:
-        List<Float> list = Arrays.asList(76.9, 86.8, 65.1, 57.0, 94.1)
-        List<String> returnedList = lc.genLetterGrade(list)
+        def list = Arrays.asList(76.9, 86.8, 65.1, 57.0, 94.1)
+        def returnedList = lc.genLetterGrade(list)
 
         then:
         returnedList.size() == 5
@@ -22,8 +23,8 @@ class LetterConverterTest extends Specification{
 
     def "fail with string input array"() {
         when:
-        List<String> list = Arrays.asList("76.9", "86.8", "65.1", "57.0", "94.1")
-        List<String> returnedList = lc.genLetterGrade(list)
+        def list = Arrays.asList("76.9", "86.8", "65.1", "57.0", "94.1")
+        def returnedList = lc.genLetterGrade(list)
 
         then:
         thrown Exception
@@ -32,8 +33,8 @@ class LetterConverterTest extends Specification{
     //BVA test for genLetterGrade
     def "in point for each grade boundary"() {
         when:
-        List<Float> list = Arrays.asList(62.9, 72.9, 82.9, 92.9)
-        List<String> returnedList = lc.genLetterGrade(list)
+        def list = Arrays.asList(62.9, 72.9, 82.9, 92.9)
+        def returnedList = lc.genLetterGrade(list)
 
         then:
         returnedList.size() == 4
@@ -46,8 +47,8 @@ class LetterConverterTest extends Specification{
     //BVA test for genLetterGrade
     def "on point for each grade boundary"() {
         when:
-        List<Float> list = Arrays.asList(63.0, 73.0, 83.0, 93.0)
-        List<String> returnedList = lc.genLetterGrade(list)
+        def list = Arrays.asList(63.0, 73.0, 83.0, 93.0)
+        def returnedList = lc.genLetterGrade(list)
 
         then:
         returnedList.size() == 4
@@ -60,8 +61,8 @@ class LetterConverterTest extends Specification{
     //BVA test for genLetterGrade
     def "off point for each grade boundary"() {
         when:
-        List<Float> list = Arrays.asList(63.1, 73.1, 83.1, 93.1)
-        List<String> returnedList = lc.genLetterGrade(list)
+        def list = Arrays.asList(63.1, 73.1, 83.1, 93.1)
+        def returnedList = lc.genLetterGrade(list)
 
         then:
         returnedList.size() == 4
@@ -74,7 +75,7 @@ class LetterConverterTest extends Specification{
     //testing setLetterBreakpoints
     def "set letter breakpoints"() {
         when:
-        String breakpoints = "95,85,75,65";
+        def breakpoints = "95,85,75,65";
         lc.setLetterBreakpoints(breakpoints)
 
         then:

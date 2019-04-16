@@ -1,7 +1,8 @@
-package SMARTron.Engine
+package Engine
 
-import spock.lang.*
-import SMARTron.Engine.*
+import Scanner.*
+import spock.lang.Ignore
+import spock.lang.Specification
 
 class ToolsTest extends Specification {
 

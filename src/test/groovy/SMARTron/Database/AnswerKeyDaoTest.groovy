@@ -1,7 +1,6 @@
-package SMARTron.Database
+package Database
 
-
-import SMARTron.Database.AnswerKeyDao
+import Database.AnswerKeyDao
 import spock.lang.Ignore
 import spock.lang.Specification
 

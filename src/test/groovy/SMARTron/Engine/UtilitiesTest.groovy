@@ -1,6 +1,6 @@
-package SMARTron.Engine
+package Engine
 
 import spock.lang.Specification
 
-class UtilitiesTest extends Specification{
+class UtilitiesTest extends Specification {
 }

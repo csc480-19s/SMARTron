@@ -1,6 +1,6 @@
-package SMARTron.Engine
+package Engine
 
 import spock.lang.Specification
 
-class StudentCreatorTest extends Specification{
+class StudentCreatorTest extends Specification {
 }

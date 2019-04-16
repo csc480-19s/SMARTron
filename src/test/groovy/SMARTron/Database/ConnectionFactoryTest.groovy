@@ -1,4 +1,4 @@
-package SMARTron.Database
+package Database
 
 import spock.lang.*
 

@@ -1,9 +1,9 @@
-package SMARTron.Engine
+package Engine
 
-import spock.lang.*
 
-class GraderTest extends Specification{
+import spock.lang.Specification
 
+class GraderTest extends Specification {
 
 
 }
