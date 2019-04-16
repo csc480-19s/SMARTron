@@ -1,2 +1,0 @@
-# SMARTron
-SCANtron, but smarter
