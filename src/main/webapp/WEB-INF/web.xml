@@ -1,46 +1,55 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<web-app version="3.0"
-         xmlns="http://java.sun.com/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
-    <servlet>
-        <servlet-name>Student</servlet-name>
-        <servlet-class>smartron.servlets.StudentServlet</servlet-class>
-    </servlet>
-    
-    <servlet-mapping>
-        <servlet-name>Student</servlet-name>
-        <url-pattern>/students</url-pattern>
-    </servlet-mapping>
+	<servlet>
+		<servlet-name>Student</servlet-name>
+		<servlet-class>smartron.servlets.StudentServlet</servlet-class>
+	</servlet>
 
-    <servlet>
-        <servlet-name>Exam</servlet-name>
-        <servlet-class>smartron.servlets.ExamServlet</servlet-class>
-    </servlet>
+	<servlet-mapping>
+		<servlet-name>Student</servlet-name>
+		<url-pattern>/students</url-pattern>
+	</servlet-mapping>
 
-    <servlet-mapping>
-        <servlet-name>Exam</servlet-name>
-        <url-pattern>/exam</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>Question</servlet-name>
-        <servlet-class>smartron.servlets.QuestionServlet</servlet-class>
-    </servlet>
+	<servlet>
+		<servlet-name>Exam</servlet-name>
+		<servlet-class>smartron.servlets.ExamServlet</servlet-class>
+	</servlet>
 
-    <servlet-mapping>
-        <servlet-name>Question</servlet-name>
-        <url-pattern>/questions</url-pattern>
-    </servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Exam</servlet-name>
+		<url-pattern>/exam</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Question</servlet-name>
+		<servlet-class>smartron.servlets.QuestionServlet</servlet-class>
+	</servlet>
 
-    <servlet>
-        <servlet-name>Statistic</servlet-name>
-        <servlet-class>smartron.servlets.StatisticServlet</servlet-class>
-    </servlet>
+	<servlet-mapping>
+		<servlet-name>Question</servlet-name>
+		<url-pattern>/questions</url-pattern>
+	</servlet-mapping>
 
-    <servlet-mapping>
-        <servlet-name>Statistic</servlet-name>
-        <url-pattern>/statistics</url-pattern>
-    </servlet-mapping>
+	<servlet>
+		<servlet-name>Statistic</servlet-name>
+		<servlet-class>smartron.servlets.StatisticServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Statistic</servlet-name>
+		<url-pattern>/statistics</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Answerkey</servlet-name>
+		<servlet-class>smartron.servlets.AnswerkeyServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Answerkey</servlet-name>
+		<url-pattern>/answerkey</url-pattern>
+	</servlet-mapping>
 
 </web-app>
