@@ -525,8 +525,8 @@ public class Stats {
         BigDecimal x = BigDecimal.valueOf(Math.sqrt(s.doubleValue())); // initial estimate
 
         //loop while error is greater than threshold
-        while(s.subtract(x.pow(2)).divide(x.multiply(BigDecimal.valueOf(2)), 34, RoundingMode.HALF_EVEN).compareTo(threshold) > 1) {
-            x = x.add(x.add(s.divide(x))).divide(BigDecimal.valueOf(2), 34, RoundingMode.HALF_EVEN); // x_{n+1} = (1/2)(x_n + S/x_n)
+        while(s.subtract(x.pow(2)).divide(x.multiply(BigDecimal.valueOf(2)), threshold.scale(), RoundingMode.HALF_EVEN).compareTo(threshold) > 1) {
+            x = x.add(x.add(s.divide(x))).divide(BigDecimal.valueOf(2), threshold.scale(), RoundingMode.HALF_EVEN); // x_{n+1} = (1/2)(x_n + S/x_n)
         }
 
         return x;
