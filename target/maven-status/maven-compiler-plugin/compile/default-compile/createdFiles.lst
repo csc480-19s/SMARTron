@@ -1,7 +1,9 @@
 Scanner/Tools.class
 GUIMiddleware/Stats.class
 Database/ConnectionFactory.class
+smartron/entities/QuestionResponse.class
 GUIMiddleware/Student.class
+smartron/servlets/StatisticServlet.class
 GUIMiddleware/Question.class
 GUIMiddleware/Main.class
 GUIMiddleware/Grader.class

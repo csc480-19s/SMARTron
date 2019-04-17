@@ -1,17 +1,16 @@
 package smartron.servlets;
 
-import com.google.gson.Gson;
-import smartron.entities.Student;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentServlet extends HttpServlet {
-
+public class StatisticServlet extends HttpServlet {
     private Gson gson = new Gson();
 
     @Override
@@ -19,19 +18,17 @@ public class StudentServlet extends HttpServlet {
             HttpServletRequest request,
             HttpServletResponse response) throws IOException {
 
-        List<Student> students = new ArrayList<>();
+       List<String> lst = new ArrayList<>();
 
-        students.add(new Student("Sushmita Banerjee", "A", 100, 100));
-        students.add(new Student("Anshuman Banerjee", "A", 100, 100));
-        students.add(new Student("Nathan O'Leary", "A", 100, 100));
-        students.add(new Student("Robert Sgroi", "A", 100, 100));
+       lst.add("Hello");
+       lst.add("World");
 
-        String studentJsonString = this.gson.toJson(students);
+        String questionJsonString = this.gson.toJson(lst);
 
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        out.print(studentJsonString);
+        out.print(questionJsonString);
         out.flush();
     }
 
@@ -42,4 +39,3 @@ public class StudentServlet extends HttpServlet {
         doGet(request, response);
     }
 }
-
