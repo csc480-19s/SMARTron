@@ -21,9 +21,9 @@ const styles = theme => ({
 });
 
 let id = 0;
-function createData(student, grade, total_points, percent) {
+function createData(student, grade, percent) {
     id += 1;
-    return { student, grade, total_points, percent };
+    return { student, grade, percent };
 }
 
 const rows = [];
@@ -36,8 +36,8 @@ const rows = [];
 fetch('http://localhost:3000/students')
     .then((response) => response.json())
     .then((responseJson) => {
-        responseJson.forEach((student) => {
-            rows.push(createData(student.name, student.grade, student.points, student.percent));
+        responseJson.students.forEach((student) => {
+            rows.push(createData(student.name, student.grade, student.percent));
         })
     })
     .catch((error) => {
@@ -55,7 +55,6 @@ function StudentTable(props) {
                     <TableRow>
                         <TableCell >Student</TableCell>
                         <TableCell align="center">Grade</TableCell>
-                        <TableCell align="center">Total Points</TableCell>
                         <TableCell align="center">Percent %</TableCell>
                     </TableRow>
                 </TableHead>
@@ -66,7 +65,6 @@ function StudentTable(props) {
                                 {row.student}
                             </TableCell>
                             <TableCell align="center">{row.grade}</TableCell>
-                            <TableCell align="center">{row.total_points}</TableCell>
                             <TableCell align="center">{row.percent}</TableCell>
                         </TableRow>
                     ))}

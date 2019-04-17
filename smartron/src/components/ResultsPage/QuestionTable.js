@@ -20,18 +20,31 @@ const styles = theme => ({
 });
 
 let id = 0;
-function createData(number, response, percent) {
+function createData(questionNumber, name, value) {
     id += 1;
-    return { number, response, percent };
+    return { questionNumber, name, value };
 }
 
 const rows = [];
 
-questionJSON.questionlist.forEach((question) => {
-    question.data.forEach((q) => {
-        rows.push(createData(question.questionNumber, q.name, q.value));
+// questionJSON.questionlist.forEach((question) => {
+//     question.data.forEach((q) => {
+//         rows.push(createData(question.questionNumber, q.name, q.value));
+//     });
+// });
+
+fetch('http://localhost:3000/questions')
+    .then((res) => res.json())
+    .then((responseJson) => {
+        responseJson.questionsList.forEach((question) => {
+            question.data.forEach((q) => {
+                rows.push(createData(question.questionNumber, q.name, q.value));
+            });
+        });
+    })
+    .catch((error) => {
+        console.error(error);
     });
-});
 
 function QuestionTable(props) {
     const { classes } = props;
@@ -42,9 +55,6 @@ function QuestionTable(props) {
                 <TableHead>
                     <TableRow>
                         <TableCell >Question Number</TableCell>
-                        <TableCell >1</TableCell>
-                    </TableRow>
-                    <TableRow>
                         <TableCell >Response</TableCell>
                         <TableCell >Frequency</TableCell>
                     </TableRow>
@@ -53,9 +63,10 @@ function QuestionTable(props) {
                     {rows.map(row => (
                         <TableRow key={row.id}>
                             <TableCell component="th" scope="row">
-                                {row.response}
+                                {row.questionNumber}
                             </TableCell>
-                            <TableCell align="center">{row.percent}</TableCell>
+                            <TableCell align="center">{row.name}</TableCell>
+                            <TableCell align="center">{row.value}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
