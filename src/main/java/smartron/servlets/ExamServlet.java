@@ -1,6 +1,7 @@
 package smartron.servlets;
 
 import Database.GenericDao;
+import GUIMiddleware.JSONBuilder;
 import com.google.gson.Gson;
 import smartron.entities.Exam;
 import smartron.entities.Professor;
@@ -21,8 +22,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+
 public class ExamServlet extends HttpServlet {
      private Gson gson = new Gson();
+
+
 
     @Override
     protected void doGet(
