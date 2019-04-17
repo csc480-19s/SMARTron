@@ -6,12 +6,29 @@
 package GUIMiddleware;
 
 public class PseudoStudent {
-    String[][] multi;
-    String[] array;
+
+    private String[][] multi;
+    private String[] array;
     
     public PseudoStudent(String[][] a, String[] s){
         this.multi = a;
         this.array = s;
+    }
+
+    public String[][] getMulti() {
+        return multi;
+    }
+
+    public void setMulti(String[][] multi) {
+        this.multi = multi;
+    }
+
+    public String[] getArray() {
+        return array;
+    }
+
+    public void setArray(String[] array) {
+        this.array = array;
     }
     
 }
