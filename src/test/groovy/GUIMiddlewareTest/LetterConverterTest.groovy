@@ -72,16 +72,52 @@ class LetterConverterTest extends Specification {
         returnedList.get(3) == "A"
     }
 
-    //testing setLetterBreakpoints
+    //testing letterDistribution
     def "set letter breakpoints"() {
         when:
         def breakpoints = "95,85,75,65";
-        lc.setLetterBreakpoints(breakpoints)
+        lc.letterDistribution(breakpoints)
 
         then:
         lc.getAboveForA() == 95.0
         lc.getAboveForB() == 85.0
         lc.getAboveForC() == 75.0
         lc.getAboveForD() == 65.0
+    }
+
+    def "only 3 breakpoints"() {
+        when:
+        def breakpoints = "95,85,75";
+        lc.letterDistribution(breakpoints)
+
+        then:
+        thrown Exception
+        lc.getAboveForA() == 95.0
+        lc.getAboveForB() == 85.0
+        lc.getAboveForC() == 75.0
+        //default for D is 63
+        lc.getAboveForD() == 63.0
+    }
+
+    def "5 breakpoints"() {
+        when:
+        def breakpoints = "95,85,75,65,55";
+        lc.letterDistribution(breakpoints)
+
+        then:
+        lc.getAboveForA() == 95.0
+        lc.getAboveForB() == 85.0
+        lc.getAboveForC() == 75.0
+        lc.getAboveForD() == 65.0
+        //it will just ignore all after the 4th
+    }
+
+    def "breakpoints aren't a string"() {
+        when:
+        def breakpoints = Arrays.asList(76.9, 86.8, 65.1, 57.0, 94.1);
+        lc.letterDistribution(breakpoints)
+
+        then:
+        thrown Exception
     }
 }

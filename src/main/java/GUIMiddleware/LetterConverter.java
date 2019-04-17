@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class LetterConverter {
 
+
     private float aboveForA = 93;
     private float aboveForB = 83;
     private float aboveForC = 73;
@@ -24,11 +25,11 @@ public class LetterConverter {
 
             if (i >= aboveForA && i <= 100.0) {
                 returnLetterGrades.add("A");
-            } else if (aboveForB >= i) {
+            } else if (i >= aboveForB) {
                 returnLetterGrades.add("B");
-            } else if (aboveForC >= i) {
+            } else if (i >= aboveForC) {
                 returnLetterGrades.add("C");
-            } else if (aboveForD >= i) {
+            } else if (i >= aboveForD) {
                 returnLetterGrades.add("D");
             } else {
                 returnLetterGrades.add("F");;
@@ -52,4 +53,21 @@ public class LetterConverter {
 
     //This method accepts a String "distribution", and parces through it.
     //It will then assign the class variables to the Integer.parseInt() of that section of the parced String
+
+
+    public float getAboveForA() {
+        return aboveForA;
+    }
+
+    public float getAboveForB() {
+        return aboveForB;
+    }
+
+    public float getAboveForC() {
+        return aboveForC;
+    }
+
+    public float getAboveForD() {
+        return aboveForD;
+    }
 }
