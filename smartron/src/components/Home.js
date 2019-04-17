@@ -107,6 +107,7 @@ class Home extends Component {
 
                                         2. Only enter 25 SCANTRONS in the scanner at a time <br/>
                                         3. Place ANSWER KEY scantron on the TOP of each pile of answer sheets <br/>
+                                        4. Students MUST fill out the ID FIELD on their Scantron Sheets
 
                                     </p>
                                     <button onClick={() => {
