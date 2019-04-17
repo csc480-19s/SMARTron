@@ -1,8 +1,8 @@
 Scanner/Tools.class
-GUIMiddleware/Student.class
 GUIMiddleware/Stats.class
+Database/ConnectionFactory.class
+GUIMiddleware/Student.class
 GUIMiddleware/Question.class
 GUIMiddleware/Main.class
-Database/ConnectionFactory.class
 GUIMiddleware/Grader.class
 Scanner/Student.class
