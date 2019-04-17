@@ -33,4 +33,14 @@
         <url-pattern>/questions</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>Statistic</servlet-name>
+        <servlet-class>smartron.servlets.StatisticServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Statistic</servlet-name>
+        <url-pattern>/statistics</url-pattern>
+    </servlet-mapping>
+
 </web-app>
