@@ -22,7 +22,7 @@ constructor(){
 }
 
 componentDidMount(){
-  fetch('http://pi.cs.oswego.edu:13126/SMARTron/smartron/answerkey')
+  fetch('http://pi.cs.oswego.edu:13126/answerkey')
   .then(response => response.json())
   .then(result => {
     const keys = result.map(item => {
@@ -95,7 +95,7 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("POST", "http://localhost:8080/SMARTron/smartron/updateAnswerKey");
+xhr.open("POST", "http://pi.cs.oswego.edu:13126/updateAnswerKey");
 xhr.setRequestHeader("Content-Type", "application/json");
 xhr.send(data);
 }
