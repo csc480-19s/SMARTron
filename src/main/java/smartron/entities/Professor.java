@@ -30,6 +30,9 @@ public class Professor {
     public void setEmail(String email) {
         this.email = email;
     }
+    public void addExam(Exam e){
+        examList.add(e);
+    }
 
     private List<Exam> examList;
 
