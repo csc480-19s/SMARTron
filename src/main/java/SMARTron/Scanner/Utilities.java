@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 //packages
 public class Utilities {
@@ -199,11 +202,12 @@ public class Utilities {
     }
 
     /**
-     * Runs Python Script which analyzes Scantron sheets. Returns MultiDimensional
-     * List of exams of students of lists integer Strings of the selected bubbles.
-     * The most outer List is of different tests
-     * The next inner list is of each individual student exam
-     * the next list is of lists of each section of the scantron
+     * Runs Python Script which analyzes Scantron sheets. Returns
+     * MultiDimensional List of exams of students of lists integer Strings of
+     * the selected bubbles. The most outer List is of different tests The next
+     * inner list is of each individual student exam the next list is of lists
+     * of each section of the scantron
+     *
      * @return the list of lists of lists of String lists
      */
     public List<List<List<List<String>>>> runScanner() {
@@ -297,17 +301,13 @@ public class Utilities {
     }
 
     /**
-     * Test the runScanner() method
+     * used to test various utilities methods
+     *
      * @param args Command line args
      */
     public static void main(String[] args) {
         Utilities u = new Utilities();
-        List<List<List<List<String>>>> temp = u.runScanner();
-        System.out.println(temp.get(0).get(5));
-        String[][] answers = u.multi(temp.get(0).get(0).get(5));
-        for (int i = 0; i < answers.length; i++) {
-            System.out.println(Arrays.toString(answers[i]));
-        }
+        u.deleteAllFiles();
     }
 
     //Takes MultiDimensional Array initiated by runGrader and puts it into a single String of Answers.
@@ -330,8 +330,9 @@ public class Utilities {
     }
 
     /**
-     * Converts the raw answers output of runScanner() into a 2D array based on the
-     * layout of the Scantron sheet
+     * Converts the raw answers output of runScanner() into a 2D array based on
+     * the layout of the Scantron sheet
+     *
      * @param a The raw answers list
      * @return Ordered 2D array
      */
@@ -391,5 +392,90 @@ public class Utilities {
             }
         }
         return array;
+    }
+
+    /**
+     * Creates a CSV from lists of the student ids and their associated grades
+     * in the folder where the send email script will be
+     *
+     * @param name 5 character code of exam
+     * @param ids student ids
+     * @param grades student grades
+     * @return the file path to the csv
+     * @throws IOException
+     */
+    public String gradeCSV(String name, List<String> ids, List<Float> grades) throws IOException {
+        File file = new File("src/main/python/" + name + ".csv");
+        PrintWriter pwriter = new PrintWriter(file);
+        pwriter.write("Student ID's,Grades\n");
+        for (int i = 0; i < ids.size(); i++) {
+            pwriter.write(ids.get(i) + "," + grades.get(i) + "\n");
+        }
+        pwriter.close();
+        return "src/main/python/" + name + ".csv";
+    }
+
+    /**
+     * Executes sendEmailHandler to send csv file
+     *
+     * @param address
+     * @param csvPath
+     * @throws IOException
+     */
+    public void sendEmailProcessed(String address, String csvPath) throws IOException {
+        String command = "python src/main/python/sendEmailHandler.py -a " + address + " -c " + csvPath;
+        Process p = Runtime.getRuntime().exec(command);
+        BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        while ((line = input.readLine()) != null) {
+            System.out.println(line);
+        }
+        input.close();
+        BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+        while ((line = error.readLine()) != null) {
+            System.out.println(line);
+        }
+        error.close();
+    }
+
+    /**
+     * Executes sendEmailHandler to notify users that scans were received and
+     * are being processed
+     *
+     * @param address
+     * @throws IOException
+     */
+    public void sendEmailReceived(String address) throws IOException {
+        String command = "python src/main/python/sendEmailHandler.py -a " + address;
+        Process p = Runtime.getRuntime().exec(command);
+        BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        while ((line = input.readLine()) != null) {
+            System.out.println(line);
+        }
+        input.close();
+        BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+        while ((line = error.readLine()) != null) {
+            System.out.println(line);
+        }
+        error.close();
+    }
+    
+    /**
+     * Deletes all jpg and pdf files from project directory
+     */
+    public void deleteAllFiles() {
+        String jpgs = "images/jpgs/";
+        String pdfs = "images/pdfTest/";
+        String[] files = new File(jpgs).list();
+        for (int i = 0; i < files.length; i++) {
+            File f = new File(jpgs + files[i]);
+            f.delete();
+        }
+        files = new File(pdfs).list();
+        for (int i = 0; i < files.length; i++) {
+            File f = new File(pdfs + files[i]);
+            f.delete();
+        }
     }
 }
