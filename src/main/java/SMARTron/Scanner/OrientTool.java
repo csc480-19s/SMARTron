@@ -168,7 +168,7 @@ public class OrientTool {
 
 
 
-                    File frontName = new File(file + "_" + x + "_front" + ".jpg");
+                    File frontName = new File(file + "-" + x + "-front" + ".jpg");
 
                     testImage.renameTo(frontName);
 
@@ -178,7 +178,7 @@ public class OrientTool {
 
                 } else {
 
-                    File backName = new File(file + "_" + y + "_back" + ".jpg");
+                    File backName = new File(file + "-" + y + "-back" + ".jpg");
 
                     testImage.renameTo(backName);
 

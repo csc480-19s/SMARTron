@@ -66,7 +66,7 @@ public class ExamManager {
         this.examGradeIntegerConverter();
         this.getExamID();
         this.assignStudentGrades();
-        this.getStats();
+        //this.getStats();
     }
 
     //Rns most of the important student processing methods in one go
@@ -114,5 +114,9 @@ public class ExamManager {
     
     public List<Student> getStudents() {
         return studentExams;
+    }
+    
+    public Student getKey() {
+        return key;
     }
 }
