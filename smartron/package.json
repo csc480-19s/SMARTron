@@ -2,7 +2,7 @@
   "name": "smartron",
   "version": "0.1.0",
   "private": true,
-  "homepage": "localhost:3000/",
+  "homepage": "pi.cs.oswego.edu:13126/",
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "history": "^4.9.0",

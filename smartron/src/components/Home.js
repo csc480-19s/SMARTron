@@ -36,8 +36,8 @@ class Home extends Component {
             var ex1 = []
             var ex2 = []
             const email = this.props.location.state.email
-            console.log(`http://localhost:3000/exam?em=${email}`)
-            fetch(`http://localhost:3000/exam?em=${email}`)
+            console.log(`pi.cs.oswego.edu:13126/exam?em=${email}`)
+            fetch(`http://pi.cs.oswego.edu:13126/exam?em=${email}`)
                 .then(response => response.json())
                 .then(result =>{
                     result.examList.forEach((exam =>
@@ -110,7 +110,7 @@ class Home extends Component {
 
                                     </p>
                                     <button onClick={() => {
-                                        fetch(`http://localhost:3000/exam?email=${this.props.location.state.email}&id=${this.state.random}&name=${this.state.newName}`,{
+                                        fetch(`http://pi.cs.oswego.edu:13126/exam?email=${this.props.location.state.email}&id=${this.state.random}&name=${this.state.newName}`,{
                                             method: 'post'
                                         })
                                         this.state.exams.push(<Exam problem={false} loginName={this.props.location.state.loginName} email={this.props.location.state.email} list={[]} text={this.state.newName} id={this.state.random} numQuest={this.state.newNum} history={this.props.history}/>); this.setState(this.state)
