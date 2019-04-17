@@ -1,5 +1,6 @@
 package smartron.servlets;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import Database.AnswerKeyDao;
 import smartron.entities.Answerkey;
@@ -31,14 +33,15 @@ public class AnswerkeyServlet extends HttpServlet {
 		Answerkey anserKey;
 		try {
 			int idCounter = 1;
-			
-			// to do check updated answerkey
-			obj = akDao.selectAnswerKey(examId, instId);
-			
-/*			if (obj == null || obj.isEmpty()) {
+
+			obj = akDao.selectUpdatedAnswerKey(examId, instId);
+			if (obj == null || obj.isEmpty()) {
 				obj = akDao.selectAnswerKey(examId, instId);
 			}
-*/			String[] answerKeyStr = obj.toString().split(",");
+			String cleanString = obj.toString();
+			cleanString = cleanString.replaceAll("\\[", "");
+			cleanString = cleanString.replaceAll("\\]", "");
+			String[] answerKeyStr = cleanString.split(",");
 			buildKeys();
 			for (String key : answerKeyStr) {
 				System.out.println(key);
@@ -62,16 +65,24 @@ public class AnswerkeyServlet extends HttpServlet {
 		out.flush();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String examId = request.getParameter("examId");
-		// get answerkey object from post request here
-		List<Answerkey> k = new ArrayList<Answerkey>();
+		System.out.println(examId);
+		BufferedReader bufferAnswerkey = request.getReader();
+		String jsonString = null;
+		String answerKey = "";
+		while ((jsonString = bufferAnswerkey.readLine()) != null) {
+			answerKey += jsonString;
+		}
+		System.out.println(answerKey);
+		List<Answerkey> k = gson.fromJson(answerKey, new TypeToken<List<Answerkey>>() {
+		}.getType());
 		try {
 			buildKeys();
 			StringBuffer updatedAnswerKey = new StringBuffer("[");
 			for (Answerkey akey : k) {
 				for (String key : akey.getAnswerKey()) {
+					System.out.println(key);
 					String keyCode = getKey(optionAnswerKey, key);
 					updatedAnswerKey.append(keyCode);
 					updatedAnswerKey.append(",");
