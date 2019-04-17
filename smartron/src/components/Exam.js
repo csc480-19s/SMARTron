@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import logo from '../assets/logo.svg';
 import alert from '../assets/alert.png';
 import '../css/exam.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 class Exam extends Component{
     constructor(props) {
         super()
@@ -32,7 +34,7 @@ class Exam extends Component{
             <div>
                 <div className={"exam"}>
                     {this.state.title1}
-                    <a className={"editName"}><img src={logo} height={25} /></a>
+                    <a className={"editName"}><FontAwesomeIcon icon={faPencilAlt}/></a>
                     <button onClick={this.navResults}>View Results</button>
                     <button onClick={this.navAnswerKey}>Edit Answer Key</button>
 

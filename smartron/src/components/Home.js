@@ -104,7 +104,6 @@ class Home extends Component {
 
                                         1. Enter this code in the NAME FIELD of the ANSWER KEY scantron <br/>
 
-
                                         2. Only enter 25 SCANTRONS in the scanner at a time <br/>
                                         3. Place ANSWER KEY scantron on the TOP of each pile of answer sheets <br/>
                                         4. Students MUST fill out the ID FIELD on their Scantron Sheets
@@ -126,7 +125,7 @@ class Home extends Component {
                 </div>
                 {this.state.swap ? <ExamList loginName={this.props.location.state.loginName} email={this.props.location.state.email} exams={this.state.exams} history={this.props.history}>{this.state.exams}</ExamList> : <ExamList loginName={this.props.location.state.loginName} email={this.props.location.state.email} exams={this.state.exams} history={this.props.history}>{this.state.exams2}</ExamList>}
 
-                <Header email={this.props.location.state.email}/>
+                <Header history={this.props.history} email={this.props.location.state.email}/>
             </div>
         );
     }
