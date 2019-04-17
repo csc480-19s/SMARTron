@@ -136,7 +136,7 @@
                 <configuration>
                     <testSources>
                         <testSource>
-                            <directory>${project.basedir}/src/test/java</directory>
+                            <directory>${project.basedir}/src/test/</directory>
                             <includes>
                                 <include>groovy/**/*.groovy</include>
                             </includes>
