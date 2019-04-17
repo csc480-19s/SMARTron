@@ -9,7 +9,7 @@ class LetterConverterTest extends Specification {
 
     def "generate a letter grade"() {
         when:
-        def list = Arrays.asList(76.9, 86.8, 65.1, 57.0, 94.1)
+        def list = Arrays.asList((float)76.9, (float)86.8, (float)65.1, (float)57.0, (float)94.1)
         def returnedList = lc.genLetterGrade(list)
 
         then:
