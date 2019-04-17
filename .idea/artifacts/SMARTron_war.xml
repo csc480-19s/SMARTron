@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="SMARTron:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="SMARTron-1.0.war">
-      <element id="artifact" artifact-name="SMARTron:war exploded" />
-    </root>
-  </artifact>
-</component>
