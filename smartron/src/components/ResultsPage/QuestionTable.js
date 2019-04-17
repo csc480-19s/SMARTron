@@ -33,7 +33,7 @@ const rows = [];
 //     });
 // });
 
-fetch('http://localhost:3000/questions')
+fetch('http://pi.cs.oswego.edu:13126/questions')
     .then((res) => res.json())
     .then((responseJson) => {
         responseJson.questionsList.forEach((question) => {

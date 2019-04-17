@@ -33,7 +33,7 @@ const rows = [];
 // });
 
 
-fetch('http://localhost:3000/students')
+fetch('http://pi.cs.oswego.edu:13126/students')
     .then((response) => response.json())
     .then((responseJson) => {
         responseJson.students.forEach((student) => {

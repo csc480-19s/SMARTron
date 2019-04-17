@@ -22,7 +22,7 @@ constructor(){
 }
 
 componentDidMount(){
-  fetch('http://localhost:8080/SMARTron/smartron/answerkey')
+  fetch('http://pi.cs.oswego.edu:13126/SMARTron/smartron/answerkey')
   .then(response => response.json())
   .then(result => {
     const keys = result.map(item => {
