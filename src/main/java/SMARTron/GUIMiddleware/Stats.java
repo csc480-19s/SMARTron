@@ -472,6 +472,9 @@ public class Stats {
      * @return list of [Q1, median, Q3]
      */
     static List<BigDecimal> quartiles(List<Integer> scores) {
+        if (scores == null) return null;
+        if (scores.size() == 0) return new ArrayList<BigDecimal>();
+
         if(scores.size() == 1) {
             BigDecimal score = BigDecimal.valueOf(scores.get(0));
             List<BigDecimal> result = new ArrayList<>();
