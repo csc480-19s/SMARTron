@@ -1,6 +1,6 @@
 package GUIMiddleware;
-import org.json.simple.JSONObject;
 
+import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -125,7 +125,7 @@ public class Student {
     private void findId() {
         String temp = "";
 
-        for (int i = 26; i < 37; i++) {
+        for (int i = 27; i < 37; i++) {
             if (studentData.get(i) != null && !studentData.get(i).equals("error") && !studentData.get(i).equals("-1")) {
                 temp = temp + studentData.get(i);
             } else {
@@ -138,7 +138,7 @@ public class Student {
     private void findCode() {
         String temp = "";
 
-        for (int i = 36; i < 43; i++) {
+        for (int i = 37; i < 43; i++) {
             if (studentData.get(i) != null && !studentData.get(i).equals("error") && !studentData.get(i).equals("-1")) {
                 temp = temp + studentData.get(i);
             } else {

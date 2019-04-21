@@ -1,21 +1,31 @@
 package smartron.entities;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Question {
-    private String examID;
-    private int id;
-    private String correct;
-    private HashMap<String, Integer> responseFrequencies;
-    private HashMap<String, Integer> responsePercentages;
 
-    public Question(String examID, int id, String correct, HashMap<String,
-            Integer> responseFrequencies, HashMap<String,Integer> responsePercentages){
+    private String examName;
+    private String examID;
+    private int number;
+    private String correct;
+    private ArrayList<QuestionResponse> data;
+
+    public Question(String examName, String examID, int number, String correct, ArrayList<QuestionResponse> data){
+
+        this.examName = examName;
         this.examID = examID;
-        this.id = id;
+        this.number = number;
         this.correct = correct;
-        this.responseFrequencies = responseFrequencies;
-        this.responsePercentages = responsePercentages;
+        this.data = data;
+    }
+
+    public String getExamName(){
+        return  examName;
+    }
+
+    public void setExamName(String examID){
+        this.examName = examName;
     }
 
     public String getExamID(){
@@ -26,12 +36,12 @@ public class Question {
         this.examID = examID;
     }
 
-    public int getID(){
-        return  id;
+    public int getNumber(){
+        return number;
     }
 
-    public void setID(int id){
-        this.id = id;
+    public void setNumber(int id){
+        this.number = number;
     }
 
     public String getCorrect(){
@@ -42,19 +52,8 @@ public class Question {
         this.correct = correct;
     }
 
-    public HashMap getResponseFrequencies(){
-        return responseFrequencies;
-    }
+    public ArrayList getData(){ return data; }
 
-    public void setResponseFrequencies(HashMap<String, Integer> responseFrequencies){
-        this.responseFrequencies = responseFrequencies;
-    }
+    public void setData(ArrayList data){ this.data = data; }
 
-    public HashMap getResponseFPercentages(){
-        return responsePercentages;
-    }
-
-    public void setResponsePercentages(HashMap<String, Integer> responsePercentages){
-        this.responsePercentages = responsePercentages;
-    }
 }

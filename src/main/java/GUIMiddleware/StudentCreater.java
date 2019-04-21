@@ -1,4 +1,5 @@
 package GUIMiddleware;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,10 +10,15 @@ public class StudentCreater {
         List<String> answerTemp = new ArrayList<>();
 
         int pos = 0;
-        for(int i = 0; i < 5; i++) {
+
+        for(int i = 0; i < answers[0].length; i++) {
             for(int j = 0; j < 10; j++) {
-                answerTemp.add(pos++, answers[j][i]);
-                answerTemp.add(answerTemp.size(), answers[j+10][i]);
+                if (j < answers.length) {
+                    answerTemp.add(pos++, answers[j][i]);
+                }
+                if (j+10 < answers.length) {
+                    answerTemp.add(answerTemp.size(), answers[j+10][i]);
+                }
             }
         }
 

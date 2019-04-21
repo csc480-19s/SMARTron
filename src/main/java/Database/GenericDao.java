@@ -1,5 +1,6 @@
 package Database;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -75,6 +76,7 @@ public class GenericDao {
 	 * @throws Exception
 	 * @throws SQLException
 	 */
+
 	public List<String> select(String sql) throws Exception {
 		List<String> list = new ArrayList<String>();
 		try {
