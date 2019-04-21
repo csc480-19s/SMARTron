@@ -1,10 +1,10 @@
 package GUIMiddleware;
 
-import SMARTron.Database.AnswerKeyDao;
-import SMARTron.Database.CourseDao;
-import SMARTron.Database.ExamDao;
-import SMARTron.Database.GenericDao;
-import SMARTron.Database.InstructorDao;
+import Database.AnswerKeyDao;
+import Database.CourseDao;
+import Database.ExamDao;
+import Database.GenericDao;
+import Database.InstructorDao;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
