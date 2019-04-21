@@ -11,11 +11,18 @@
 package Scanner;
 
 
-import javax.imageio.ImageIO;
-import java.awt.*;
+
+import java.awt.Graphics2D;
+
 import java.awt.image.BufferedImage;
+
 import java.io.File;
+
 import java.io.IOException;
+import java.util.Arrays;
+
+import javax.imageio.ImageIO;
+
 
 
 /**
@@ -60,9 +67,10 @@ public class OrientTool {
 
             //Read directory to get all jpegs
 
-            //For loop for all scantron jpg files      
-
-            for (final File fileEntry : directory.listFiles()) {
+            //For loop for all scantron jpg files    
+            File[] arraytemp = directory.listFiles();
+            Arrays.parallelSort(arraytemp);
+            for (final File fileEntry : arraytemp) {
 
                 //Get the new image
 
@@ -159,10 +167,7 @@ public class OrientTool {
                 // Verify if the scan is a front or back and rename file accordingly
 
                 if (count1 > 10) {
-
-
-
-                    File frontName = new File(file + "_" + x + "_front" + ".jpg");
+                    File frontName = new File(file + "-" + x + "-front" + ".jpg");
 
                     testImage.renameTo(frontName);
 
@@ -172,7 +177,7 @@ public class OrientTool {
 
                 } else {
 
-                    File backName = new File(file + "_" + y + "_back" + ".jpg");
+                    File backName = new File(file + "-" + y + "-back" + ".jpg");
 
                     testImage.renameTo(backName);
 

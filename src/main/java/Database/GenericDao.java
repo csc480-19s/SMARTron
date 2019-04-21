@@ -1,5 +1,6 @@
 package Database;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -75,22 +76,21 @@ public class GenericDao {
 	 * @throws Exception
 	 * @throws SQLException
 	 */
-	public List<String> selectFirst(String sql) throws Exception {
+
+	public List<String> select(String sql) throws Exception {
 		List<String> list = new ArrayList<String>();
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				list.add(rs.getString(1) + rs.getString(2) + "," + rs.getString(3) + "," + rs.getString(4) + "," + rs.getString(5) +"," + rs.getString(6) + "," +rs.getString(7)+ "," + rs.getString(8).substring(1,rs.getString(8).length()-1));
+				list.add(rs.getString(1));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new Exception("Could not execute the following sql statement: " + sql);
 		}
-
 		return list;
-
 	}
 
 	/**

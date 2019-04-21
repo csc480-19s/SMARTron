@@ -6,27 +6,31 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.tools.imageio.ImageIOUtil;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+
 import java.awt.image.BufferedImage;
+import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 //packages
 public class Utilities {
 
     public void RetrieveEmails() throws IOException {
 
-        String pdfFilename;
         String line;
-        String command = "python src/main/python/imapConnect.py";
+        String command = "python3 src/main/python/imapConnect.py";
         //^^Alter this script based on server directories
         try {
             Process p = Runtime.getRuntime().exec(command);
@@ -51,6 +55,7 @@ public class Utilities {
 
         File file2 = new File("images/");
         String[] arraytemp = file2.list();
+        Arrays.parallelSort(arraytemp);
         for (int a = 0; a < arraytemp.length; a++) {
             System.out.println(arraytemp[a].substring(arraytemp[a].length() - 3, arraytemp[a].length()));
             int length = arraytemp[a].length();
@@ -62,10 +67,10 @@ public class Utilities {
     }
 
     public void pdf2jpeg() throws IOException { //png, jpg, pdf, tiff, pnp
-
         File file = new File("images/pdfTest/");
         int i = file.list().length;
         String[] array = file.list();
+        Arrays.parallelSort(array);
         for (int j = 0; j < array.length; j++) {
             String fileName = array[j];
             PDDocument document = PDDocument.load(new File("images/pdfTest/" + array[j]));
@@ -78,7 +83,8 @@ public class Utilities {
         }
     }
 
-    //Legacy version of orienting images no need to test
+
+    //Legacy version of orienting images no need to test (go to OrientTool)
     public void orient() {
         int width = 963;    //width of the image
         int height = 640;   //height of the image
@@ -185,8 +191,8 @@ public class Utilities {
 
     }
 
-    //leagacy version no need to test
-    public static BufferedImage rotateClockwise90(BufferedImage src) {
+    //legacy version no need to test (go to OrientTool)
+    public BufferedImage rotateClockwise90(BufferedImage src) {
         int width = src.getWidth();
         int height = src.getHeight();
 
@@ -200,47 +206,71 @@ public class Utilities {
         return dest;
     }
 
-    public List<List<List<String>>> runScanner() {            //Runs Python Script which analyzes a single Scantron. Returns MultiDimensional Array of Integers which are currently just the answers. No other Data.
+    /**
+     * Runs Python Script which analyzes Scantron sheets. Returns
+     * MultiDimensional List of exams of students of lists integer Strings of
+     * the selected bubbles. The most outer List is of different tests The next
+     * inner list is of each individual student exam the next list is of lists
+     * of each section of the scantron
+     *
+     * @return the list of lists of lists of String lists
+     */
+    public List<List<List<List<String>>>> runScanner() {
         File dir = new File("images/jpgs");
         String[] filesInDir = dir.list();
-        List<List<List<String>>> arr = new ArrayList<List<List<String>>>();
-        //String array[][] = new String[filesInDir.length][143];
-        //int i = 0;
+        Arrays.parallelSort(filesInDir);
+        List<List<List<List<String>>>> arr = new ArrayList<List<List<List<String>>>>();
+        List<String> examNames = new ArrayList<String>();
+        List<List<String>> examNumbers = new ArrayList<List<String>>();
         int count = 0;
         for (int j = 0; j < filesInDir.length; j++) {
-            if (filesInDir[j].contains("front")) {
-                arr.add(new ArrayList<List<String>>());
+            Scanner s = new Scanner(filesInDir[j]);
+            s.useDelimiter("-");
+            String name = s.next();
+            String number = s.next();
+            if (!examNames.contains(name)) {
+                examNames.add(name);
+                examNumbers.add(new ArrayList<String>());
+                arr.add(new ArrayList<List<List<String>>>());
+            }
+            int index = examNames.indexOf(name);
+            if (!examNumbers.get(index).contains(number)) {
+                arr.get(index).add(new ArrayList<List<String>>());
+                examNumbers.get(index).add(number);
+                count = examNumbers.get(index).indexOf(number);
                 for (int z = 0; z < 6; z++) {
-                    arr.get(count).add(new ArrayList<String>());
+                    arr.get(index).get(count).add(new ArrayList<String>());
                 }
-                String line;
-                String command = "python src/main/python/edgey.py -f images/jpgs/" + filesInDir[j]; //
+            } else {
+                count = examNumbers.get(index).indexOf(number);
+            }
+            String line;
+            String command = "python3 src/main/python/edgey.py -f images/jpgs/" + filesInDir[j];
+            if (filesInDir[j].contains("front")) {
                 try {
                     Process p = Runtime.getRuntime().exec(command);
                     BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                    int num = 0;                                //i < 143
+                    int num = 0;
                     while ((line = input.readLine()) != null) {
-                        //array[count][i] = line;
-                        //i++;
                         if (line.startsWith("n")) {
-                            arr.get(count).get(0).add(line.replace("n ", ""));
+                            arr.get(index).get(count).get(0).add(line.replace("n ", ""));
                         } else if (line.startsWith("g")) {
-                            arr.get(count).get(1).add(line.replace("g ", ""));
+                            arr.get(index).get(count).get(1).add(line.replace("g ", ""));
                         } else if (line.startsWith("e")) {
-                            arr.get(count).get(2).add(line.replace("e ", ""));
+                            arr.get(index).get(count).get(2).add(line.replace("e ", ""));
                         } else if (line.startsWith("m")) {
-                            arr.get(count).get(3).add(line.replace("m ", ""));
+                            arr.get(index).get(count).get(3).add(line.replace("m ", ""));
                         } else if (line.startsWith("d")) {
-                            arr.get(count).get(3).add(line.replace("d ", ""));
+                            arr.get(index).get(count).get(3).add(line.replace("d ", ""));
                         } else if (line.startsWith("i")) {
-                            if (num > 2 || arr.get(count).get(3).isEmpty()) {
-                                arr.get(count).get(4).add(line.replace("i ", ""));
+                            if (num > 2 || arr.get(index).get(count).get(3).isEmpty()) {
+                                arr.get(index).get(count).get(4).add(line.replace("i ", ""));
                             } else {
                                 num++;
-                                arr.get(count).get(3).add(line.replace("i ", ""));
+                                arr.get(index).get(count).get(3).add(line.replace("i ", ""));
                             }
                         } else {
-                            arr.get(count).get(5).add(line);
+                            arr.get(index).get(count).get(5).add(line);
                         }
                     }
                     input.close();
@@ -252,25 +282,42 @@ public class Utilities {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-                count++;
-                //i = 0;
+            } else if (filesInDir[j].contains("back")) {
+                try {
+                    Process p = Runtime.getRuntime().exec(command);
+                    arr.get(index).get(count).add(new ArrayList<String>());
+                    BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                    while ((line = input.readLine()) != null) {
+                        if (!line.startsWith("n") && !line.startsWith("g") && !line.startsWith("e") && !line.startsWith("m") && !line.startsWith("d") && !line.startsWith("i")) {
+                            arr.get(index).get(count).get(6).add(line);
+                        }
+                    }
+                    input.close();
+                    BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+                    while ((line = error.readLine()) != null) {
+                        System.out.println(line);
+                    }
+                    error.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         }
-        //return Arrays.copyOfRange(array, 0, count);
         return arr;
     }
 
+    /**
+     * used to test various utilities methods
+     *
+     * @param args Command line args
+     */
     public static void main(String[] args) {
         Utilities u = new Utilities();
-        List<List<List<String>>> temp = u.runScanner();
-        System.out.println(temp.get(0).get(5));
-        String[][] answers = u.multi(temp.get(0).get(5));
-        for (int i = 0; i < answers.length; i++) {
-            System.out.println(Arrays.toString(answers[i]));
-        }
+        u.deleteAllFiles();
     }
 
-    public String[] getAnswers(int[][] a) {  //Takes MultiDimensional Array initiated by runGrader and puts it into a single String of Answers.
+    //Takes MultiDimensional Array initiated by runGrader and puts it into a single String of Answers.
+    public String[] getAnswers(int[][] a) {
         int k = 0;
         for (int l = 0; l < a.length; l++) {
             for (int f = 0; f < a[l].length; f++) {
@@ -287,7 +334,15 @@ public class Utilities {
         }
         return studentAnswers;
     }
-    
+
+    /**
+     * Converts the raw answers output of runScanner() into a 2D array based on
+     * the layout of the Scantron sheet
+     *
+     * @param a The raw answers list
+     * @return Ordered 2D array
+     */
+
     public String[][] multi(List<String> a) {
         int maxR = 0, maxC = 0;
         String[] temp = new String[a.size()];
@@ -302,7 +357,8 @@ public class Utilities {
                 maxC = temp2;
             }
         }
-        String[][] array = new String[maxR+1][maxC+1];
+        String[][] array = new String[maxR + 1][maxC + 1];
+
         int f = 0, j = 0;
         for (int i = 0; i < temp.length; i++) {
             if (temp[i].contains("-") && temp[i].length() > 2) {
@@ -344,5 +400,90 @@ public class Utilities {
             }
         }
         return array;
+    }
+
+    /**
+     * Creates a CSV from lists of the student ids and their associated grades
+     * in the folder where the send email script will be
+     *
+     * @param name 5 character code of exam
+     * @param ids student ids
+     * @param grades student grades
+     * @return the file path to the csv
+     * @throws IOException
+     */
+    public String gradeCSV(String name, List<String> ids, List<Float> grades) throws IOException {
+        File file = new File("src/main/python/" + name + ".csv");
+        PrintWriter pwriter = new PrintWriter(file);
+        pwriter.write("Student ID's,Grades\n");
+        for (int i = 0; i < ids.size(); i++) {
+            pwriter.write(ids.get(i) + "," + grades.get(i) + "\n");
+        }
+        pwriter.close();
+        return "src/main/python/" + name + ".csv";
+    }
+
+    /**
+     * Executes sendEmailHandler to send csv file
+     *
+     * @param address
+     * @param csvPath
+     * @throws IOException
+     */
+    public void sendEmailProcessed(String address, String csvPath) throws IOException {
+        String command = "python3 src/main/python/sendEmailHandler.py -a " + address + " -c " + csvPath;
+        Process p = Runtime.getRuntime().exec(command);
+        BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        while ((line = input.readLine()) != null) {
+            System.out.println(line);
+        }
+        input.close();
+        BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+        while ((line = error.readLine()) != null) {
+            System.out.println(line);
+        }
+        error.close();
+    }
+
+    /**
+     * Executes sendEmailHandler to notify users that scans were received and
+     * are being processed
+     *
+     * @param address
+     * @throws IOException
+     */
+    public void sendEmailReceived(String address) throws IOException {
+        String command = "python3 src/main/python/sendEmailHandler.py -a " + address;
+        Process p = Runtime.getRuntime().exec(command);
+        BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        while ((line = input.readLine()) != null) {
+            System.out.println(line);
+        }
+        input.close();
+        BufferedReader error = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+        while ((line = error.readLine()) != null) {
+            System.out.println(line);
+        }
+        error.close();
+    }
+    
+    /**
+     * Deletes all jpg and pdf files from project directory
+     */
+    public void deleteAllFiles() {
+        String jpgs = "images/jpgs/";
+        String pdfs = "images/pdfTest/";
+        String[] files = new File(jpgs).list();
+        for (int i = 0; i < files.length; i++) {
+            File f = new File(jpgs + files[i]);
+            f.delete();
+        }
+        files = new File(pdfs).list();
+        for (int i = 0; i < files.length; i++) {
+            File f = new File(pdfs + files[i]);
+            f.delete();
+        }
     }
 }
