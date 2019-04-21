@@ -1,5 +1,6 @@
 package GUIMiddleware;
 
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -24,7 +25,7 @@ public class Question {
                 e++;
                 break;
             default:
-                //System.out.println("SMARTron question object add Error");
+                System.out.println("SMARTron question object add Error");
                 break;
         }
     }

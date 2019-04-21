@@ -1,8 +1,18 @@
 package GUIMiddleware;
 
-import Database.*;
+import SMARTron.Database.AnswerKeyDao;
+import SMARTron.Database.CourseDao;
+import SMARTron.Database.ExamDao;
+import SMARTron.Database.GenericDao;
+import SMARTron.Database.InstructorDao;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -14,36 +24,17 @@ public class Main {
         CourseDao courDao = new CourseDao();
         ExamDao examDao = new ExamDao();
         GenericDao gen = new GenericDao();
-//        ExamServlet es = new ExamServlet();
         List<String> ls = new ArrayList<>();
 
 
-//
-//        File studentpage = new File("\\GUIMiddleware\\Bystudent.txt");
-//        Scanner studentPageScanner = new Scanner(studentpage);
-//
-//        System.out.println(studentPageScanner.nextLine());
 
-
-
-        String instructorID = "123456789";
-        String examID = "69696";
-        ls = gen.selectFirst("SELECT first_name, last_name, gender,semester,birth_date,student_id,course_crn,answers FROM exam WHERE instructor_id='123456789' and exam_id='69696';");
-
-
-
+        //ls = gen.selectFirst("SELECT * FROM exam");
         MiddlewareInterface mi = new MiddlewareInterface();
         for (int i = 1; i < ls.size(); i++) {
-
             mi.addStudentExam(ls.get(i));
-
         }
-
+        
         mi.getGrades();
-
-
-
-
         //        try(FileWriter f = new FileWriter("test.json")){
     }
 }

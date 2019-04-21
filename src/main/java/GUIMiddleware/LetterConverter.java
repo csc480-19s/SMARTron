@@ -24,11 +24,11 @@ public class LetterConverter {
 
             if (i >= aboveForA && i <= 100.0) {
                 returnLetterGrades.add("A");
-            } else if (i >= aboveForB) {
+            } else if (aboveForB >= i) {
                 returnLetterGrades.add("B");
-            } else if (i >= aboveForC) {
+            } else if (aboveForC >= i) {
                 returnLetterGrades.add("C");
-            } else if (i >= aboveForD) {
+            } else if (aboveForD >= i) {
                 returnLetterGrades.add("D");
             } else {
                 returnLetterGrades.add("F");;
