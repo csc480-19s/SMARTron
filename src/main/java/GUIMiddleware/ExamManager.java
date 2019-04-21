@@ -1,4 +1,3 @@
-    
 package SMARTron.GUIMiddleware;
 
 import java.util.ArrayList;
