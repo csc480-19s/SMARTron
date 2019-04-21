@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
@@ -63,12 +64,12 @@ public class OrientTool {
            //directory hardcoded in to speed process
 
             directory = new File("images/jpgs/");
-
             //Read directory to get all jpegs
 
-            //For loop for all scantron jpg files      
-
-            for (final File fileEntry : directory.listFiles()) {
+            //For loop for all scantron jpg files    
+            File[] arraytemp = directory.listFiles();
+            Arrays.parallelSort(arraytemp);
+            for (final File fileEntry : arraytemp) {
 
                 //Get the new image
 

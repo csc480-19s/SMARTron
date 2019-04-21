@@ -108,7 +108,7 @@ public class Main {
                 }
                 int count = 0;
                 if (!realCode) {
-                    code = "XCVBS";
+                    code = "!real";
                 }
                 //List<String> sID = new ArrayList<String>();
                 //List<Float> grades = new ArrayList<Float>();
@@ -117,14 +117,17 @@ public class Main {
                     //grades.add(exams.get(i).getExamGrade());
                     boolean notInserted = true;
                     boolean validName = false;
-                    while (notInserted) {
+                    int vCount = 0;
+                    while (notInserted && vCount < 9) {
                         try {
                             if (exams.get(i).getId() != null && !exams.get(i).getId().equals("") && !exams.get(i).getId().equals("..........")) {
                                 if (validName) {
+                                    vCount++;
                                     String o = "" + new Random().nextInt(10);
                                     examDao.addExam(exams.get(i).getName(), exams.get(i).getName(),
-                                            exams.get(i).getId().replace(".", o), "Fall18", exams.get(i).getBirthday(), crn, instructID, code,
+                                            o + exams.get(i).getId().substring(vCount), "Fall18", exams.get(i).getBirthday(), crn, instructID, code,
                                             Arrays.toString(exams.get(i).getAnswers().toArray()));
+                                    vCount = 0;
                                 } else {
                                     validName = true;
                                     examDao.addExam(exams.get(i).getName(), exams.get(i).getName(),
@@ -150,7 +153,7 @@ public class Main {
                 //u.sendEmailProcessed(testAddress, csv);
             }
             u.deleteAllFiles();
-            Thread.sleep(600000);
+            Thread.sleep(300000);
         }
     }
 }

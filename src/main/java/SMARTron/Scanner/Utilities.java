@@ -28,7 +28,7 @@ public class Utilities {
 
     public void RetrieveEmails() throws IOException {
         String line;
-        String command = "python src/main/python/imapConnect.py";
+        String command = "python3 src/main/python/imapConnect.py";
         //^^Alter this script based on server directories
         try {
             Process p = Runtime.getRuntime().exec(command);
@@ -53,6 +53,7 @@ public class Utilities {
 
         File file2 = new File("images/");
         String[] arraytemp = file2.list();
+        Arrays.parallelSort(arraytemp);
         for (int a = 0; a < arraytemp.length; a++) {
             System.out.println(arraytemp[a].substring(arraytemp[a].length() - 3, arraytemp[a].length()));
             int length = arraytemp[a].length();
@@ -67,6 +68,7 @@ public class Utilities {
         File file = new File("images/pdfTest/");
         int i = file.list().length;
         String[] array = file.list();
+        Arrays.parallelSort(array);
         for (int j = 0; j < array.length; j++) {
             String fileName = array[j];
             PDDocument document = PDDocument.load(new File("images/pdfTest/" + array[j]));
@@ -213,6 +215,7 @@ public class Utilities {
     public List<List<List<List<String>>>> runScanner() {
         File dir = new File("images/jpgs");
         String[] filesInDir = dir.list();
+        Arrays.parallelSort(filesInDir);
         List<List<List<List<String>>>> arr = new ArrayList<List<List<List<String>>>>();
         List<String> examNames = new ArrayList<String>();
         List<List<String>> examNumbers = new ArrayList<List<String>>();
@@ -239,7 +242,7 @@ public class Utilities {
                 count = examNumbers.get(index).indexOf(number);
             }
             String line;
-            String command = "python src/main/python/edgey.py -f images/jpgs/" + filesInDir[j];
+            String command = "python3 src/main/python/edgey.py -f images/jpgs/" + filesInDir[j];
             if (filesInDir[j].contains("front")) {
                 try {
                     Process p = Runtime.getRuntime().exec(command);
@@ -423,7 +426,7 @@ public class Utilities {
      * @throws IOException
      */
     public void sendEmailProcessed(String address, String csvPath) throws IOException {
-        String command = "python src/main/python/sendEmailHandler.py -a " + address + " -c " + csvPath;
+        String command = "python3 src/main/python/sendEmailHandler.py -a " + address + " -c " + csvPath;
         Process p = Runtime.getRuntime().exec(command);
         BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
         String line;
@@ -446,7 +449,7 @@ public class Utilities {
      * @throws IOException
      */
     public void sendEmailReceived(String address) throws IOException {
-        String command = "python src/main/python/sendEmailHandler.py -a " + address;
+        String command = "python3 src/main/python/sendEmailHandler.py -a " + address;
         Process p = Runtime.getRuntime().exec(command);
         BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
         String line;
