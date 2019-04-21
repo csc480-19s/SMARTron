@@ -21,7 +21,6 @@ class AnswerKeyDaoTest extends Specification {
 
         when:
         //This simply ensures that the exam is not already in the DB
-        akd.deleteAnswerKey('midterm')
         akd.addAnswerKey('midterm', 'MATT', 'a,b,c,d')
 
 
