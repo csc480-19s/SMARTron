@@ -1,4 +1,4 @@
-package SMARTron.GUIMiddleware;
+package GUIMiddleware;
 
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.math.BigDecimal;
 import java.util.Scanner;
+
 
 public class Stats {
 

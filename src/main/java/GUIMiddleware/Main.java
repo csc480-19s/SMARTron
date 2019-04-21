@@ -1,4 +1,4 @@
-package SMARTron.GUIMiddleware;
+package GUIMiddleware;
 
 import SMARTron.Database.AnswerKeyDao;
 import SMARTron.Database.CourseDao;
@@ -24,7 +24,6 @@ public class Main {
         CourseDao courDao = new CourseDao();
         ExamDao examDao = new ExamDao();
         GenericDao gen = new GenericDao();
-
         List<String> ls = new ArrayList<>();
 
 
@@ -36,10 +35,6 @@ public class Main {
         }
         
         mi.getGrades();
-        
-        
-
-
         //        try(FileWriter f = new FileWriter("test.json")){
     }
 }

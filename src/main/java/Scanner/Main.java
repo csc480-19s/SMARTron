@@ -1,4 +1,4 @@
-package SMARTron.Scanner;
+package Scanner;
 
 import SMARTron.Database.AnswerKeyDao;
 import SMARTron.Database.CourseDao;

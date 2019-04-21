@@ -1,4 +1,4 @@
-package SMARTron.Scanner;
+package Scanner;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
@@ -6,6 +6,7 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.tools.imageio.ImageIOUtil;
 
 import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
@@ -27,6 +28,7 @@ import java.util.logging.Logger;
 public class Utilities {
 
     public void RetrieveEmails() throws IOException {
+
         String line;
         String command = "python3 src/main/python/imapConnect.py";
         //^^Alter this script based on server directories
@@ -80,6 +82,7 @@ public class Utilities {
             document.close();
         }
     }
+
 
     //Legacy version of orienting images no need to test (go to OrientTool)
     public void orient() {
@@ -339,6 +342,7 @@ public class Utilities {
      * @param a The raw answers list
      * @return Ordered 2D array
      */
+
     public String[][] multi(List<String> a) {
         int maxR = 0, maxC = 0;
         String[] temp = new String[a.size()];
@@ -354,6 +358,7 @@ public class Utilities {
             }
         }
         String[][] array = new String[maxR + 1][maxC + 1];
+
         int f = 0, j = 0;
         for (int i = 0; i < temp.length; i++) {
             if (temp[i].contains("-") && temp[i].length() > 2) {

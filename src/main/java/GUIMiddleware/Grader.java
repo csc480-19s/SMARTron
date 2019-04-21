@@ -1,4 +1,4 @@
-package SMARTron.GUIMiddleware;
+package GUIMiddleware;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class Grader {
                     //Increments numPoints if it passes the conditions of the if statement
                 }
                 if (studentExam.getAnswers().get(j) != null)
-                questions.get(j).increment(studentExam.getAnswers().get(j));
+                  questions.get(j).increment(studentExam.getAnswers().get(j));
                 //For the question number j on the test, the jth position in the question array will be adjusted
                 //If the student has put "A" (we read "A" as 0) the "a" integer is incremented in that instance
 

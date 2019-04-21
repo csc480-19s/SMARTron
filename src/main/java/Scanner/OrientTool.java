@@ -8,7 +8,7 @@
 
  */
 
-package SMARTron.Scanner;
+package Scanner;
 
 
 
@@ -64,6 +64,7 @@ public class OrientTool {
            //directory hardcoded in to speed process
 
             directory = new File("images/jpgs/");
+
             //Read directory to get all jpegs
 
             //For loop for all scantron jpg files    
@@ -166,9 +167,6 @@ public class OrientTool {
                 // Verify if the scan is a front or back and rename file accordingly
 
                 if (count1 > 10) {
-
-
-
                     File frontName = new File(file + "-" + x + "-front" + ".jpg");
 
                     testImage.renameTo(frontName);

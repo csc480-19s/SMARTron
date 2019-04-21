@@ -1,5 +1,4 @@
-package SMARTron.GUIMiddleware;
-
+package GUIMiddleware;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;

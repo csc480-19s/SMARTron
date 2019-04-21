@@ -1,4 +1,5 @@
-package SMARTron.Database;
+package Database;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

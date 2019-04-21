@@ -1,4 +1,5 @@
-package SMARTron.Database;
+package Database;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -75,6 +76,7 @@ public class GenericDao {
 	 * @throws Exception
 	 * @throws SQLException
 	 */
+
 	public List<String> select(String sql) throws Exception {
 		List<String> list = new ArrayList<String>();
 		try {

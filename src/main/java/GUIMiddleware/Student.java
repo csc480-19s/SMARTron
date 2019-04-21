@@ -1,6 +1,6 @@
-package SMARTron.GUIMiddleware;
-import org.json.simple.JSONObject;
+package GUIMiddleware;
 
+import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
