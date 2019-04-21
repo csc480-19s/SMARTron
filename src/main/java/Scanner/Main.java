@@ -1,15 +1,10 @@
 package Scanner;
 
-import SMARTron.Database.AnswerKeyDao;
-import SMARTron.Database.CourseDao;
-import SMARTron.Database.ExamDao;
-import SMARTron.Database.GenericDao;
-import SMARTron.Database.InstructorDao;
-import SMARTron.GUIMiddleware.ExamManager;
+import Database.*;
+import GUIMiddleware.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import SMARTron.GUIMiddleware.Student;
 import java.util.ArrayList;
 import java.util.Random;
 

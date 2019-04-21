@@ -44,7 +44,7 @@ public class QuestionServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        out.print(jb.getByquestion());
+       // out.print(jb.getByquestion());
         out.flush();
     }
 

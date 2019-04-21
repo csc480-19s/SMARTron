@@ -42,7 +42,7 @@ public class StudentServlet extends HttpServlet {
 //        String studentPageEndpointString = studentPageScanner.nextLine();
 //        System.out.println(studentPageEndpointString);
 
-        out.print(jb.getBystudent());
+       // out.print(jb.getBystudent());
         out.flush();
 //        out.print(studentJsonString);
 //        out.flush();
