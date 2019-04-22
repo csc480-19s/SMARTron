@@ -19,7 +19,7 @@ import Database.AnswerKeyDao;
 import smartron.entities.Answerkey;
 
 public class AnswerkeyServlet extends HttpServlet {
-	private Gson gson = new Gson();
+	private Gson gson = null;
 	private static HashMap<String, String> optionAnswerKey = new HashMap<>();
 	AnswerKeyDao akDao = new AnswerKeyDao();
 
@@ -29,8 +29,10 @@ public class AnswerkeyServlet extends HttpServlet {
 		String instId = request.getParameter("instId");
 
 		List<String> obj = null;
-		List<Answerkey> keyList = new ArrayList<>();
-		Answerkey anserKey;
+		System.out.println("Is this null: " + obj);
+		List<Answerkey> keyList = null;
+		Answerkey anserKey = null;
+		String questionJsonString = null;
 		try {
 			int idCounter = 1;
 
@@ -43,11 +45,20 @@ public class AnswerkeyServlet extends HttpServlet {
 			cleanString = cleanString.replaceAll("\\]", "");
 			String[] answerKeyStr = cleanString.split(",");
 			buildKeys();
+			keyList = new ArrayList<Answerkey>();
 			for (String key : answerKeyStr) {
+				key = key.trim();
 				System.out.println(key);
 				anserKey = new Answerkey();
 				anserKey.setQuestionId(idCounter);
-				String[] keys = { optionAnswerKey.get(key.trim()) };
+				String keys[] = new String[5];
+				if (!(key.equals("-1") || key.equals("error"))) {
+					for (int i = 0; i < key.length(); i++) {
+						keys[i] = optionAnswerKey.get(key.substring(i, i + 1));
+					}
+				} else {
+					keys[0] = key;
+				}
 				anserKey.setAnswerKey(keys);
 				keyList.add(anserKey);
 				idCounter++;
@@ -56,8 +67,9 @@ public class AnswerkeyServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		String questionJsonString = this.gson.toJson(keyList);
-
+		gson = new Gson();
+		questionJsonString = gson.toJson(keyList);
+		System.out.println("Size of KeyList" + keyList.size());
 		PrintWriter out = response.getWriter();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
@@ -71,6 +83,7 @@ public class AnswerkeyServlet extends HttpServlet {
 		BufferedReader bufferAnswerkey = request.getReader();
 		String jsonString = null;
 		String answerKey = "";
+		gson = new Gson();
 		while ((jsonString = bufferAnswerkey.readLine()) != null) {
 			answerKey += jsonString;
 		}
@@ -82,11 +95,12 @@ public class AnswerkeyServlet extends HttpServlet {
 			StringBuffer updatedAnswerKey = new StringBuffer("[");
 			for (Answerkey akey : k) {
 				for (String key : akey.getAnswerKey()) {
-					System.out.println(key);
-					String keyCode = getKey(optionAnswerKey, key);
-					updatedAnswerKey.append(keyCode);
-					updatedAnswerKey.append(",");
+					if (!(key == null)) {
+						String keyCode = getKey(optionAnswerKey, key);
+						updatedAnswerKey.append(keyCode);
+					}
 				}
+				updatedAnswerKey.append(",");
 			}
 			updatedAnswerKey.deleteCharAt(updatedAnswerKey.length() - 1);
 			updatedAnswerKey.append("]");

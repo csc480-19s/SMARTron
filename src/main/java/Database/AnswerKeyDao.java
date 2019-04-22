@@ -144,6 +144,7 @@ public class AnswerKeyDao {
 	 * @throws Exception 
 	 */
 	public List<String> selectUpdatedAnswerKey(String examId, String instId) throws Exception {
+		list = new ArrayList<String>();
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(SELECT_UPDATED_ANSWER_KEY);
@@ -154,6 +155,7 @@ public class AnswerKeyDao {
 				list.add(rs.getString(1));
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new Exception("Could not retrieve the updated answer key for the exam with id " + examId);
 		}
 
