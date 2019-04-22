@@ -26,10 +26,10 @@ public class AnswerkeyServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String examId = request.getParameter("examId");
-		String instId = request.getParameter("instId");
-
+        String instId = request.getParameter("instId").split("@")[0];
+		System.out.println("***Exam ID: "+examId);
+		System.out.println("***Inst ID"+instId);
 		List<String> obj = null;
-		System.out.println("Is this null: " + obj);
 		List<Answerkey> keyList = null;
 		Answerkey anserKey = null;
 		String questionJsonString = null;
