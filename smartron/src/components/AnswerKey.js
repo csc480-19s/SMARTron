@@ -21,8 +21,8 @@ constructor(){
 }
 
 componentDidMount(){
-  console.log(`http://localhost:3000/answerkey?examId=${this.props.location.state.id}&instId=${this.props.location.state.email}`);
-  fetch(`http://localhost:3000/answerkey?examId=${this.props.location.state.id}&instId=${this.props.location.state.email}`)
+  //http://localhost:3000/answerkey?examId
+  fetch(`http://pi.cs.oswego.edu:13126/answerkey?examId=${this.props.location.state.id}&instId=${this.props.location.state.email}`)
   .then(response => response.json())
   .then(result => {
     const keys = result.map(item => {
@@ -70,7 +70,7 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("POST", `http://localhost:3000/answerkey?examId=${this.props.location.state.id}`);
+xhr.open("POST", `http://pi.cs.oswego.edu:13126/answerkey?examId=${this.props.location.state.id}`);
 xhr.setRequestHeader("Content-Type", "application/json");
 xhr.send(data);
 }
