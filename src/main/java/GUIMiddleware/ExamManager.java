@@ -8,6 +8,7 @@ public class ExamManager {
 
 //This class is a high level controller for making student objects, grade them, and process them
 
+
     private List<Student> studentExams = new ArrayList<>();
     private List<Integer> studentGradesForStats = new ArrayList<>();
     private List<Float> studentNumberGrades = new ArrayList<>();
@@ -119,5 +120,9 @@ public class ExamManager {
     
     public Student getKey() {
         return key;
+    }
+
+    public List<Student> getStudentExams() {
+        return studentExams;
     }
 }
