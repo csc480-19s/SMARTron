@@ -35,7 +35,7 @@ public class OrientTool {
 
         //Unused variable?
         BufferedImage image = null;
-        //Another unused variable
+        //Another unused variabl
         String temp = "";
 
         try {

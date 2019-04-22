@@ -17,7 +17,7 @@ public class ExamManager {
     private LetterConverter letterConverter = new LetterConverter();
     private StudentCreator studentCreator = new StudentCreator();
     private Student key = new Student();
-    //The bottom two variables are unused and can be removed I am guessing.
+    //The bottom two variables are unused and can be removed I am guessing.SS
     private String examName = "";
     private String examID = "";
 

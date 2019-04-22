@@ -9,7 +9,7 @@ import java.lang.reflect.Method
 class StudentTest extends Specification{
 
     Student student = new Student()
-    def testString = ['10', '15', '14', '4', '14', '0', '20', '18', '25', '14', '9', '19', '11', '9', '0', '13', '0', '0', '0', '0', '13', '1', '0', '1', '1', '7', '9', '2', '8', '0', '3', '0', '4', '3', '9', '7', '4', '1', '2', '3', '4', '5', '6']
+    def testString = ['10', '15', '14', '4', '14', '0', '20', '18', '25', '14', '9', '19', '11', '9', '0', '13', '0', '0', '0', '0', '13', '1', '1', '1', '7', '9', '2', '8', '0', '3', '0', '4', '3', '9', '7', '4', '1', '2', '3', '4', '5', '6']
 
     def "This test the correct initializeAnswers method"(){
 
@@ -142,6 +142,8 @@ class StudentTest extends Specification{
         student.getGrade() == "."
     }
 
+    //This is right month is one digiit.VVVV
+
     //This method for some reason runs alpha converter on the birthday?
     //0 is invalid in this it shouldn't be.
     //Also only takes 5 characters, should be 6
@@ -155,7 +157,7 @@ class StudentTest extends Specification{
         method.invoke(student)
 
         then:
-        student.getBirthday() == "011792"
+        student.getBirthday() == "11792"
 
     }
 
