@@ -61,7 +61,7 @@ class Home extends Component {
 
     generateCode(){
         var id = ""
-        var poss = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        var poss = "BCDFGHJKLMNPQRSTVWXYZ"
         for (let i = 0; i < 5; i++) {
             id += poss.charAt(Math.floor(Math.random()*25))
         }
