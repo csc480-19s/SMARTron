@@ -42,7 +42,7 @@ class Home extends Component {
                 .then(result =>{
                     result.examList.forEach((exam =>
                             this.state.exams.push(<Exam problem={false} loginName={this.props.location.state.loginName}  list={[]}
-                                                        email={this.props.location.state.email} text={exam.examName} scanCode={exam.scanCode}
+                                                        email={this.props.location.state.email} text={exam.examName} scanCode={exam.examCode}
                                                         history={this.props.history}/>)
 
                     )); this.setState(this.state)
