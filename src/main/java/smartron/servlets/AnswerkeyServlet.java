@@ -27,8 +27,6 @@ public class AnswerkeyServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String examId = request.getParameter("examId");
         String instId = request.getParameter("instId").split("@")[0];
-		System.out.println("***Exam ID: "+examId);
-		System.out.println("***Inst ID"+instId);
 		List<String> obj = null;
 		List<Answerkey> keyList = null;
 		Answerkey anserKey = null;
@@ -40,28 +38,31 @@ public class AnswerkeyServlet extends HttpServlet {
 			if (obj == null || obj.isEmpty()) {
 				obj = akDao.selectAnswerKey(examId, instId);
 			}
-			String cleanString = obj.toString();
-			cleanString = cleanString.replaceAll("\\[", "");
-			cleanString = cleanString.replaceAll("\\]", "");
-			String[] answerKeyStr = cleanString.split(",");
-			buildKeys();
-			keyList = new ArrayList<Answerkey>();
-			for (String key : answerKeyStr) {
-				key = key.trim();
-				System.out.println(key);
-				anserKey = new Answerkey();
-				anserKey.setQuestionId(idCounter);
-				String keys[] = new String[5];
-				if (!(key.equals("-1") || key.equals("error"))) {
-					for (int i = 0; i < key.length(); i++) {
-						keys[i] = optionAnswerKey.get(key.substring(i, i + 1));
+			if(!obj.isEmpty()) {
+				String cleanString = obj.toString();
+				cleanString = cleanString.replaceAll("\\[", "");
+				cleanString = cleanString.replaceAll("\\]", "");
+				String[] answerKeyStr = cleanString.split(",");
+				buildKeys();
+				keyList = new ArrayList<Answerkey>();
+				for (String key : answerKeyStr) {
+					key = key.trim();
+					System.out.println(key);
+					anserKey = new Answerkey();
+					anserKey.setQuestionId(idCounter);
+					String keys[] = new String[5];
+					if (!(key.equals("-1") || key.equals("error"))) {
+						for (int i = 0; i < key.length(); i++) {
+							keys[i] = optionAnswerKey.get(key.substring(i, i + 1));
+						}
+					} else if(key != null){
+						keys[0] = key;
 					}
-				} else {
-					keys[0] = key;
+					anserKey.setAnswerKey(keys);
+					keyList.add(anserKey);
+					idCounter++;
 				}
-				anserKey.setAnswerKey(keys);
-				keyList.add(anserKey);
-				idCounter++;
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
