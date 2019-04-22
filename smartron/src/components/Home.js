@@ -24,6 +24,7 @@ class Home extends Component {
         this.handleName = this.handleName.bind(this)
         this.handleNum = this.handleNum.bind(this)
         this.sort = this.sort.bind(this)
+        this.resetNewTest = this.resetNewTest.bind(this)
 
     }
     componentDidMount() {
@@ -63,7 +64,7 @@ class Home extends Component {
         var id = ""
         var poss = "BCDFGHJKLMNPQRSTVWXYZ"
         for (let i = 0; i < 5; i++) {
-            id += poss.charAt(Math.floor(Math.random()*25))
+            id += poss.charAt(Math.floor(Math.random()*20))
         }
         this.state.random = id
         this.setState(this.state)
@@ -79,13 +80,18 @@ class Home extends Component {
         this.state.swap = !tmp
         this.setState(this.state)
     }
+    resetNewTest(){
+        this.state.newName = ""
+        this.state.newNum = ""
+        this.setState(this.state)
+    }
 
     render() {
         return (
             <div>
                 <h1 className={"welcome"}> Welcome, {this.props.location.state.loginName}</h1>
                 <div className={"buttons"}>
-                    <Popup  onClose={()=>{this.setState(this.state)}} onOpen={this.generateCode} modal trigger={<button   className={"scanButton"}>New Test Scan</button>}>
+                    <Popup  onClose={this.resetNewTest} onOpen={this.generateCode} modal trigger={<button   className={"scanButton"}>New Test Scan</button>}>
                         {close =>
                             <div className={"modal"}>
 
@@ -113,7 +119,8 @@ class Home extends Component {
                                         fetch(`http://pi.cs.oswego.edu:13126/exam?email=${this.props.location.state.email}&id=${this.state.random}&name=${this.state.newName}`,{
                                             method: 'post'
                                         })
-                                        this.state.exams.push(<Exam problem={false} loginName={this.props.location.state.loginName} email={this.props.location.state.email} list={[]} text={this.state.newName} id={this.state.random} numQuest={this.state.newNum} history={this.props.history}/>); this.setState(this.state)
+                                        this.state.exams.push(<Exam problem={false} loginName={this.props.location.state.loginName} scanCode={this.state.random} email={this.props.location.state.email} list={[]} text={this.state.newName} id={this.state.random} numQuest={this.state.newNum} history={this.props.history}/>); this.setState(this.state)
+                                        this.resetNewTest()
                                         close()
                                     }}>Ok
                                     </button>
