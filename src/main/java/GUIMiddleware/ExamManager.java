@@ -15,8 +15,9 @@ public class ExamManager {
     private Grader grader = new Grader();
     private Stats stats = new Stats();
     private LetterConverter letterConverter = new LetterConverter();
-    private StudentCreater studentCreater = new StudentCreater();
+    private StudentCreator studentCreator = new StudentCreator();
     private Student key = new Student();
+    //The bottom two variables are unused and can be removed I am guessing.
     private String examName = "";
     private String examID = "";
 
@@ -39,7 +40,7 @@ public class ExamManager {
      *
      *letterConverter Returns a list of letter grades based off of "studentNumberGrades".
      *
-     *studentCreater Makes student classes.
+     *studentCreator Makes student classes.
      *
      *key This is the test key, It is a student class.
      *
@@ -50,7 +51,7 @@ public class ExamManager {
 
 
     public void addStudentExam(String[][] answers, String[] studentData){
-        this.studentExams.add(studentCreater.makeStudent(answers, studentData));
+        this.studentExams.add(studentCreator.makeStudent(answers, studentData));
     }
 
     /**
