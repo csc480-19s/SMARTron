@@ -63,10 +63,15 @@ class Exam extends Component{
                                                                            onChange={this.handleName}/></label> <br/>
                                 </form>
                                 <button onClick={()=>{
+                                    fetch(`http://pi.cs.oswego.edu:13126/namechange?id=${this.state.exid}&name=${this.state.newName}`,{
+                                        method: 'post'
+                                    })
                                     this.resetNewNames()
                                     close()
                                 }
                                 }>Submit</button>
+
+
                                 <button onClick={()=>{
                                     this.resetNewNames()
                                     close()
