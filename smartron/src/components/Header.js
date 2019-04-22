@@ -12,10 +12,10 @@ class Header extends Component{
     render(){
     return(
       <header className={"topBar"}>
-      <h1 className={"leftA"}>SMART</h1><h1 className={"leftB"}>RON</h1>
-      <h1 className={"right"}>{this.props.email} </h1>
+          <h1 className={"leftA"}>SMART</h1><h1 className={"leftB"}>RON</h1>
+          <button className={"logout"} onClick={()=>{this.props.history.push("/")}}><FontAwesomeIcon icon={faPowerOff} size={"lg"}/></button>
+          <h1 className={"right"}>{this.props.email} </h1>
 
-      <button className={"logout"} onClick={()=>{this.props.history.push("/")}}><FontAwesomeIcon icon={faPowerOff} size={"lg"}/></button>
       </header>
     );
   }
