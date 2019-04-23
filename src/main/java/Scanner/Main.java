@@ -73,9 +73,10 @@ public class Main {
                 try {
                     if (code.length() == 5) {
                         realCode = true;
-                        ansKDao.addAnswerKey(code, instructID, Arrays.toString(ansKey.getAnswers().toArray()));
+                        //ansKDao.addAnswerKey(code, instructID, Arrays.toString(ansKey.getAnswers().toArray()));
+                        ansKDao.addUpdatedAnswerKey(code, Arrays.toString(ansKey.getAnswers().toArray()));
                     } else {
-                        ansKDao.addAnswerKey("XCVBS", instructID, Arrays.toString(ansKey.getAnswers().toArray()));
+                        //ansKDao.addAnswerKey("XCVBS", instructID, Arrays.toString(ansKey.getAnswers().toArray()));
                     }
                 } catch (Exception ex) {
                     //ex.printStackTrace();
