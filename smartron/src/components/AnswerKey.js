@@ -8,7 +8,6 @@ constructor(){
     answerKeys: [],
     keyOptions: ["A", "B", "C", "D", "E"],
     chkbox: false,
-    updateAnswerKey: [],
     copyOfAnswerKey: [],
     makeCopy: true,
     examList:[],
@@ -22,14 +21,15 @@ constructor(){
 }
 
 componentDidMount(){
-  fetch('http://pi.cs.oswego.edu:13126/answerkey')
+  //http://localhost:3000/answerkey?examId
+  fetch(`http://pi.cs.oswego.edu:13126/answerkey?examId=${this.props.location.state.id}&instId=${this.props.location.state.email}`)
   .then(response => response.json())
   .then(result => {
     const keys = result.map(item => {
       return item;
     })
     this.setState({
-      answerKeys: keys,
+      answerKeys: keys
     })
   });
 }
@@ -42,44 +42,19 @@ copyAnswerKey(){
   });
 }
 
-handleClick(item, key){
-  if(this.state.makeCopy){
-    this.copyAnswerKey();
-  }
-  var index = item.answerKey.indexOf(key);
-  item.answerKey = [];
-  item.answerKey.push(key);
-//    if(item.answerKey.includes(key)){
-//      item.answerKey.splice(index,1);
-//    }else{
-//      item.answerKey.push(key);
-//    }
-    console.log();
-  if(this.state.updateAnswerKey.length === 0){
-    this.state.updateAnswerKey.push(item);
-  }
-
-  let updateList = this.state.updateAnswerKey;
-  updateList = updateList.filter(function( obj ){
-  return obj.questionId !== item.questionId});
-
-  let anserKeyObj = this.state.copyOfAnswerKey
-    .find(obj => obj.questionId === item.questionId);
-    item.answerKey.sort();
-
-  if(JSON.stringify(item) !== JSON.stringify(anserKeyObj)){
-    updateList.push(item);
-  }
-  this.setState({
-    updateAnswerKey:updateList
-  });
+handleClick(item, index){
+  var i = item.answerKey.indexOf(index);
+  if(item.answerKey.includes(index)){
+    item.answerKey.splice(i,1);
+  }else{
+    item.answerKey.push(index);
+}
 }
 
 handleSubmit(e){
   this.props.history.push({pathname:"/home", state:{loginName:this.props.location.state.loginName, email:this.props.location.state.email,exams:this.props.location.state.exams}});
   console.log("handle on submit here")
   console.log(this.state.copyOfAnswerKey);
-  console.log(this.state.updateAnswerKey);
   this.postAnswerKey();
 }
 
@@ -95,7 +70,7 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("POST", "http://pi.cs.oswego.edu:13126/updateAnswerKey");
+xhr.open("POST", `http://pi.cs.oswego.edu:13126/answerkey?examId=${this.props.location.state.id}`);
 xhr.setRequestHeader("Content-Type", "application/json");
 xhr.send(data);
 }
