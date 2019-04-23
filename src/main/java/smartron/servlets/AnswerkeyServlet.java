@@ -19,18 +19,18 @@ import Database.AnswerKeyDao;
 import smartron.entities.Answerkey;
 
 public class AnswerkeyServlet extends HttpServlet {
-	private Gson gson = new Gson();
+	private Gson gson = null;
 	private static HashMap<String, String> optionAnswerKey = new HashMap<>();
 	AnswerKeyDao akDao = new AnswerKeyDao();
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String examId = request.getParameter("examId");
-		String instId = request.getParameter("instId");
-
+        String instId = request.getParameter("instId").split("@")[0];
 		List<String> obj = null;
-		List<Answerkey> keyList = new ArrayList<>();
-		Answerkey anserKey;
+		List<Answerkey> keyList = null;
+		Answerkey anserKey = null;
+		String questionJsonString = null;
 		try {
 			int idCounter = 1;
 
@@ -38,26 +38,39 @@ public class AnswerkeyServlet extends HttpServlet {
 			if (obj == null || obj.isEmpty()) {
 				obj = akDao.selectAnswerKey(examId, instId);
 			}
-			String cleanString = obj.toString();
-			cleanString = cleanString.replaceAll("\\[", "");
-			cleanString = cleanString.replaceAll("\\]", "");
-			String[] answerKeyStr = cleanString.split(",");
-			buildKeys();
-			for (String key : answerKeyStr) {
-				System.out.println(key);
-				anserKey = new Answerkey();
-				anserKey.setQuestionId(idCounter);
-				String[] keys = { optionAnswerKey.get(key.trim()) };
-				anserKey.setAnswerKey(keys);
-				keyList.add(anserKey);
-				idCounter++;
+			if(!obj.isEmpty()) {
+				String cleanString = obj.toString();
+				cleanString = cleanString.replaceAll("\\[", "");
+				cleanString = cleanString.replaceAll("\\]", "");
+				String[] answerKeyStr = cleanString.split(",");
+				buildKeys();
+				keyList = new ArrayList<Answerkey>();
+				for (String key : answerKeyStr) {
+					key = key.trim();
+					System.out.println(key);
+					anserKey = new Answerkey();
+					anserKey.setQuestionId(idCounter);
+					String keys[] = new String[5];
+					if (!(key.equals("-1") || key.equals("error"))) {
+						for (int i = 0; i < key.length(); i++) {
+							keys[i] = optionAnswerKey.get(key.substring(i, i + 1));
+						}
+					} else if(key != null){
+						keys[0] = key;
+					}
+					anserKey.setAnswerKey(keys);
+					keyList.add(anserKey);
+					idCounter++;
+				}
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		String questionJsonString = this.gson.toJson(keyList);
-
+		gson = new Gson();
+		questionJsonString = gson.toJson(keyList);
+		System.out.println("Size of KeyList" + keyList.size());
 		PrintWriter out = response.getWriter();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
@@ -71,6 +84,7 @@ public class AnswerkeyServlet extends HttpServlet {
 		BufferedReader bufferAnswerkey = request.getReader();
 		String jsonString = null;
 		String answerKey = "";
+		gson = new Gson();
 		while ((jsonString = bufferAnswerkey.readLine()) != null) {
 			answerKey += jsonString;
 		}
@@ -82,11 +96,12 @@ public class AnswerkeyServlet extends HttpServlet {
 			StringBuffer updatedAnswerKey = new StringBuffer("[");
 			for (Answerkey akey : k) {
 				for (String key : akey.getAnswerKey()) {
-					System.out.println(key);
-					String keyCode = getKey(optionAnswerKey, key);
-					updatedAnswerKey.append(keyCode);
-					updatedAnswerKey.append(",");
+					if (!(key == null)) {
+						String keyCode = getKey(optionAnswerKey, key);
+						updatedAnswerKey.append(keyCode);
+					}
 				}
+				updatedAnswerKey.append(",");
 			}
 			updatedAnswerKey.deleteCharAt(updatedAnswerKey.length() - 1);
 			updatedAnswerKey.append("]");
