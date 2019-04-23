@@ -1,9 +1,19 @@
 from numba import jit #leads to functions being split up into inner and outer functions due to the specific requirements needed to use jit
 import numpy as np
 import cv2
-import random
+#import random
 #import time
 import sys, getopt
+
+##      (`-.                .-') _             ('-.       .-') _  .-') _          _ .-') _                .-') _  ('-. .-. 
+##    _(OO  )_             ( OO ) )          _(  OO)     ( OO ) )(  OO) )        ( (  OO) )              ( OO ) )( OO )  / 
+##,--(_/   ,. \ ,-.-') ,--./ ,--,'  .-----. (,------.,--./ ,--,' /     '._        \     .'_   ,-.-') ,--./ ,--,' ,--. ,--. 
+##\   \   /(__/ |  |OO)|   \ |  |\ '  .--./  |  .---'|   \ |  |\ |'--...__)       ,`'--..._)  |  |OO)|   \ |  |\ |  | |  | 
+## \   \ /   /  |  |  \|    \|  | )|  |('-.  |  |    |    \|  | )'--.  .--'       |  |  \  '  |  |  \|    \|  | )|   .|  | 
+##  \   '   /,  |  |(_/|  .     |//_) |OO  )(|  '--. |  .     |/    |  |          |  |   ' |  |  |(_/|  .     |/ |       | 
+##   \     /__),|  |_.'|  |\    | ||  |`-'|  |  .--' |  |\    |     |  |          |  |   / : ,|  |_.'|  |\    |  |  .-.  | 
+##    \   /   (_|  |   |  | \   |(_'  '--'\  |  `---.|  | \   |     |  |          |  '--'  /(_|  |   |  | \   |  |  | |  | 
+##     `-'      `--'   `--'  `--'   `-----'  `------'`--'  `--'     `--'          `-------'   `--'   `--'  `--'  `--' `--' 
 
 #Global variables of the images height and width also a list of all of the processed circles
 imgW = 0
@@ -519,8 +529,8 @@ co1 = cv2.findContours(dark1, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)[0]
 contours2 = cv2.findContours(edges2, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)[0]
 
 
-img1 = cv2.imread(fileName)
-img1 = cv2.resize(img1, (imgW, imgH), interpolation = cv2.INTER_AREA)
+##img1 = cv2.imread(fileName)
+##img1 = cv2.resize(img1, (imgW, imgH), interpolation = cv2.INTER_AREA)
 #cv2.drawContours(img1, co, -1, (0, 250, 250), 2)
 
 #puts all contours in a single list
@@ -543,45 +553,45 @@ columns = findColumns(circles)
 
 nameGroup = names(columns)
 
-for i in nameGroup:
-   for j in i:
-       cv2.drawContours(img1, j, -1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), 2)
+##for i in nameGroup:
+##   for j in i:
+##       cv2.drawContours(img1, j, -1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), 2)
     
 eduGroup = gradeEDU(columns)
 
-for i in eduGroup:
-   for j in i:
-       cv2.drawContours(img1, j, -1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), 2)
+##for i in eduGroup:
+##   for j in i:
+##       cv2.drawContours(img1, j, -1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), 2)
 
 monthGroup = month(columns)
 
-for i in monthGroup:
-   for j in i:
-       cv2.drawContours(img1, j, -1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), 2)
+##for i in monthGroup:
+##   for j in i:
+##       cv2.drawContours(img1, j, -1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), 2)
 
 dateIDGroup = dateID(columns)
 
-for i in dateIDGroup:
-   for j in i:
-       cv2.drawContours(img1, j, -1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), 2)
+##for i in dateIDGroup:
+##   for j in i:
+##       cv2.drawContours(img1, j, -1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), 2)
 
 queGroup = questions(rows)
 
-for i in queGroup:
-   for j in i:
-       cv2.drawContours(img1, j, -1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), 2)
+##for i in queGroup:
+##   for j in i:
+##       cv2.drawContours(img1, j, -1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), 2)
 
 dateGroup = date1(columns)
 
-for i in dateGroup:
-   for j in i:
-       cv2.drawContours(img1, j, -1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), 2)
+##for i in dateGroup:
+##   for j in i:
+##       cv2.drawContours(img1, j, -1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), 2)
 
 genderGroup = gender(columns)
 
-for i in genderGroup:
-   for j in i:
-       cv2.drawContours(img1, j, -1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), 2)
+##for i in genderGroup:
+##   for j in i:
+##       cv2.drawContours(img1, j, -1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), 2)
 
 bubbledQue = findSelectedQ(queGroup)
 
@@ -638,8 +648,8 @@ for z in bubbledQue:
                 selected = [str(x[1]) for x in w]
                 print(str(i) + "-" + str(j) + " " + ''.join(selected))
           
-cv2.namedWindow("edges", cv2.WINDOW_NORMAL)
-cv2.imshow("edges", img1)
+##cv2.namedWindow("edges", cv2.WINDOW_NORMAL)
+##cv2.imshow("edges", img1)
 ##cv2.namedWindow("edges1", cv2.WINDOW_NORMAL)
 ##cv2.imshow("edges1", img)
 ##cv2.namedWindow("edges2", cv2.WINDOW_NORMAL)
@@ -648,5 +658,5 @@ cv2.imshow("edges", img1)
 ##cv2.imshow("edges3", edges2)
 
 #print(time.time() - start)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+##cv2.waitKey(0)
+##cv2.destroyAllWindows()
