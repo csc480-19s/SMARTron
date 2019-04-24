@@ -1,0 +1,12 @@
+0:0:0:0:0:0:0:1 - - [22/Apr/2019:00:33:15 -0400] "GET / HTTP/1.1" 200 2061 http-bio-3000-exec-1 45
+0:0:0:0:0:0:0:1 - - [22/Apr/2019:00:33:15 -0400] "GET /static/css/main.3b23aad9.chunk.css HTTP/1.1" 200 4270 http-bio-3000-exec-2 3
+0:0:0:0:0:0:0:1 - - [22/Apr/2019:00:33:15 -0400] "GET /static/js/main.3fb5a719.chunk.js HTTP/1.1" 200 20473 http-bio-3000-exec-4 2
+0:0:0:0:0:0:0:1 - - [22/Apr/2019:00:33:15 -0400] "GET /static/js/2.b9feedf0.chunk.js HTTP/1.1" 200 731438 http-bio-3000-exec-3 11
+0:0:0:0:0:0:0:1 - - [22/Apr/2019:00:33:16 -0400] "GET /static/media/smartron-logo.613fdbf0.png HTTP/1.1" 200 22422 http-bio-3000-exec-5 2
+0:0:0:0:0:0:0:1 - - [22/Apr/2019:00:33:16 -0400] "GET /favicon.ico HTTP/1.1" 200 3870 http-bio-3000-exec-9 2
+0:0:0:0:0:0:0:1 - - [22/Apr/2019:00:33:16 -0400] "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 1015 http-bio-3000-exec-1 2
+0:0:0:0:0:0:0:1 - - [22/Apr/2019:00:33:16 -0400] "GET /apple-touch-icon.png HTTP/1.1" 404 991 http-bio-3000-exec-1 1
+0:0:0:0:0:0:0:1 - - [22/Apr/2019:00:33:37 -0400] "GET /static/media/smartron-logo.613fdbf0.png HTTP/1.1" 304 - http-bio-3000-exec-8 6
+0:0:0:0:0:0:0:1 - - [22/Apr/2019:00:34:28 -0400] "GET /static/css/main.3b23aad9.chunk.css.map HTTP/1.1" 200 14682 http-bio-3000-exec-8 2
+0:0:0:0:0:0:0:1 - - [22/Apr/2019:00:34:28 -0400] "GET /static/js/main.3fb5a719.chunk.js.map HTTP/1.1" 200 56619 http-bio-3000-exec-5 3
+0:0:0:0:0:0:0:1 - - [22/Apr/2019:00:34:28 -0400] "GET /static/js/2.b9feedf0.chunk.js.map HTTP/1.1" 200 3599653 http-bio-3000-exec-2 20
