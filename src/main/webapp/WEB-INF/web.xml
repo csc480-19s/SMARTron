@@ -4,13 +4,23 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
 	<servlet>
-		<servlet-name>NameChange</servlet-name>
-		<servlet-class>smartron.servlets.NameChangeServlet</servlet-class>
-	</servlet>
+	<servlet-name>NameChange</servlet-name>
+	<servlet-class>smartron.servlets.NameChangeServlet</servlet-class>
+</servlet>
 
 	<servlet-mapping>
 		<servlet-name>NameChange</servlet-name>
 		<url-pattern>/namechange</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Results</servlet-name>
+		<servlet-class>smartron.servlets.ResultServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Results</servlet-name>
+		<url-pattern>/result</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
