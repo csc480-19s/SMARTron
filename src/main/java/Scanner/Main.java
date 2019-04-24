@@ -18,8 +18,6 @@ import java.util.Random;
 public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        //String testAddress = "noleary@oswego.edu";
-
         Utilities u = new Utilities();
         OrientTool ot = new OrientTool();
         //InstructorDao instDao = new InstructorDao();
@@ -36,7 +34,6 @@ public class Main {
             List<List<List<List<String>>>> tests = u.runScanner();
             for (int x = 0; x < tests.size(); x++) {
                 List<List<List<String>>> arr = tests.get(x);
-//            u.sendEmailReceived(testAddress);
                 ExamManager e = new ExamManager();
                 for (int i = 0; i < arr.size(); i++) {
                     String[] s = new String[43];
@@ -64,6 +61,8 @@ public class Main {
                 } catch (Exception ex) {
                     //ex.printStackTrace();
                 }
+                String email = instructID + "@oswego.edu";
+                u.sendEmailReceived(email);
 //            try {
 //                instDao.addInstructor(instructID, "Bastian", "Tenbergen");
 //            } catch (Exception ex) {
@@ -106,11 +105,11 @@ public class Main {
                 if (!realCode) {
                     code = "!real";
                 }
-                //List<String> sID = new ArrayList<String>();
-                //List<Float> grades = new ArrayList<Float>();
+                List<String> sID = new ArrayList<String>();
+                List<Float> grades = new ArrayList<Float>();
                 for (int i = 0; i < exams.size(); i++) {
-                    //sID.add(exams.get(i).getId());
-                    //grades.add(exams.get(i).getExamGrade());
+                    sID.add(exams.get(i).getId());
+                    grades.add(exams.get(i).getExamGrade());
                     boolean notInserted = true;
                     boolean validName = false;
                     int vCount = 0;
@@ -145,8 +144,8 @@ public class Main {
                         }
                     }
                 }
-                //String csv = u.gradeCSV(code, sID, grades);
-                //u.sendEmailProcessed(testAddress, csv);
+                String csv = u.gradeCSV(code, sID, grades);
+                u.sendEmailProcessed(email, csv);
             }
             u.deleteAllFiles();
             Thread.sleep(300000);

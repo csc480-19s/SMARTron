@@ -3,54 +3,35 @@ import imaplib
 import os
 import smtplib
 import mimetypes
+import sendEmail
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
-
-def sendEmail(emailAddress):
-    fromaddr = 'smartron@cs.oswego.edu'
-
-    # email address the email will be sent to
-    toaddrs  = emailAddress
-    type(toaddrs)
-    msg = MIMEMultipart()
-    msg['Subject'] = 'Test'
-    msg['From'] = fromaddr
-    msg['To'] = toaddrs
-    text = "files have been recieved and are being processed"
-    part = MIMEText(text, 'plain')
-    msg.attach(part)
-    username = 'smartron'
-    password = ''
-    server = smtplib.SMTP('cs.oswego.edu')
-    server.ehlo()
-    server.starttls()
-    server.login(username,password)
-    server.sendmail(fromaddr, toaddrs, msg.as_string())
-    server.quit()
-    print("Email sent")
+from credentials import username as smartronUsername
+from credentials import password as smartronPassword
 
 class FetchEmail():
 
     connection = None
     error = None
 
+    # establish connection to the imap server and account
     def __init__(self, mail_server, username, password):
         self.connection = imaplib.IMAP4_SSL(mail_server)
         self.connection.login(username, password)
         # so we can mark mail as read
         self.connection.select(readonly=False) 
 
-    def fetch_unread_messages(self):
-        
-        # Retrieve unread messages
-
+    # Retrieve unread messages (self explanatory)
+    def fetch_unread_messages(self, download_folder, email_address):
         # select a folder in the email account
         self.connection.select('inbox')
         result, data = self.connection.search(None, '(NOT SEEN)')
         if result == "OK":
+            # print for testing
             print('Reading mail...')
             if data[0] == b'':
+                # print for testing
                 print('no new mail')
                 self.connection.close()
             email_message = None
@@ -72,7 +53,7 @@ class FetchEmail():
                             continue
                         fileName = part.get_filename()
                         if bool(fileName):
-                            filePath = os.path.join('Macintosh\ HD/Users/jondntryniski/480_emails', fileName)
+                            filePath = os.path.join(download_folder, fileName)
                             if not os.path.isfile(filePath) :
                                 fp = open(filePath, 'wb')
                                 fp.write(part.get_payload(decode=True))
@@ -85,8 +66,9 @@ class FetchEmail():
         else:
             print("Failed to retreive emails.")
             self.connection.close()
-        if count > 0:
-            sendEmail('ENTER EMAIL ADDRESS HERE')
+
+        #if count > 0:
+            #sendEmail.SendEmail.sendEmailOnFilesRecieved(email_address)
 
     
             
@@ -96,14 +78,16 @@ class Main(FetchEmail):
     def main():
         
         imap_host = 'cs.oswego.edu'
-        imap_user = 'smartron'
-        imap_pass = 'csc480'
-        download_folder = 'ENTER DOWNLOAD FOLDER DIRECTORY ADDRESS HERE'
+        imap_user = smartronUsername
+        imap_pass = smartronPassword
+        download_folder = '/images/'
 
         self = FetchEmail(imap_host,imap_user,imap_pass)
         
         if (self):
+            # print for testing
             print('Connection Successful')
-            FetchEmail.fetch_unread_messages(self)
+            # email address must be passed here in order to send
+            FetchEmail.fetch_unread_messages(self, download_folder,"PASS EMAIL ADDRESS HERE")
             
     if __name__ == "__main__": main()

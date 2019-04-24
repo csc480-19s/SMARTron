@@ -312,8 +312,13 @@ public class Utilities {
      * @param args Command line args
      */
     public static void main(String[] args) {
-        Utilities u = new Utilities();
-        u.deleteAllFiles();
+        try {
+            OrientTool ot = new OrientTool();
+            Utilities u = new Utilities();
+            ot.orient();
+        } catch (IOException ex) {
+            Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     //Takes MultiDimensional Array initiated by runGrader and puts it into a single String of Answers.
@@ -413,7 +418,7 @@ public class Utilities {
      * @throws IOException
      */
     public String gradeCSV(String name, List<String> ids, List<Float> grades) throws IOException {
-        File file = new File("src/main/python/" + name + ".csv");
+        File file = new File("src/main/python/csv/" + name + ".csv");
         PrintWriter pwriter = new PrintWriter(file);
         pwriter.write("Student ID's,Grades\n");
         for (int i = 0; i < ids.size(); i++) {
@@ -475,6 +480,7 @@ public class Utilities {
     public void deleteAllFiles() {
         String jpgs = "images/jpgs/";
         String pdfs = "images/pdfTest/";
+        String csvs = "src/main/python/csv/";
         String[] files = new File(jpgs).list();
         for (int i = 0; i < files.length; i++) {
             File f = new File(jpgs + files[i]);
@@ -483,6 +489,11 @@ public class Utilities {
         files = new File(pdfs).list();
         for (int i = 0; i < files.length; i++) {
             File f = new File(pdfs + files[i]);
+            f.delete();
+        }
+        files = new File(csvs).list();
+        for (int i = 0; i < files.length; i++) {
+            File f = new File(csvs + files[i]);
             f.delete();
         }
     }
