@@ -1,23 +1,11 @@
 package smartron.servlets;
-import Database.GenericDao;
-import GUIMiddleware.JSONBuilder;
-import com.google.gson.Gson;
-import smartron.entities.Exam;
-import smartron.entities.Professor;
-import smartron.entities.Question;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 

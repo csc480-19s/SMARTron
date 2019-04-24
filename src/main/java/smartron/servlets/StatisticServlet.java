@@ -20,8 +20,7 @@ public class StatisticServlet extends HttpServlet {
 
        List<String> lst = new ArrayList<>();
 
-       lst.add("Hello");
-       lst.add("World");
+       lst.add("Waiting for Statistics JSON");
 
         String questionJsonString = this.gson.toJson(lst);
 
