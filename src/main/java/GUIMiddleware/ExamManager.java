@@ -125,4 +125,8 @@ public class ExamManager {
     public List<Student> getStudentExams() {
         return studentExams;
     }
+
+    public List<Float> getStudentNumberGrades() {
+        return studentNumberGrades;
+    }
 }
