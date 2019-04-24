@@ -21,20 +21,18 @@ public class Grader {
 
         for (Student studentExam : studentExams) {
             numPoints = 0;
-            for (int j = 0; j < key.getAnswers().size(); j++) {
-                if (studentExam.getAnswers().size() > j) {
-                    if (studentExam.getAnswers().get(j) != null && key.getAnswers().get(j).contains(studentExam.getAnswers().get(j)) && !key.getAnswers().get(j).contains("-1")) {
-                        //Compares the jth  position in the answer array from ith studentExam to the key
-                        //It cannot equal "-1", that means the  answer is blank
-                        numPoints++;
-                        //Increments numPoints if it passes the conditions of the if statement
-                    }
-                    if (studentExam.getAnswers().get(j) != null)
-                        questions.get(j).increment(studentExam.getAnswers().get(j));
-                    //For the question number j on the test, the jth position in the question array will be adjusted
-                    //If the student has put "A" (we read "A" as 0) the "a" integer is incremented in that instance
-
+            for (int j = 0; j < studentExam.getAnswers().size(); j++) {
+                if (studentExam.getAnswers().get(j) != null && key.getAnswers().get(j).contains(studentExam.getAnswers().get(j)) && !key.getAnswers().get(j).contains("-1")) {
+                    //Compares the jth  position in the answer array from ith studentExam to the key
+                    //It cannot equal "-1", that means the  answer is blank
+                    numPoints++;
+                    //Increments numPoints if it passes the conditions of the if statement
                 }
+                if (studentExam.getAnswers().get(j) != null)
+                  questions.get(j).increment(studentExam.getAnswers().get(j));
+                //For the question number j on the test, the jth position in the question array will be adjusted
+                //If the student has put "A" (we read "A" as 0) the "a" integer is incremented in that instance
+
             }
             grades.add((float) numPoints / key.getAnswers().size() * 100);
             //This will calculate the grade for the exam at i
