@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class StudentCreater {
+public class StudentCreator {
 
     public Student makeStudent(String[][] answers, String[] StudentData) {
         List<String> answerTemp = new ArrayList<>();
