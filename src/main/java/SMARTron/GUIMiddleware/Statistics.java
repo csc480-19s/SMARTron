@@ -306,10 +306,14 @@ public class Statistics {
         BigDecimal vTest = overallVariance(examGrader(exams, answerKey, weight));
         BigDecimal numberOfQuestions = BigDecimal.valueOf(exams.get(0).size());
 
-        BigDecimal rightHand = BigDecimal.ONE.subtract((sigmaVI.divide(vTest, 128, RoundingMode.HALF_UP)));
-        BigDecimal leftHand = numberOfQuestions.divide((numberOfQuestions.subtract(BigDecimal.ONE)), 128, RoundingMode.HALF_UP);
+        try {
+            BigDecimal rightHand = BigDecimal.ONE.subtract((sigmaVI.divide(vTest, 128, RoundingMode.HALF_UP)));
+            BigDecimal leftHand = numberOfQuestions.divide((numberOfQuestions.subtract(BigDecimal.ONE)), 128, RoundingMode.HALF_UP);
+            return rightHand.multiply(leftHand);
 
-        return rightHand.multiply(leftHand);
+        } catch (ArithmeticException e) {
+            return BigDecimal.ONE;
+        }
     }
     /* This method uses many other methods in this class to, in this order:
      * Calculate the Grade on each question of each exam, using the exam data, the answer key, and a weight.
@@ -401,11 +405,15 @@ public class Statistics {
         BigDecimal overallVariance = overallVariance(examGrader(exams, answerKey, weight));
         BigDecimal meanScore = meanInteger(examGrader(exams, answerKey, weight));
         BigDecimal meanWeight = meanInteger(weight);
+        
+        try {
+            BigDecimal leftHand = numberOfQuestions.divide(numberOfQuestions.subtract(BigDecimal.ONE), 128, RoundingMode.HALF_UP);
+            BigDecimal rightHand = BigDecimal.ONE.subtract((meanScore.multiply((numberOfQuestions.subtract((meanScore)))).divide((numberOfQuestions.multiply((overallVariance))), 128, RoundingMode.HALF_UP)));
+            return ((leftHand.multiply(rightHand, MathContext.UNLIMITED)).divide(meanWeight, 128, RoundingMode.HALF_UP));
 
-        BigDecimal leftHand = numberOfQuestions.divide(numberOfQuestions.subtract(BigDecimal.ONE), 128, RoundingMode.HALF_UP);
-        BigDecimal rightHand = BigDecimal.ONE.subtract((meanScore.multiply((numberOfQuestions.subtract((meanScore)))).divide((numberOfQuestions.multiply((overallVariance))), 128, RoundingMode.HALF_UP)));
-
-        return ((leftHand.multiply(rightHand, MathContext.UNLIMITED)).divide(meanWeight, 128, RoundingMode.HALF_UP));
+        } catch (ArithmeticException e) {
+            return BigDecimal.ONE;
+        }
     }
     /* This method does, in this order:
      * Calculates the number of questions (n)
@@ -434,10 +442,14 @@ public class Statistics {
             sigmaPxQ = ((sigmaPxQ.add(a)));
         }
 
-        BigDecimal leftHand = (numberOfQuestions).divide((numberOfQuestions.subtract(BigDecimal.ONE)), 128, RoundingMode.HALF_UP);
-        BigDecimal rightHand = (BigDecimal.ONE.subtract((sigmaPxQ.divide((overallVariance), 128, RoundingMode.HALF_UP))));
+        try {
+            BigDecimal leftHand = (numberOfQuestions).divide((numberOfQuestions.subtract(BigDecimal.ONE)), 128, RoundingMode.HALF_UP);
+            BigDecimal rightHand = (BigDecimal.ONE.subtract((sigmaPxQ.divide((overallVariance), 128, RoundingMode.HALF_UP))));
+            return ((leftHand.multiply(rightHand)).divide(meanWeight, 128, RoundingMode.HALF_UP));
 
-        return ((leftHand.multiply(rightHand)).divide(meanWeight, 128, RoundingMode.HALF_UP));
+        } catch (ArithmeticException e) {
+            return BigDecimal.ONE;
+        }
     }
     /* This method does, in this order:
      * Calculates the number of questions (n)
