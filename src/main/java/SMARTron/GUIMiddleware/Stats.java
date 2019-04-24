@@ -12,7 +12,7 @@ public class Stats {
     private List<Integer> scores = new ArrayList<>();
     private List<String> key = new ArrayList<>();
     private List<Integer> weight = new ArrayList<>();
-    private String min, max, mean, range, median, variance, standardDeviation, kr20, kr21, cronbach = "";
+    private String min, max, mean, range, median, variance, standardDeviation, kr20, kr21, cronbach, lowestScore, highestScore = "";
 
     public void getStats(){
         min = Integer.toString(lowestScore(scores));
@@ -20,13 +20,15 @@ public class Stats {
         mean = meanInteger(scores).toString();
         range = Integer.toString(rangeOfScores(scores));
         median = Integer.toString(median(scores));
-        //variance = overallVariance(scores).toString();
+        variance = overallVariance(scores).toString();
+        lowestScore = lowestScore(scores);
+        highestScore = highestScore(scores);
 
         MathContext m = new MathContext(2);
 
-        //kr20 = kuderRichardson20(exams, key, weight).round(m).toString();
-        //kr21 = kuderRichardson21(exams, key, weight).round(m).toString();
-        //cronbach = cronbachsAlpha(exams, key, weight).round(m).toString();
+        kr20 = kuderRichardson20(exams, key, weight).round(m).toString();
+        kr21 = kuderRichardson21(exams, key, weight).round(m).toString();
+        cronbach = cronbachsAlpha(exams, key, weight).round(m).toString();
     }
 
     //This runs the stats and sets the class variables to the results
