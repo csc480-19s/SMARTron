@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../css/answerkey.css';
 import Header from '../components/Header';
+
 class AnswerKey extends Component{
 constructor(){
   super();
@@ -111,7 +112,7 @@ xhr.send(data);
               <button className= "float"
                      onClick={() => this.handleSubmit()}>Submit</button>
             </div>
-          <Header email={this.props.location.state.email}/>
+          <Header history={this.props.history} email={this.props.location.state.email}/>
 
       </div>
 
