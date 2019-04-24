@@ -22,7 +22,6 @@ constructor(){
 }
 
 componentDidMount(){
-  //http://localhost:3000/answerkey?examId
   fetch(`http://pi.cs.oswego.edu:13126/answerkey?examId=${this.props.location.state.id}&instId=${this.props.location.state.email}`)
   .then(response => response.json())
   .then(result => {
