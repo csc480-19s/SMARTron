@@ -87,7 +87,7 @@ public class JSONBuilder {
 
         for (int i = 0; i < questions.size(); i++){
             JSONObject ent = new JSONObject();
-            ent.put("questionNumber", i++);
+            ent.put("questionNumber", i + 1);
             ent.put("data", questions.get(i).returnList());
             arr.add(ent);
         }

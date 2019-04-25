@@ -22,7 +22,7 @@ public class Grader {
         for (Student studentExam : studentExams) {
             numPoints = 0;
             for (int j = 0; j < studentExam.getAnswers().size(); j++) {
-                if (studentExam.getAnswers().get(j) != null && key.getAnswers().get(j).contains(studentExam.getAnswers().get(j)) && !key.getAnswers().get(j).contains("-1")) {
+                if (studentExam.getAnswers().size() > j) {
                     //Compares the jth  position in the answer array from ith studentExam to the key
                     //It cannot equal "-1", that means the  answer is blank
                     numPoints++;
