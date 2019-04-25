@@ -425,7 +425,7 @@ public class Utilities {
             pwriter.write(ids.get(i) + "," + grades.get(i) + "\n");
         }
         pwriter.close();
-        return "src/main/python/" + name + ".csv";
+        return "src/main/python/csv/" + name + ".csv";
     }
 
     /**
