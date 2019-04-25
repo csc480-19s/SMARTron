@@ -199,7 +199,7 @@ public class Stats {
         for (BigDecimal score : scores) {
             total = total.add(score);
         }
-        return total.divide(BigDecimal.valueOf(scores.size()));
+        return total.divide(BigDecimal.valueOf(scores.size()), 8, RoundingMode.HALF_UP);
     }
     /* Takes in a List of BigDecimals and calculates the mean, outputs a BigDecimal */
 
@@ -208,7 +208,7 @@ public class Stats {
         for (Integer score : scores) {
             total += score;
         }
-        return BigDecimal.valueOf(total).divide(BigDecimal.valueOf(scores.size()),4, RoundingMode.HALF_UP);
+        return BigDecimal.valueOf(total).divide(BigDecimal.valueOf(scores.size()),8, RoundingMode.HALF_UP);
     }
     /* Takes in a List of Integers and calculates the mean, outputs a BigDecimal */
 
@@ -310,7 +310,7 @@ public class Stats {
     static List<BigDecimal> divisionOfData(List<BigDecimal> input, int divisor) {
         List<BigDecimal> output = new ArrayList<>();
         for (int i = 0; i < input.size(); i++) {
-            output.add(input.get(i).divide(BigDecimal.valueOf(divisor), 16384, RoundingMode.HALF_UP));
+            output.add(input.get(i).divide(BigDecimal.valueOf(divisor), 8, RoundingMode.HALF_UP));
         }
         return output;
     }
@@ -338,8 +338,8 @@ public class Stats {
         BigDecimal vTest = overallVariance(examGrader(exams, answerKey, weight));
         BigDecimal numberOfQuestions = BigDecimal.valueOf(exams.get(0).size()).subtract(BigDecimal.valueOf(0));
 
-        BigDecimal rightHand = BigDecimal.ONE.subtract((sigmaVI.divide(vTest,RoundingMode.HALF_UP)));
-        BigDecimal leftHand = numberOfQuestions.divide((numberOfQuestions.subtract(BigDecimal.ONE)), 32768, RoundingMode.HALF_UP);
+        BigDecimal rightHand = BigDecimal.ONE.subtract((sigmaVI.divide(vTest, 8, RoundingMode.HALF_UP)));
+        BigDecimal leftHand = numberOfQuestions.divide((numberOfQuestions.subtract(BigDecimal.ONE)), 8, RoundingMode.HALF_UP);
 
         return rightHand.multiply(leftHand);
     }
@@ -402,7 +402,7 @@ public class Stats {
                     currentProportion = (currentProportion.add(BigDecimal.ONE));
                 }
             }
-            proportionPassingByQuestion.add(currentProportion.divide(BigDecimal.valueOf(exams.size()), 16384, RoundingMode.HALF_UP));
+            proportionPassingByQuestion.add(currentProportion.divide(BigDecimal.valueOf(exams.size()), 8, RoundingMode.HALF_UP));
         }
         return proportionPassingByQuestion;
     }
@@ -420,7 +420,7 @@ public class Stats {
                     currentProportion = (currentProportion.add(BigDecimal.ONE));
                 }
             }
-            proportionFailingByQuestion.add((currentProportion.divide((BigDecimal.valueOf(exams.size())), 16384, RoundingMode.HALF_UP)));
+            proportionFailingByQuestion.add((currentProportion.divide((BigDecimal.valueOf(exams.size())), 8, RoundingMode.HALF_UP)));
         }
         return proportionFailingByQuestion;
     }
@@ -434,10 +434,10 @@ public class Stats {
         BigDecimal meanScore = meanInteger(examGrader(exams, answerKey, weight));
         BigDecimal meanWeight = meanInteger(weight);
 
-        BigDecimal leftHand = numberOfQuestions.divide(numberOfQuestions.subtract(BigDecimal.ONE), 16384, RoundingMode.HALF_UP);
-        BigDecimal rightHand = BigDecimal.ONE.subtract((meanScore.multiply((numberOfQuestions.subtract((meanScore)))).divide((numberOfQuestions.multiply((overallVariance))), 32768, RoundingMode.HALF_UP)));
+        BigDecimal leftHand = numberOfQuestions.divide(numberOfQuestions.subtract(BigDecimal.ONE), 8, RoundingMode.HALF_UP);
+        BigDecimal rightHand = BigDecimal.ONE.subtract((meanScore.multiply((numberOfQuestions.subtract((meanScore)))).divide((numberOfQuestions.multiply((overallVariance))), 8, RoundingMode.HALF_UP)));
 
-        return ((leftHand.multiply(rightHand, MathContext.UNLIMITED)).divide(meanWeight, 16384, RoundingMode.HALF_UP));
+        return ((leftHand.multiply(rightHand, MathContext.UNLIMITED)).divide(meanWeight, 8, RoundingMode.HALF_UP));
     }
     /* This method does, in this order:
      * Calculates the number of questions (n)
@@ -466,10 +466,10 @@ public class Stats {
             sigmaPxQ = ((sigmaPxQ.add(a)));
         }
 
-        BigDecimal leftHand = (numberOfQuestions).divide((numberOfQuestions.subtract(BigDecimal.ONE)), 16384, RoundingMode.HALF_UP);
-        BigDecimal rightHand = (BigDecimal.ONE.subtract((sigmaPxQ.divide((overallVariance), 16384, RoundingMode.HALF_UP))));
+        BigDecimal leftHand = (numberOfQuestions).divide((numberOfQuestions.subtract(BigDecimal.ONE)), 8, RoundingMode.HALF_UP);
+        BigDecimal rightHand = (BigDecimal.ONE.subtract((sigmaPxQ.divide((overallVariance), 8, RoundingMode.HALF_UP))));
 
-        return ((leftHand.multiply(rightHand)).divide(meanWeight, 16384, RoundingMode.HALF_UP));
+        return ((leftHand.multiply(rightHand)).divide(meanWeight, 8, RoundingMode.HALF_UP));
     }
     /* This method does, in this order:
      * Calculates the number of questions (n)
@@ -540,7 +540,7 @@ public class Stats {
                 }
             }
 
-            percentiles.add((numberLessThan.divide(BigDecimal.valueOf(scores.size()), 128, RoundingMode.HALF_UP)).multiply(BigDecimal.valueOf(100)).toString().substring(0, 5));
+            percentiles.add((numberLessThan.divide(BigDecimal.valueOf(scores.size()), 8, RoundingMode.HALF_UP)).multiply(BigDecimal.valueOf(100)).toString().substring(0, 5));
         }
 
         return percentiles;
@@ -556,9 +556,9 @@ public class Stats {
         BigDecimal second = new BigDecimal(Math.sqrt(input.doubleValue()));
         while (!first.equals(second)) {
             first = second;
-            second = input.divide(first, 128, RoundingMode.HALF_UP);
+            second = input.divide(first, 8, RoundingMode.HALF_UP);
             second = second.add(first);
-            second = second.divide(BigDecimal.valueOf(2), 128, RoundingMode.HALF_UP);
+            second = second.divide(BigDecimal.valueOf(2), 8, RoundingMode.HALF_UP);
 
         }
         return second;
@@ -593,7 +593,7 @@ public class Stats {
         if(sortedScores.size() % 2 == 0)
             median = BigDecimal.valueOf(sortedScores.get(medianIndex))
                     .add(BigDecimal.valueOf(sortedScores.get(medianIndex - 1)))
-                    .divide(BigDecimal.valueOf(2));
+                    .divide(BigDecimal.valueOf(2), 8, RoundingMode.HALF_UP);
         else
             median = BigDecimal.valueOf(sortedScores.get(medianIndex));
 
@@ -605,10 +605,10 @@ public class Stats {
         thirdQuartileIndex = (scores.size() + medianIndex) / 2;
         firstQuartile = BigDecimal.valueOf(sortedScores.get(firstQuartileIndex))
                 .add(BigDecimal.valueOf(sortedScores.get(firstQuartileIndex + 1)))
-                .divide(BigDecimal.valueOf(2), 1, RoundingMode.HALF_UP);
+                .divide(BigDecimal.valueOf(2), 8, RoundingMode.HALF_UP);
         thirdQuartile = BigDecimal.valueOf(sortedScores.get(thirdQuartileIndex))
                 .add(BigDecimal.valueOf(sortedScores.get(thirdQuartileIndex + 1)))
-                .divide(BigDecimal.valueOf(2), 1, RoundingMode.HALF_UP);
+                .divide(BigDecimal.valueOf(2), 8, RoundingMode.HALF_UP);
 
         result.add(firstQuartile);
         result.add(median);
