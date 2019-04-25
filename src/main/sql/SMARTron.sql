@@ -1,4 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS `scantron` ;
+CREATE SCHEMA IF NOT EXISTS scantron` ;
 
 CREATE TABLE IF NOT EXISTS scantron.instructor (
     instructor_id VARCHAR(200) NOT NULL,
