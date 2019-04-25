@@ -2,9 +2,11 @@ package SMARTron.GUIMiddleware;
 
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.util.*;
 import java.math.BigDecimal;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class Stats {
 
@@ -12,23 +14,25 @@ public class Stats {
     private List<Integer> scores = new ArrayList<>();
     private List<String> key = new ArrayList<>();
     private List<Integer> weight = new ArrayList<>();
-    private String min, max, mean, range, median, variance, standardDeviation, kr20, kr21, cronbach, lowestScore, highestScore = "";
+    private String min, max, mean, range, median, variance, standardDeviation, kr20, kr21, cronbach = "";
+    private List<List<String>> frequency = new ArrayList<>();
+    private List<String> percentiles = new ArrayList<>();
 
     public void getStats(){
+        MathContext m = new MathContext(2);
+
         min = Integer.toString(lowestScore(scores));
         max = Integer.toString(highestScore(scores));
         mean = meanInteger(scores).toString();
         range = Integer.toString(rangeOfScores(scores));
         median = Integer.toString(median(scores));
         variance = overallVariance(scores).toString();
-        lowestScore = lowestScore(scores);
-        highestScore = highestScore(scores);
-
-        MathContext m = new MathContext(2);
-
+        standardDeviation = String.valueOf(overallVariance(scores).sqrt(MathContext.DECIMAL64));
         kr20 = kuderRichardson20(exams, key, weight).round(m).toString();
         kr21 = kuderRichardson21(exams, key, weight).round(m).toString();
         cronbach = cronbachsAlpha(exams, key, weight).round(m).toString();
+        frequency = questionFrequency(exams);
+        percentiles = percentiles(scores);
     }
 
     //This runs the stats and sets the class variables to the results
@@ -68,6 +72,19 @@ public class Stats {
     public String getCronbach(){
         return cronbach;
     }
+
+    public String getDeviation() {
+        return standardDeviation;
+    }
+
+    public List<List<String>> getFrequency() {
+        return frequency;
+    }
+
+    public List<String> getPercentiles() {
+        return percentiles;
+    }
+
 
     public void setScores(List<Integer> scores, List<String> key, List<Student> students){
         this.scores = scores;
@@ -468,6 +485,72 @@ public class Stats {
      * Note that this statistic is not completely accurate unless the exam is entirely 1 point questions
      * Should be between 0 and 1 but can be negative when you are a really bad test maker and your students are also really bad ツ */
 
+    static List<List<String>> questionFrequency(List<List<String>> exams) {
+        List<List<String>> questionFrequency = new ArrayList<>();
+
+        for (int i = 0; i < exams.get(0).size(); i++) {
+            List<String> templist = new ArrayList<>();
+
+            int a = 0;
+            int b = 0;
+            int c = 0;
+            int d = 0;
+            int e = 0;
+
+            for (int j = 0; j < exams.size(); j++) {
+
+                if (exams.get(j).get(i).equals("0")) {
+                    a++;
+                } else if (exams.get(j).get(i).equals("1")) {
+                    b++;
+                } else if (exams.get(j).get(i).equals("2")) {
+                    c++;
+                } else if (exams.get(j).get(i).equals("3")) {
+                    d++;
+                } else if (exams.get(j).get(i).equals("4")) {
+                    e++;
+                }
+            }
+
+            templist.add(String.valueOf(a));
+            templist.add(String.valueOf(b));
+            templist.add(String.valueOf(c));
+            templist.add(String.valueOf(d));
+            templist.add(String.valueOf(e));
+
+            questionFrequency.add(templist);
+        }
+        return questionFrequency;
+    }
+    /* This method takes in the List<List<Strings>> that are the exams in the form of exams<question<answer>> and the answers are in 01234 format,
+     * and returns a List<List<String>> which is the question<choice<frequency>> of the exam.
+     * For example, questionFrequency(exams).get(5).get(3) will give you an integer corresponding to question 6 choice D frequency.
+     * Remember that a 200 question exam is indexed 0-199 */
+
+    static List<String> percentiles(List<Integer> scores) {
+
+        List<String> percentiles = new ArrayList<>();
+
+        for (int i = 0; i < scores.size(); i++) {
+            BigDecimal numberLessThan = BigDecimal.ZERO;
+
+            for (int j = 0; j < scores.size(); j++) {
+                if (scores.get(j) < scores.get(i)) {
+                    numberLessThan = numberLessThan.add(BigDecimal.ONE);
+                }
+            }
+
+            percentiles.add((numberLessThan.divide(BigDecimal.valueOf(scores.size()), 128, RoundingMode.HALF_UP)).multiply(BigDecimal.valueOf(100)).toString().substring(0, 5));
+        }
+
+        return percentiles;
+    }
+    /* This method takes in a List<Integer> corresponding to the scores and returns a list of BigDecimals corresponding
+     * to that exam's percentile.
+     * For example, percentiles(scores).get(5) will give you the 6th exam's percentile.
+     * Remember index 0-1999 for a 2000 count exam.
+     */
+
     /**
      * Creates a list of quartiles for a given list of scores.
      * @param scores list of scores to compute quartiles for
@@ -517,6 +600,8 @@ public class Stats {
         result.add(thirdQuartile);
         return result;
     }
+
+
     /**
      * Calculates an estimate of the square root of <code>s</code> within a given error threshold.
      * @param s the number to calculate the square root of.
