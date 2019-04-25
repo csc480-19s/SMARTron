@@ -27,7 +27,7 @@ public class Stats {
         range = Integer.toString(rangeOfScores(scores));
         median = Integer.toString(median(scores));
         variance = overallVariance(scores).toString();
-        standardDeviation = String.valueOf(overallVariance(scores).sqrt(MathContext.DECIMAL64));
+        standardDeviation = String.valueOf(squareRoot(overallVariance(scores)));
         kr20 = kuderRichardson20(exams, key, weight).round(m).toString();
         kr21 = kuderRichardson21(exams, key, weight).round(m).toString();
         cronbach = cronbachsAlpha(exams, key, weight).round(m).toString();
@@ -551,6 +551,21 @@ public class Stats {
      * Remember index 0-1999 for a 2000 count exam.
      */
 
+    static BigDecimal squareRoot(BigDecimal input) {
+        BigDecimal first = new BigDecimal("0");
+        BigDecimal second = new BigDecimal(Math.sqrt(input.doubleValue()));
+        while (!first.equals(second)) {
+            first = second;
+            second = input.divide(first, 128, RoundingMode.HALF_UP);
+            second = second.add(first);
+            second = second.divide(BigDecimal.valueOf(2), 128, RoundingMode.HALF_UP);
+
+        }
+        return second;
+    }
+    /* This method takes in a BigDecimal as input and returns the square root of the BigDecimal */
+
+
     /**
      * Creates a list of quartiles for a given list of scores.
      * @param scores list of scores to compute quartiles for
@@ -600,6 +615,7 @@ public class Stats {
         result.add(thirdQuartile);
         return result;
     }
+
 
 
     /**
