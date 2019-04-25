@@ -507,13 +507,23 @@ public class Statistics {
      * For example, questionFrequency(exams).get(5).get(3) will give you an integer corresponding to question 6 choice D frequency.
      * Remember that a 200 question exam is indexed 0-199 */
 
-    static BigDecimal standardDeviation(List<Integer> scores) {
-        return overallVariance(scores).sqrt(MathContext.DECIMAL64);
+    static BigDecimal squareRoot(BigDecimal input) {
+        BigDecimal first = new BigDecimal("0");
+        BigDecimal second = new BigDecimal(Math.sqrt(input.doubleValue()));
+        while (!first.equals(second)) {
+            first = second;
+            second = input.divide(first, 8, RoundingMode.HALF_UP);
+            second = second.add(first);
+            second = second.divide(BigDecimal.valueOf(2), 8, RoundingMode.HALF_UP);
+
+        }
+        return second;
     }
-    /* Standard Deviation is the square root of the Overall Variance of test scores.
-     * This method takes in the List<Integers> of scores and performs the Overall Variance on it,
-     * and then square roots it.
-     * Returns this value */
+    /* This method takes in a BigDecimal as input and returns the square root of the BigDecimal */
+
+    static BigDecimal standardDeviation(List<Integer> scores) {
+        return squareRoot(overallVariance(scores));
+    }
 
     static List<BigDecimal> percentiles(List<Integer> scores) {
 
