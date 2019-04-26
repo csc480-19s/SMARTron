@@ -177,7 +177,13 @@ public class Stats {
                     if (!(exams.get(i).get(j).contains(c))) {
                         matchesAll = false;
                     }
-                    System.out.println("matchesAll " + matchesAll);
+                    if (exams.get(i).get(j).equals("error")) {
+                        matchesAll = false;
+                    }
+                    if (exams.get(i).get(j).equals("-1")) {
+                        matchesAll = false;
+                    }
+                    //System.out.println("matchesAll " + matchesAll);
                 }
                 if (matchesAll) {
                     examScore += weight.get(j);
@@ -239,9 +245,22 @@ public class Stats {
         List<List<Integer>> examGradesByQuestion = new ArrayList<>();
         for (int i = 0; i < exams.size(); i++) {
             List<Integer> examScore = new ArrayList<>();
-            for (int j = 45; j < answerKey.size(); j++) {
-                if (exams.get(i).get(j).equals(answerKey.get(j))) {
-                    examScore.add(weight.get(j-45));
+            for (int j = 0; j < answerKey.size(); j++) {
+                boolean matchesAll = true;
+                for (int k = 0; k < answerKey.get(j).length(); k++) {
+                    CharSequence c = "" + answerKey.get(j).charAt(k);
+                    if (!(exams.get(i).get(j).contains(c))) {
+                        matchesAll = false;
+                    }
+                    if (exams.get(i).get(j).equals("error")) {
+                        matchesAll = false;
+                    }
+                    if (exams.get(i).get(j).equals("-1")) {
+                        matchesAll = false;
+                    }
+                }
+                if (matchesAll) {
+                    examScore.add(weight.get(j));
                 } else {
                     examScore.add(0);
                 }
