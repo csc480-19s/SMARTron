@@ -170,7 +170,16 @@ public class Stats {
         for (int i = 0; i < exams.size(); i++) {
             int examScore = 0;
             for (int j = 0; j < answerKey.size(); j++) {
-                if (exams.get(i).get(j).equals(answerKey.get(j))) {
+                boolean matchesAll = true;
+                //if (exams.get(i).get(j).equals(answerKey.get(j))) {
+                for (int k = 0; k < answerKey.get(j).length(); k++) {
+                    CharSequence c = "" + answerKey.get(j).charAt(k);
+                    if (!(exams.get(i).get(j).contains(c))) {
+                        matchesAll = false;
+                    }
+                    System.out.println("matchesAll " + matchesAll);
+                }
+                if (matchesAll) {
                     examScore += weight.get(j);
                 }
             }
