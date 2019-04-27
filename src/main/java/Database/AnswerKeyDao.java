@@ -13,7 +13,7 @@ public class AnswerKeyDao {
 	private static String INSERT_ANSWER_KEY = "insert into answerkey (exam_id, instructor_id, answers) "
 			+ "values (?, ?, ?)";
 
-	private static String UPDATED_ANSWER_KEY = "";
+	private static String UPDATED_ANSWER_KEY = "update answerkey set updated_answers = ? where exam_id = ?";
 
 	private static String DELETE_ANSWER_KEY = "delete from answerkey where exam_id = ?";
 
