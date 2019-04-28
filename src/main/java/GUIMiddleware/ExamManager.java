@@ -129,4 +129,16 @@ public class ExamManager {
     public List<Float> getStudentNumberGrades() {
         return studentNumberGrades;
     }
+
+    public List<String> getStudentLetterGrades() {
+        return studentLetterGrades;
+    }
+
+    public List<Integer> getStudentGradesForStats() {
+        return studentGradesForStats;
+    }
+
+    public Stats getstats(){
+        return stats;
+    }
 }
