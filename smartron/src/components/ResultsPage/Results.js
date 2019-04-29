@@ -14,10 +14,11 @@ class Results extends Component {
     render() {
         return (
             <div>
-                <Header history={this.props.history} email={this.props.location.state.email}/>
                 <h1 style={{ color: '#00ccbc', paddingLeft: '50px' }}>Results</h1>
                 <p style={{ color: '#00ccbc', paddingLeft: '50px' }}>{this.props.location.state.text}</p>
                 <Center><Tabs /></Center>
+                <Header history={this.props.history} email={this.props.location.state.email}/>
+
             </div>
 
         );
