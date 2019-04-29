@@ -33,7 +33,6 @@ class Home extends Component {
             var ex1 = []
             var ex2 = []
             const email = this.props.location.state.email
-            console.log(`pi.cs.oswego.edu:13126/exam?em=${email}`)
             fetch(`http://pi.cs.oswego.edu:13126/exam?em=${email}`)
                 .then(response => response.json())
                 .then(result =>{
@@ -42,13 +41,22 @@ class Home extends Component {
                                                         email={this.props.location.state.email} text={exam.examName} scanCode={exam.examCode}
                                                         history={this.props.history}/>)
 
-                    )); this.setState(this.state)
-                })
-            console.log(this.state.exams)
+                    )); this.setState(this.state);
 
-            this.state.exams = ex2
-            this.state.exams2= ex2.reverse()
-                this.setState(this.state)
+                    var tmp = []
+
+                    console.log(this.state.exams)
+                    var len = this.state.exams.length
+                    console.log(len)
+                    for (let i = (len-1); i >= 0; i--) {
+                        tmp.push(this.state.exams[i])
+                    }
+                    console.log(tmp)
+                    this.state.exams2= tmp
+                    console.log(this.state.exams2)
+                    this.setState(this.state)
+                })
+
 
     }
 
@@ -78,14 +86,17 @@ class Home extends Component {
 
     }
     sort(){
-        var tmp = this.state.swap
+        var tmp =
         this.state.swap = !tmp
+
+
         this.setState(this.state)
     }
     resetNewTest(){
         this.state.newName = ""
         this.state.newNum = ""
         this.setState(this.state)
+        this.forceUpdate()
     }
 
     render() {
@@ -130,10 +141,9 @@ class Home extends Component {
                             </div>
                         }
                     </Popup>
-                    <select className={"select"} onChange={this.sort}><option value={"recent"}>Most Recent </option> <option value={"alpha"}>Alphanumeric</option></select>
+                    <select className={"select"} onChange={this.sort}><option value={"recent"}>Newest First </option> <option value={"alpha"}>Oldest First</option></select>
                 </div>
-                {this.state.swap ? <ExamList loginName={this.props.location.state.loginName} email={this.props.location.state.email} exams={this.state.exams} history={this.props.history}>{this.state.exams}</ExamList> : <ExamList loginName={this.props.location.state.loginName} email={this.props.location.state.email} exams={this.state.exams} history={this.props.history}>{this.state.exams2}</ExamList>}
-
+              <ExamList loginName={this.props.location.state.loginName} email={this.props.location.state.email} exams={this.state.exams2} history={this.props.history}>{this.state.swap ? this.state.exams2 : this.state.exams}</ExamList>
                 <Header history={this.props.history} email={this.props.location.state.email}/>
             </div>
         );
@@ -142,3 +152,19 @@ class Home extends Component {
 }
 
 export default Home;
+/*ex2.sort(function(a,b){
+                console.log("hey")
+                if(a.loginName>b.loginName){
+                    console.log(a.loginName + "> " + b.loginName)
+                    return 1
+                }else if(a.loginName<b.loginName){
+                    console.log(a.loginName + "< " + b.loginName)
+                    return -1
+                }else{
+                    console.log(a.loginName + "== " + b.loginName)
+                    return 0
+                }
+            })*/
+
+/* {this.state.swap ? <ExamList loginName={this.props.location.state.loginName} email={this.props.location.state.email} exams={this.state.exams2} history={this.props.history}>{this.state.exams2}</ExamList> : <ExamList loginName={this.props.location.state.loginName} email={this.props.location.state.email} exams={this.state.exams} history={this.props.history}>{this.state.exams}</ExamList>}
+*/
