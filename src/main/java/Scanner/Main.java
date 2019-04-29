@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The Main class of the Scanner side of engine This part should run
@@ -16,7 +18,7 @@ import java.util.Random;
  * @author Vincent Dinh
  */
 public class Main {
-    
+
     public static void main(String[] args) throws IOException, InterruptedException {
         Utilities u = new Utilities();
         OrientTool ot = new OrientTool();
@@ -25,7 +27,7 @@ public class Main {
         CourseDao courDao = new CourseDao();
         ExamDao examDao = new ExamDao();
         GenericDao gDao = new GenericDao();
-        
+
         while (true) {
             u.RetrieveEmails();
             u.changeDirectory();
@@ -102,7 +104,7 @@ public class Main {
                             }
                         }
                     }
-                    int count = 0;
+                    //int count = 0;
                     if (!realCode) {
                         code = "!real";
                     }
@@ -111,38 +113,45 @@ public class Main {
                     for (int i = 0; i < exams.size(); i++) {
                         sID.add(exams.get(i).getId());
                         grades.add(exams.get(i).getExamGrade());
-                        boolean notInserted = true;
-                        boolean validName = false;
-                        int vCount = 0;
-                        while (notInserted && vCount < 9) {
-                            try {
-                                if (exams.get(i).getId() != null && !exams.get(i).getId().equals("") && !exams.get(i).getId().equals("..........")) {
-                                    if (validName) {
-                                        vCount++;
-                                        String o = "" + new Random().nextInt(10);
-                                        examDao.addExam(exams.get(i).getName(), exams.get(i).getName(),
-                                                o + exams.get(i).getId().substring(vCount), "Fall18", exams.get(i).getBirthday(), crn, instructID, code,
-                                                Arrays.toString(exams.get(i).getAnswers().toArray()));
-                                        vCount = 0;
-                                    } else {
-                                        validName = true;
-                                        examDao.addExam(exams.get(i).getName(), exams.get(i).getName(),
-                                                exams.get(i).getId(), "Fall18", exams.get(i).getBirthday(), crn, instructID, code,
-                                                Arrays.toString(exams.get(i).getAnswers().toArray()));
-                                    }
-                                } else {
-                                    examDao.addExam(exams.get(i).getName(), exams.get(i).getName(),
-                                            "NONE" + count, "Fall18", exams.get(i).getBirthday(), crn, instructID, code,
-                                            Arrays.toString(exams.get(i).getAnswers().toArray()));
-                                    count++;
-                                }
-                                notInserted = false;
-                            } catch (Exception ex) {
-                                if (!validName) {
-                                    count++;
-                                }
-                                //ex.printStackTrace();
-                            }
+                        try {
+                            examDao.addExam(exams.get(i).getName(), exams.get(i).getName(),
+                                    exams.get(i).getId(), "*", exams.get(i).getBirthday(), crn, instructID, code,
+                                    Arrays.toString(exams.get(i).getAnswers().toArray()));
+                            //boolean notInserted = true;
+                            //boolean validName = false;
+                            //int vCount = 0;
+//                        while (notInserted && vCount < 9) {
+//                            try {
+//                                if (exams.get(i).getId() != null && !exams.get(i).getId().equals("") && !exams.get(i).getId().equals("..........")) {
+//                                    if (validName) {
+//                                        vCount++;
+//                                        String o = "" + new Random().nextInt(10);
+//                                        examDao.addExam(exams.get(i).getName(), exams.get(i).getName(),
+//                                                o + exams.get(i).getId().substring(vCount), "Fall18", exams.get(i).getBirthday(), crn, instructID, code,
+//                                                Arrays.toString(exams.get(i).getAnswers().toArray()));
+//                                        vCount = 0;
+//                                    } else {
+//                                        validName = true;
+//                                        examDao.addExam(exams.get(i).getName(), exams.get(i).getName(),
+//                                                exams.get(i).getId(), "Fall18", exams.get(i).getBirthday(), crn, instructID, code,
+//                                                Arrays.toString(exams.get(i).getAnswers().toArray()));
+//                                    }
+//                                } else {
+//                                    examDao.addExam(exams.get(i).getName(), exams.get(i).getName(),
+//                                            "NONE" + count, "Fall18", exams.get(i).getBirthday(), crn, instructID, code,
+//                                            Arrays.toString(exams.get(i).getAnswers().toArray()));
+//                                    count++;
+//                                }
+//                                notInserted = false;
+//                            } catch (Exception ex) {
+//                                if (!validName) {
+//                                    count++;
+//                                }
+//                                //ex.printStackTrace();
+//                            }
+//                        }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
                     }
                     String csv = u.gradeCSV(code, sID, grades);
