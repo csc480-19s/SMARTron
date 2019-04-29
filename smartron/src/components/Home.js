@@ -69,7 +69,10 @@ class Home extends Component {
         this.setState({newName: event.target.value});
     }
     handleNum(event) {
-        this.setState({newNum: event.target.value});
+        if(!isNaN(event.target.value)){
+            this.setState({newNum: event.target.value});
+        }
+
     }
     sort(){
         var tmp = this.state.swap
