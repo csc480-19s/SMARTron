@@ -66,7 +66,10 @@ class Home extends Component {
         this.setState(this.state)
     }
     handleName(event) {
-        this.setState({newName: event.target.value});
+        if(event.target.value.length<21){
+            this.setState({newName: event.target.value});
+
+        }
     }
     handleNum(event) {
         if(!isNaN(event.target.value)){
