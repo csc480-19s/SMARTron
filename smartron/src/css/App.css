@@ -174,4 +174,13 @@
   margin-top: 1.5%;
   float: right;
   justify-content: center;
+
+}
+
+.closeButton {
+  position: absolute;
+  font-size: xx-large;
+  cursor: pointer;
+  right: 0px;
+  top: -15px;
 }

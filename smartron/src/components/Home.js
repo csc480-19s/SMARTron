@@ -96,7 +96,7 @@ class Home extends Component {
                     <Popup  onClose={this.resetNewTest} onOpen={this.generateCode} modal trigger={<button   className={"scanButton"}>New Test Scan</button>}>
                         {close =>
                             <div className={"modal"}>
-
+                                <a className={"closeButton"} onClick={close}> &times; </a>
                                 <h1> New Test Scan</h1>
                                 <form>
                                     <label> Enter name of test: <input name={"newName"} value={this.state.newName}
