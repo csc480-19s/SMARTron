@@ -115,28 +115,6 @@ class ExamManagerTest extends Specification {
         afte == 100
     }
 
-    def "fail getExamGrades from selected answer out of scantron range 0-4"() {
-        //adding two exams simply to check multiple inserts into the list
-        String[][] first = [['5','3','3','3','4'],['1','2','0','0','2'],['0','1','2','1','3'],['2','0','3','3','2'],['0','1','2','3','1'],
-                            ['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],
-                            ['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],
-                            ['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1']]
-        String[] second = ['10', '15', '14', '4', '14', '0', '20', '18', '25', '14', '9', '19', '11', '9', '0', '13', '0', '0', '0', '0', '13', '1', '1', '1', '7', '9', '2', '8', '0', '3', '0', '4', '3', '9', '7', '4', '1', '2', '3', '4', '5', '6', '0']
-        em.addStudentExam(first, second)
-        when:
-        int before = em.getStudentNumberGrades().size()
-        int befor = em.getKey().answers.size()
-        Class aClass = em.getClass()
-        Method method = aClass.getDeclaredMethod("getExamGrades")
-        method.setAccessible(true)
-        method.invoke(em)
-        int after = em.getStudentNumberGrades().size()
-        int afte = em.getKey().answers.size()
-
-        then:
-        thrown Exception
-    }
-
     def "fail getExamGrades from studentExams not being a properly formatted 2-d array of strings"() {
         //adding two exams simply to check multiple inserts into the list
         String[][] first = [['a few strings','to break','this'],['method','in','testing']]
