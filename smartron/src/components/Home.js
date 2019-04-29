@@ -28,10 +28,6 @@ class Home extends Component {
 
     }
     componentDidMount() {
-        if(this.props.location.state.exams.length>0){
-            this.state.exams = this.props.location.state.exams
-            this.setState(this.state)
-        }else {
 
             this.setState(this.state)
             var ex1 = []
@@ -53,7 +49,7 @@ class Home extends Component {
             this.state.exams = ex2
             this.state.exams2= ex2.reverse()
                 this.setState(this.state)
-        }
+
     }
 
 
