@@ -27,16 +27,10 @@ public class Main {
         MiddlewareInterface mi = new MiddlewareInterface();
 
         for (int i = 1; i < ls.size(); i++) {
-            System.out.println(ls.get(i));
             mi.addStudentExam(ls.get(i));
-
         }
 
         mi.getGrades();
-
-
-
-
         //        try(FileWriter f = new FileWriter("test.json")){
     }
 }

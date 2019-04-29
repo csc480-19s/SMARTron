@@ -128,6 +128,10 @@ public class JSONBuilder {
         ret.put("kr20", stats.getKr20());
         ret.put("kr21", stats.getKr21());
         ret.put("cronbach", stats.getCronbach());
+        ret.put("questionFrequency", stats.getFrequency());
+        ret.put("percentile", stats.getPercentiles());
+        //ret.put("deviation", stats.getDeviation());
+        ret.put("standardDeviation", stats.getDeviation());
 
         try(FileWriter f = new FileWriter("Stats.txt")){
             f.write(ret.toString());
@@ -136,13 +140,13 @@ public class JSONBuilder {
             e.printStackTrace();
         }
     }
-//    public String getBystats() throws FileNotFoundException {
-//        File studentpage = new File("Bystats.txt");
-//        Scanner studentPageScanner = new Scanner(studentpage);
-//        String studentPageEndpointString = studentPageScanner.nextLine();
-//
-//        return studentPageEndpointString;
-//    }
+    public String getBystats() throws FileNotFoundException {
+        File studentpage = new File("Stats.txt");
+        Scanner studentPageScanner = new Scanner(studentpage);
+        String studentPageEndpointString = studentPageScanner.nextLine();
+
+        return studentPageEndpointString;
+    }
 
     public void buildMainpageJSON() {
 
