@@ -65,6 +65,25 @@ class ExamManagerTest extends Specification {
 
     }
 
+    def "successful getExamID"() {
+        when:
+        String[][] first = [['4','3','3','3','4'],['1','2','0','0','2'],['0','1','2','1','3'],['2','0','3','3','2'],['0','1','2','3','1'],
+                            ['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],
+                            ['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],
+                            ['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1'],['-1','-1','-1','-1','-1']]
+        String[] second = ['10', '15', '14', '4', '14', '0', '20', '18', '25', '14', '9', '19', '11', '9', '0', '13', '0', '0', '0', '0', '13', '1', '1', '1', '7', '9', '2', '8', '0', '3', '0', '4', '3', '9', '7', '4', '1', '2', '3', '4', '5', '6', '0']
+        em.addStudentExam(first, second)
+        Class aClass = em.getClass()
+        Method method = aClass.getDeclaredMethod("getExamID")
+        method.setAccessible(true)
+        method.invoke(em)
+        String id = em.getExamId()
+
+        then:
+        id.compareTo("") != 0
+        //simply copies a string from a student object into this one
+    }
+
     def "get exam grades"() {
         //adding two exams simply to check multiple inserts into the list
         String[][] first = [['4','3','3','3','4'],['1','2','0','0','2'],['0','1','2','1','3'],['2','0','3','3','2'],['0','1','2','3','1'],
@@ -532,9 +551,10 @@ class ExamManagerTest extends Specification {
         int afte = em.getKey().answers.size()
         List<String> grades = em.getStudentLetterGrades()
         List<Integer> grade = em.getStudentGradesForStats()
+        String id = em.getExamId()
         List<Student> students = em.getStudentExams()
 
-        //Stats stats = em.getstats()
+        //Stats stats = mi.getstats()
         //This line is commented out because the relevant code it would test is currently commented out. Unsure if needed
 
         then:
@@ -544,6 +564,7 @@ class ExamManagerTest extends Specification {
         afte == 100
         grades.size() == 1
         grade.size() == 1
+        id.compareTo("") != 0
         students.size() == 1
         students.get(0).getLetterGrade() == 'D'
         students.get(0).getExamGrade() == 64.0
@@ -575,9 +596,10 @@ class ExamManagerTest extends Specification {
         int afte = em.getKey().answers.size()
         List<String> grades = em.getStudentLetterGrades()
         List<Integer> grade = em.getStudentGradesForStats()
+        String id = em.getExamId()
         List<Student> students = em.getStudentExams()
 
-        //Stats stats = em.getstats()
+        //Stats stats = mi.getstats()
         //This line is commented out because the relevant code it would test is currently commented out. Unsure if needed
 
         then:
@@ -610,9 +632,10 @@ class ExamManagerTest extends Specification {
         int afte = em.getKey().answers.size()
         List<String> grades = em.getStudentLetterGrades()
         List<Integer> grade = em.getStudentGradesForStats()
+        String id = em.getExamId()
         List<Student> students = em.getStudentExams()
 
-        //Stats stats = em.getstats()
+        //Stats stats = mi.getstats()
         //This line is commented out because the relevant code it would test is currently commented out. Unsure if needed
 
         then:

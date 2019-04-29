@@ -141,4 +141,8 @@ public class ExamManager {
     public Stats getstats(){
         return stats;
     }
+
+    public String getExamId(){
+        return examID;
+    }
 }

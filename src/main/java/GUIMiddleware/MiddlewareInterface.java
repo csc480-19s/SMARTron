@@ -127,4 +127,32 @@ public class MiddlewareInterface {
 
     }
     //This makes the json for the gui
+
+    public List<Float> getStudentNumberGrades() {
+        return studentNumberGrades;
+    }
+
+    public List<String> getStudentLetterGrades() {
+        return studentLetterGrades;
+    }
+
+    public List<Integer> getStudentGradesForStats() {
+        return studentGradesForStats;
+    }
+
+    public Stats getstats(){
+        return stats;
+    }
+
+    public String getExamId(){
+        return examID;
+    }
+
+    public List<Student> getStudentExams() {
+        return studentExams;
+    }
+
+    public Student getKey() {
+        return key;
+    }
 }
