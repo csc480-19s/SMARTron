@@ -123,7 +123,7 @@ public class MiddlewareInterface {
         jsonBuilder.buildAnswerKeyJSON(this.key);
         jsonBuilder.buildByStudentJSON(this.studentExams);
         jsonBuilder.buildByQuestion(this.grader.getStatsByQuestion());
-        //jsonBuilder.buildStatsJSON(stats);
+        jsonBuilder.buildStatsJSON(stats);
 
     }
     //This makes the json for the gui

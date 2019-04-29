@@ -70,7 +70,7 @@ public class AnswerkeyServlet extends HttpServlet {
 
 		gson = new Gson();
 		questionJsonString = gson.toJson(keyList);
-		System.out.println("Size of KeyList" + keyList.size());
+
 		PrintWriter out = response.getWriter();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
