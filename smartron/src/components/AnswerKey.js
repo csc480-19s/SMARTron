@@ -110,6 +110,8 @@ xhr.send(data);
                   </div>
               <button className= "float"
                      onClick={() => this.handleSubmit()}>Submit</button>
+          <button className= "float2"
+                  onClick={() => this.props.history.push({pathname:'/home',state:{loginName:this.props.location.state.loginName,email:this.props.location.state.email}})}>Return Home</button>
             </div>
           <Header history={this.props.history} email={this.props.location.state.email}/>
 
