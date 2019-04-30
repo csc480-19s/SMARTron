@@ -62,6 +62,7 @@ public class NameChangeServlet extends HttpServlet {
 
             PrintWriter out = response.getWriter();
            out.println(oldName + " " + id + " " + nameOfTest );
+           conn.close();
 
         }catch (Exception e){
             e.printStackTrace();

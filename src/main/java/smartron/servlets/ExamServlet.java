@@ -71,6 +71,7 @@ public class ExamServlet extends HttpServlet {
                 }
                 out.print(this.gson.toJson(professor));
                 out.flush();
+                conn.close();
             }
 
 
@@ -117,7 +118,7 @@ public class ExamServlet extends HttpServlet {
             stmt.executeUpdate("insert into answerkey (exam_id,instructor_id,exam_name) values ('"+ id + "','" + instructorId +"','" + nameOfTest +"')");
             PrintWriter out = response.getWriter();
             out.println(email + " " + id + " " + nameOfTest );
-
+            conn.close();
         }catch (Exception e){
             e.printStackTrace();
         }
