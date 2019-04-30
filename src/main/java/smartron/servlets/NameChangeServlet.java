@@ -15,6 +15,8 @@ public class NameChangeServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	Connection conn = null;
+	
 	@Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response){
         try{
@@ -23,7 +25,7 @@ public class NameChangeServlet extends HttpServlet {
             String nameOfTest = request.getParameter("name");
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            Connection conn = DataSource.getInstance().getBasicDataSource().getConnection();
+            conn = DataSource.getInstance().getBasicDataSource().getConnection();
 
             String sql = "select * from answerkey where exam_id=?";
             PreparedStatement checkStatement = conn.prepareStatement(sql);
@@ -59,6 +61,15 @@ public class NameChangeServlet extends HttpServlet {
 
         }catch (Exception e){
             e.printStackTrace();
+        } finally {
+        	if (conn != null) {
+        		try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
         }
 
     }

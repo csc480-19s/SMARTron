@@ -24,6 +24,7 @@ public class ExamServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Gson gson = new Gson();
 
+	Connection conn = null;
 
 
     @Override
@@ -37,7 +38,7 @@ public class ExamServlet extends HttpServlet {
         professor.setName(request.getParameter("nm"));
         try{
         	// Gets a connection using the datasource class and a loaded in db.properties file
-            Connection conn = DataSource.getInstance().getBasicDataSource().getConnection();
+            conn = DataSource.getInstance().getBasicDataSource().getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("select instructor_id from instructor where inst_email='" + lakerNetEmail+"'");
             PrintWriter out = response.getWriter();
@@ -71,6 +72,15 @@ public class ExamServlet extends HttpServlet {
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("Error Selecting");
+        } finally {
+        	if (conn != null) {
+        		try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
         }
     }
     @Override
@@ -81,7 +91,7 @@ public class ExamServlet extends HttpServlet {
             String nameOfTest = request.getParameter("name");
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            Connection conn = DataSource.getInstance().getBasicDataSource().getConnection();
+            conn = DataSource.getInstance().getBasicDataSource().getConnection();
             Statement stmt = conn.createStatement();
             String sql = "select instructor_id from instructor where inst_email=?";
             PreparedStatement checkStatement = conn.prepareStatement(sql);
@@ -104,6 +114,15 @@ public class ExamServlet extends HttpServlet {
 
         }catch (Exception e){
             e.printStackTrace();
+        } finally {
+        	if (conn != null) {
+        		try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
         }
 
     }
