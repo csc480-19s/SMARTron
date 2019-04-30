@@ -1,10 +1,11 @@
 package smartron.servlets;
 
 import com.google.gson.Gson;
+
+import Database.DataSource;
 import smartron.entities.Exam;
 import smartron.entities.Professor;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,12 +15,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.io.InputStream;
-import java.util.Properties;
 
 
 public class ExamServlet extends HttpServlet {
-     private Gson gson = new Gson();
+     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Gson gson = new Gson();
 
 
 
@@ -28,22 +31,13 @@ public class ExamServlet extends HttpServlet {
             HttpServletRequest request,
             HttpServletResponse response) throws IOException {
         Professor professor = new Professor();
-        List<Exam> exams = new ArrayList<>();
-
-        ServletContext context = getServletContext();
-        InputStream is = context.getResourceAsStream("db.properties");
-        Properties props = new Properties();
-        props.load(is);
-        String url = props.getProperty("url");
-        String user = props.getProperty("user");
-        String pass = props.getProperty("password");
-
+        
         String lakerNetEmail = request.getParameter("em").split("@")[0];
         professor.setEmail(lakerNetEmail);
         professor.setName(request.getParameter("nm"));
         try{
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url,user,pass);
+        	// Gets a connection using the datasource class and a loaded in db.properties file
+            Connection conn = DataSource.getInstance().getBasicDataSource().getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("select instructor_id from instructor where inst_email='" + lakerNetEmail+"'");
             PrintWriter out = response.getWriter();
@@ -52,7 +46,6 @@ public class ExamServlet extends HttpServlet {
             List<String> list = new ArrayList<>();
             while (rs.next()){
                 list.add(rs.getString(1));
-
             }
             if(list.size()==0){
 
@@ -83,21 +76,12 @@ public class ExamServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response){
         try{
-            ServletContext context = getServletContext();
-            InputStream is = context.getResourceAsStream("db.properties");
-            Properties props = new Properties();
-            props.load(is);
-            String url = props.getProperty("url");
-            String user = props.getProperty("user");
-            String pass = props.getProperty("password");
-
             String email = request.getParameter("email").split("@")[0];
             String id = request.getParameter("id");
             String nameOfTest = request.getParameter("name");
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url,user,pass);
+            Connection conn = DataSource.getInstance().getBasicDataSource().getConnection();
             Statement stmt = conn.createStatement();
             String sql = "select instructor_id from instructor where inst_email=?";
             PreparedStatement checkStatement = conn.prepareStatement(sql);

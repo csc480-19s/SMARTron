@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+
 public class AnswerKeyDao {
 
 	// Query Strings for the methods
@@ -21,12 +23,16 @@ public class AnswerKeyDao {
 
 	private static String SELECT_UPDATED_ANSWER_KEY = "select updated_answers from answerkey where exam_id = ? and "
 			+ "instructor_id = ?";
+	
+	private static String SELECT_INSTRUCTOR_ID = "select instructor_id from answerkey where exam_id = ?";
 
 	// Standard connection properties for the class
 	Connection con = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
 
+	BasicDataSource basicDS = DataSource.getInstance().getBasicDataSource();
+	
 	List<String> list = new ArrayList<String>();
 
 	/**
@@ -43,7 +49,7 @@ public class AnswerKeyDao {
 	 * @throws Exception
 	 */
 	private Connection getConnection() throws Exception {
-		return ConnectionFactory.getInstance().getConnection();
+		return basicDS.getConnection();
 	}
 
 	/**
@@ -189,5 +195,27 @@ public class AnswerKeyDao {
 		} catch (SQLException e) {
 			throw new Exception("Could not close the connections to the database");
 		}
+	}
+	
+	/**
+	 * Returns the Instructor Id based off of the exam id
+	 * @param examId
+	 * @return
+	 * @throws Exception
+	 */
+	public String getInstructorId(String examId) throws Exception {
+		String instId = "";
+		try {
+			con = getConnection();
+			ps = con.prepareStatement(SELECT_INSTRUCTOR_ID);
+			ps.setString(1, examId);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				instId = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			throw new Exception("Could not get the instructor id from the answerkey table.");
+		}
+		return instId;
 	}
 }

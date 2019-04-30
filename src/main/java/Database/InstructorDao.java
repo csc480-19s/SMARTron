@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+
 public class InstructorDao {
 
 	// Query Strings for the methods
@@ -17,12 +19,16 @@ public class InstructorDao {
 	
 	private static String SELECT_INSTRUCTOR = "select instructor_id from instructor where inst_first_name = ? "
 			+ "and inst_last_name = ?";
+	
+	private static String SELECT_INST_EMAIL = "select instructor_id from instructor where inst_email = ?";
 
 	// Standard connection properties for the class
 	Connection con = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
 
+	BasicDataSource basicDS = DataSource.getInstance().getBasicDataSource();
+	
 	List<String> list = new ArrayList<String>();
 	
 	public InstructorDao() {
@@ -36,7 +42,7 @@ public class InstructorDao {
 	 * @throws Exception 
 	 */
 	private Connection getConnection() throws Exception {
-		return ConnectionFactory.getInstance().getConnection();
+		return basicDS.getConnection();
 	}
 
 	/**
@@ -125,5 +131,28 @@ public class InstructorDao {
 		} catch (SQLException e) {
 			throw new Exception("Could not close the connections to the database");
 		}
+	}
+	
+	/**
+	 * Retrieve the Instructor Id from the database based off of the Instructor's email
+	 * @param email
+	 * @return
+	 * @throws Exception
+	 */
+	public String getInstIdFromEmail (String email) throws Exception {
+		String instId = null;
+		try {
+			con = getConnection();
+			ps = con.prepareStatement(SELECT_INST_EMAIL);
+			ps.setString(1, email);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				instId = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			throw new Exception("Could not retrieve the instructor id from the instructor table");
+		}
+		return instId;
+		
 	}
 }
