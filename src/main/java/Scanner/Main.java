@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The Main class of the Scanner side of engine This part should run
@@ -61,91 +63,100 @@ public class Main {
                 } catch (Exception ex) {
                     //ex.printStackTrace();
                 }
-                String email = instructID + "@oswego.edu";
-                u.sendEmailReceived(email);
+                if (instructID != null && !instructID.equals("")) {
+                    String email = instructID + "@oswego.edu";
+                    u.sendEmailReceived(email);
 //            try {
 //                instDao.addInstructor(instructID, "Bastian", "Tenbergen");
 //            } catch (Exception ex) {
 //                //ex.printStackTrace();
 //            }
-                boolean realCode = false;
-                try {
-                    if (code.length() == 5) {
-                        realCode = true;
-                        //ansKDao.addAnswerKey(code, instructID, Arrays.toString(ansKey.getAnswers().toArray()));
-                        ansKDao.addUpdatedAnswerKey(code, Arrays.toString(ansKey.getAnswers().toArray()));
-                    } else {
-                        //ansKDao.addAnswerKey("XCVBS", instructID, Arrays.toString(ansKey.getAnswers().toArray()));
-                    }
-                } catch (Exception ex) {
-                    //ex.printStackTrace();
-                }
-                boolean in = false;
-                String crn = "";
-                try {
-                    crn = gDao.select("select course_crn from course where instructor_id = \"" + instructID + "\"").get(0);
-                } catch (Exception ex) {
-                    //ex.printStackTrace();
-                }
-                if (crn.equals("")) {
-                    while (!in) {
-                        for (int c = 0; c < 5; c++) {
-                            crn = crn + ((char) (new Random().nextInt(26) + 65));
+                    boolean realCode = false;
+                    try {
+                        if (code.length() == 5) {
+                            realCode = true;
+                            //ansKDao.addAnswerKey(code, instructID, Arrays.toString(ansKey.getAnswers().toArray()));
+                            ansKDao.addUpdatedAnswerKey(code, Arrays.toString(ansKey.getAnswers().toArray()));
+                        } else {
+                            //ansKDao.addAnswerKey("XCVBS", instructID, Arrays.toString(ansKey.getAnswers().toArray()));
                         }
-                        try {
-                            courDao.addCourse(crn, "Bastian's FunHouse", "810", "Fall18", instructID);
-                            in = true;
-                        } catch (Exception ex) {
-                            crn = "";
-                            //ex.printStackTrace();
-                        }
+                    } catch (Exception ex) {
+                        //ex.printStackTrace();
                     }
-                }
-                int count = 0;
-                if (!realCode) {
-                    code = "!real";
-                }
-                List<String> sID = new ArrayList<String>();
-                List<Float> grades = new ArrayList<Float>();
-                for (int i = 0; i < exams.size(); i++) {
-                    sID.add(exams.get(i).getId());
-                    grades.add(exams.get(i).getExamGrade());
-                    boolean notInserted = true;
-                    boolean validName = false;
-                    int vCount = 0;
-                    while (notInserted && vCount < 9) {
-                        try {
-                            if (exams.get(i).getId() != null && !exams.get(i).getId().equals("") && !exams.get(i).getId().equals("..........")) {
-                                if (validName) {
-                                    vCount++;
-                                    String o = "" + new Random().nextInt(10);
-                                    examDao.addExam(exams.get(i).getName(), exams.get(i).getName(),
-                                            o + exams.get(i).getId().substring(vCount), "Fall18", exams.get(i).getBirthday(), crn, instructID, code,
-                                            Arrays.toString(exams.get(i).getAnswers().toArray()));
-                                    vCount = 0;
-                                } else {
-                                    validName = true;
-                                    examDao.addExam(exams.get(i).getName(), exams.get(i).getName(),
-                                            exams.get(i).getId(), "Fall18", exams.get(i).getBirthday(), crn, instructID, code,
-                                            Arrays.toString(exams.get(i).getAnswers().toArray()));
-                                }
-                            } else {
-                                examDao.addExam(exams.get(i).getName(), exams.get(i).getName(),
-                                        "NONE" + count, "Fall18", exams.get(i).getBirthday(), crn, instructID, code,
-                                        Arrays.toString(exams.get(i).getAnswers().toArray()));
-                                count++;
+                    boolean in = false;
+                    String crn = "";
+                    try {
+                        crn = gDao.select("select course_crn from course where instructor_id = \"" + instructID + "\"").get(0);
+                    } catch (Exception ex) {
+                        //ex.printStackTrace();
+                    }
+                    if (crn.equals("")) {
+                        while (!in) {
+                            for (int c = 0; c < 5; c++) {
+                                crn = crn + ((char) (new Random().nextInt(26) + 65));
                             }
-                            notInserted = false;
-                        } catch (Exception ex) {
-                            if (!validName) {
-                                count++;
+                            try {
+                                courDao.addCourse(crn, "Bastian's FunHouse", "810", "Fall18", instructID);
+                                in = true;
+                            } catch (Exception ex) {
+                                crn = "";
+                                //ex.printStackTrace();
                             }
-                            //ex.printStackTrace();
                         }
                     }
+                    //int count = 0;
+                    if (!realCode) {
+                        code = "!real";
+                    }
+                    List<String> sID = new ArrayList<String>();
+                    List<Float> grades = new ArrayList<Float>();
+                    for (int i = 0; i < exams.size(); i++) {
+                        sID.add(exams.get(i).getId());
+                        grades.add(exams.get(i).getExamGrade());
+                        try {
+                            examDao.addExam(exams.get(i).getName(), exams.get(i).getName(),
+                                    exams.get(i).getId(), "*", exams.get(i).getBirthday(), crn, instructID, code,
+                                    Arrays.toString(exams.get(i).getAnswers().toArray()));
+                            //boolean notInserted = true;
+                            //boolean validName = false;
+                            //int vCount = 0;
+//                        while (notInserted && vCount < 9) {
+//                            try {
+//                                if (exams.get(i).getId() != null && !exams.get(i).getId().equals("") && !exams.get(i).getId().equals("..........")) {
+//                                    if (validName) {
+//                                        vCount++;
+//                                        String o = "" + new Random().nextInt(10);
+//                                        examDao.addExam(exams.get(i).getName(), exams.get(i).getName(),
+//                                                o + exams.get(i).getId().substring(vCount), "Fall18", exams.get(i).getBirthday(), crn, instructID, code,
+//                                                Arrays.toString(exams.get(i).getAnswers().toArray()));
+//                                        vCount = 0;
+//                                    } else {
+//                                        validName = true;
+//                                        examDao.addExam(exams.get(i).getName(), exams.get(i).getName(),
+//                                                exams.get(i).getId(), "Fall18", exams.get(i).getBirthday(), crn, instructID, code,
+//                                                Arrays.toString(exams.get(i).getAnswers().toArray()));
+//                                    }
+//                                } else {
+//                                    examDao.addExam(exams.get(i).getName(), exams.get(i).getName(),
+//                                            "NONE" + count, "Fall18", exams.get(i).getBirthday(), crn, instructID, code,
+//                                            Arrays.toString(exams.get(i).getAnswers().toArray()));
+//                                    count++;
+//                                }
+//                                notInserted = false;
+//                            } catch (Exception ex) {
+//                                if (!validName) {
+//                                    count++;
+//                                }
+//                                //ex.printStackTrace();
+//                            }
+//                        }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                    String csv = u.gradeCSV(code, sID, grades);
+                    u.sendEmailProcessed(email, csv);
                 }
-                String csv = u.gradeCSV(code, sID, grades);
-                u.sendEmailProcessed(email, csv);
             }
             u.deleteAllFiles();
             Thread.sleep(300000);
