@@ -31,6 +31,10 @@ class Exam extends Component{
         const his = this.props.history
         // createBrowserHistory().push("/results");
         this.props.history.push({pathname:"/results",state:{id:this.state.exid, text:this.state.title1 ,loginName:this.props.loginName,exams:this.props.list,email:this.props.email}});
+
+        fetch(`http://pi.cs.oswego.edu:13126/result?examID=${this.state.exid}&instID=${this.props.email}`, {
+            method: 'post'
+        })
     }
 
     navAnswerKey(){
