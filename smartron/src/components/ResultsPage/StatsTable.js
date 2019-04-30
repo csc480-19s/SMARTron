@@ -7,30 +7,39 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import statsJSON from '../../JSON/Statistics';
 
 const styles = theme => ({
     root: {
-        width: '50%',
+        width: '80%',
         marginTop: theme.spacing.unit * 3,
         overflowX: 'auto',
     },
     table: {
-        minWidth: 100,
+        minWidth: 500,
     },
 });
 
 let id = 0;
-function createData(grade, percent) {
+function createData(mean, median, max, min, range, deviation, variance, kr20, kr21, cronbach) {
     id += 1;
-    return { grade, percent };
+    return { mean, median, max, min, range, deviation, variance, kr20, kr21, cronbach };
 }
 
-const data = [];
+const rows = [];
 
-statsJSON.gradeDistribution.forEach((stat) => {
-    data.push(createData(stat.grade, stat.percent));
-});
+// statsJSON.gradeDistribution.forEach((stat) => {
+//     data.push(createData(stat.grade, stat.percent));
+// });
+
+fetch('http://pi.cs.oswego.edu:13126/statistics')
+    .then((res) => res.json())
+    .then((responseJson) => {
+        rows.push(createData(responseJson.mean, responseJson.median, responseJson.max, responseJson.min, responseJson.range, 
+            responseJson.deviation, responseJson.variance, responseJson.kr20, responseJson.kr21, responseJson.cronbach));
+    })
+    .catch((error) => {
+        console.error(error);
+    });
 
 function StatsTable(props) {
 
@@ -41,17 +50,47 @@ function StatsTable(props) {
             <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
-                        <TableCell align="center">Grade</TableCell>
-                        <TableCell align="center">Percent Score</TableCell>
+                        <TableCell align="center">Mean</TableCell>
+                        <TableCell align="center">Median</TableCell>
+                        <TableCell align="center">Max</TableCell>
+                        <TableCell align="center">Min</TableCell>
+                        <TableCell align="center">Range</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map(row => (
+                    {rows.map(row => (
                         <TableRow key={row.id}>
                             <TableCell component="th" scope="row">
-                                {row.grade}
+                                {row.mean}
                             </TableCell>
-                            <TableCell align="center">{row.percent}</TableCell>
+                            <TableCell align="center">{row.median}</TableCell>
+                            <TableCell align="center">{row.max}</TableCell>
+                            <TableCell align="center">{row.min}</TableCell>
+                            <TableCell align="center">{row.range}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+            <Table className={classes.table}>
+                <TableHead>
+                    <TableRow>
+                        <TableCell align="center">Standard Deviation</TableCell>
+                        <TableCell align="center">Variance</TableCell>
+                        <TableCell align="center">Kuder-Richardson-20</TableCell>
+                        <TableCell align="center">Kuder-Richardson-21</TableCell>
+                        <TableCell align="center">Cronbach</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {rows.map(row => (
+                        <TableRow key={row.id}>
+                            <TableCell component="th" scope="row">
+                                {row.deviation}
+                            </TableCell>
+                            <TableCell align="center">{row.variance}</TableCell>
+                            <TableCell align="center">{row.kr20}</TableCell>
+                            <TableCell align="center">{row.kr21}</TableCell>
+                            <TableCell align="center">{row.cronbach}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

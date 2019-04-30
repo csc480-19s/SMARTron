@@ -91,7 +91,7 @@ class CenteredTabs extends React.Component {
                         <Center><StatsTable /></Center>
                         <p> </p>
                         <Center>
-                            <BarChart width={700} height={200} data={data1}>
+                            {/* <BarChart width={700} height={200} data={data1}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="grade" />
                                 <YAxis />
@@ -102,7 +102,7 @@ class CenteredTabs extends React.Component {
                                         data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
                                     }
                                 </Bar>
-                            </BarChart>
+                            </BarChart> */}
                         </Center>
                     </TabContainer>
                     <TabContainer dir={theme.direction}>
