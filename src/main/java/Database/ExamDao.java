@@ -31,7 +31,7 @@ public class ExamDao {
 	
 	BasicDataSource basicDS = DataSource.getInstance().getBasicDataSource();
 
-	List<String> list = new ArrayList<String>();
+	List<String> list;
 	
 	public ExamDao() {
 
@@ -113,6 +113,7 @@ public class ExamDao {
 	 */
 	public List<String> selectExamId(String examId, String instId, String stdntId, String crn, String sem)
 			throws Exception {
+		list  = new ArrayList<String>();
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(SELECT_EXAM);
@@ -159,9 +160,7 @@ public class ExamDao {
 	 * @throws Exception
 	 */
 	public List<String> selectStudents(String instId, String examId) throws Exception {
-
-		List<String> list = new ArrayList<String>();
-
+		list = new ArrayList<String>();
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(SELECT_STUDENTS);

@@ -33,7 +33,7 @@ public class AnswerKeyDao {
 
 	BasicDataSource basicDS = DataSource.getInstance().getBasicDataSource();
 	
-	List<String> list = new ArrayList<String>();
+	List<String> list;
 
 	/**
 	 * Answer Key Object

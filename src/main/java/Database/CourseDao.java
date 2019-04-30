@@ -30,7 +30,7 @@ public class CourseDao {
 
 	BasicDataSource basicDS = DataSource.getInstance().getBasicDataSource();
 	
-	List<String> list = new ArrayList<String>();
+	List<String> list;
 
 	public CourseDao() {
 
@@ -110,6 +110,7 @@ public class CourseDao {
 	 * @throws Exception
 	 */
 	public List<String> selectCourse(String crn, String section, String semester, String instId) throws Exception {
+		list  = new ArrayList<String>();
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(SELECT_COURSE);
@@ -154,7 +155,7 @@ public class CourseDao {
 	 * @throws Exception
 	 */
 	public List<String> selectCrn(String instId) throws Exception {
-		List<String> list = new ArrayList<String>();
+		list = new ArrayList<String>();
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(SELECT_CRN);

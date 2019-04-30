@@ -29,7 +29,7 @@ public class InstructorDao {
 
 	BasicDataSource basicDS = DataSource.getInstance().getBasicDataSource();
 	
-	List<String> list = new ArrayList<String>();
+	List<String> list;
 	
 	public InstructorDao() {
 
@@ -97,6 +97,7 @@ public class InstructorDao {
 	 * @throws Exception 
 	 */
 	public List<String> selectInstructor(String firstName, String lastName) throws Exception {
+		list  = new ArrayList<String>();
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(SELECT_INSTRUCTOR);
