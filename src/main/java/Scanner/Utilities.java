@@ -55,7 +55,7 @@ public class Utilities {
 
         File file2 = new File("images/");
         String[] arraytemp = file2.list();
-        Arrays.parallelSort(arraytemp);
+        Arrays.sort(arraytemp);
         for (int a = 0; a < arraytemp.length; a++) {
             System.out.println(arraytemp[a].substring(arraytemp[a].length() - 3, arraytemp[a].length()));
             int length = arraytemp[a].length();
@@ -70,7 +70,7 @@ public class Utilities {
         File file = new File("images/pdfTest/");
         int i = file.list().length;
         String[] array = file.list();
-        Arrays.parallelSort(array);
+        Arrays.sort(array);
         for (int j = 0; j < array.length; j++) {
             String fileName = array[j];
             PDDocument document = PDDocument.load(new File("images/pdfTest/" + array[j]));
@@ -218,7 +218,7 @@ public class Utilities {
     public List<List<List<List<String>>>> runScanner() {
         File dir = new File("images/jpgs");
         String[] filesInDir = dir.list();
-        Arrays.parallelSort(filesInDir);
+        Arrays.sort(filesInDir);
         List<List<List<List<String>>>> arr = new ArrayList<List<List<List<String>>>>();
         List<String> examNames = new ArrayList<String>();
         List<List<String>> examNumbers = new ArrayList<List<String>>();
@@ -315,6 +315,7 @@ public class Utilities {
         try {
             OrientTool ot = new OrientTool();
             Utilities u = new Utilities();
+            u.pdf2jpeg();
             ot.orient();
         } catch (IOException ex) {
             Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);

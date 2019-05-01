@@ -64,9 +64,13 @@ public class Student {
         this.birthday = stringScanner.next();
         this.id = stringScanner.next();
         this.code = stringScanner.next();
-
         while(stringScanner.hasNext()){
-            answers.add(stringScanner.next());
+            String temp = stringScanner.next();
+            if(temp.charAt(0) == ' '){
+                answers.add(temp.substring(1));
+            }else{
+                answers.add(temp);
+            }
         }
     }
 
@@ -156,7 +160,6 @@ public class Student {
 
         obj.put("name", this.name);
         obj.put("grade", this.letterGrade);
-        //obj.put("points", this.numPoints);
         obj.put("percent", this.examGrade);
 
         return obj;
