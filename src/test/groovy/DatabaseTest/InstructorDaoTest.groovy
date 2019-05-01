@@ -74,7 +74,7 @@ class   InstructorDaoTest extends Specification {//TODO: possibly look into deri
         beforeList.size() == 0
         afterList.size() == 0
 
-        when: "the instructor was in the database"//this is problematic... (1) first run inst not deleted<bug!> (2) run again and exception thrown since inst still in database
+        when: "the instructor was in the database"//this is problematic... (1) first run inst not deleted<bug?> (2) run again and exception thrown since inst still in database
         instDao.addInstructor(instID, instFName, instLName)
         beforeList = instDao.selectInstructor(instFName, instLName)
         instDao.deleteInstructor(instID)
@@ -110,7 +110,7 @@ class   InstructorDaoTest extends Specification {//TODO: possibly look into deri
         given:
         InstructorDao instDao = new InstructorDao()
 
-        when: "empty string"
+        when: "empty string"//returns [""], is this intened?
         def list = instDao.selectInstructor("", "")
         then:"nothing happens, nothing returned"
         list.size() == 0
