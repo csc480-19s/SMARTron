@@ -89,6 +89,7 @@ public class ExamServlet extends HttpServlet {
             String email = request.getParameter("email").split("@")[0];
             String id = request.getParameter("id");
             String nameOfTest = request.getParameter("name");
+            String number = request.getParameter("num");
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             conn = DataSource.getInstance().getBasicDataSource().getConnection();
@@ -100,7 +101,7 @@ public class ExamServlet extends HttpServlet {
             ResultSet rs =checkStatement.executeQuery();
             if(!rs.next()){
                 instructorId =email;
-                stmt.executeUpdate("insert into instructor (instructor_id,inst_email) values ('" + email + "','" + email + "')");
+                stmt.executeUpdate("insert into instructor (instructor_id,inst_email,answer_key_length) values ('" + email + "','" + email + "','" + number + "')");
             }
             else {
                 rs.beforeFirst();
