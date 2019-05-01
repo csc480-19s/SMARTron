@@ -124,6 +124,8 @@ public class CourseDao {
 			}
 		} catch (SQLException e) {
 			throw new Exception("Could not get the course name for crn " + crn);
+		} finally {
+			closeConnections();
 		}
 		return list;
 	}
@@ -166,6 +168,8 @@ public class CourseDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new Exception("Could not retrieve the crn from the course table");
+		} finally {
+			closeConnections();
 		}
 		return list;
 	}

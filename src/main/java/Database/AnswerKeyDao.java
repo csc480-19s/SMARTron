@@ -141,6 +141,8 @@ public class AnswerKeyDao {
 			}
 		} catch (SQLException e) {
 			throw new Exception("Could not get the answer key for the exam with id " + examId);
+		} finally {
+			closeConnections();
 		}
 
 		return list;
@@ -171,6 +173,8 @@ public class AnswerKeyDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new Exception("Could not retrieve the updated answer key for the exam with id " + examId);
+		} finally {
+			closeConnections();
 		}
 
 		return list;
@@ -215,6 +219,8 @@ public class AnswerKeyDao {
 			}
 		} catch (SQLException e) {
 			throw new Exception("Could not get the instructor id from the answerkey table.");
+		} finally {
+			closeConnections();
 		}
 		return instId;
 	}

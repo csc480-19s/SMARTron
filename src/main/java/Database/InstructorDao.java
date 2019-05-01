@@ -109,8 +109,9 @@ public class InstructorDao {
 			}
 		} catch (SQLException e) {
 			throw new Exception("Could not retrieve the data for the instructor");
+		} finally {
+			closeConnections();
 		}
-
 		return list;
 	}
 
@@ -152,6 +153,8 @@ public class InstructorDao {
 			}
 		} catch (SQLException e) {
 			throw new Exception("Could not retrieve the instructor id from the instructor table");
+		} finally {
+			closeConnections();
 		}
 		return instId;
 		

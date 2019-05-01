@@ -128,6 +128,8 @@ public class ExamDao {
 			}
 		} catch (SQLException e) {
 			throw new Exception("Could not retrieve the data for the exam with id " + examId);
+		} finally { 
+			closeConnections();
 		}
 
 		return list;
@@ -174,6 +176,8 @@ public class ExamDao {
 			}
 		} catch (SQLException e) {
 			throw new Exception("Could not retrieve the list of students");
+		} finally {
+			closeConnections();
 		}
 		return list;
 	}
