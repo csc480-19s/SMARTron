@@ -66,7 +66,6 @@
   align-content: center;
   top: 0;
   margin-left: 0%;
-  margin-right: 0%;
   height: 70px;
   width: 100%;
   background-color: #f2f2f2;
@@ -183,4 +182,7 @@
   cursor: pointer;
   right: 0px;
   top: -15px;
+}
+.topRight{
+  margin-right: 3%;
 }
