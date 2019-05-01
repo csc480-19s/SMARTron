@@ -7,6 +7,8 @@ class GenericDaoTest extends Specification {//is this even going to be used or d
     GenericDao genDao = new GenericDao()
 
     def "Insert"() {//3.5.2
+
+        //tests fail
         when: "string is a valid SQL string; Test#1"
         //assumes there is not already an instructor with this name in the system
         def beforeList = genDao.select("SELECT * FROM scantron.exam WHERE exam_id='SZVYT';")//either i cant write SQL statements for shit, or this broken
@@ -43,6 +45,8 @@ class GenericDaoTest extends Specification {//is this even going to be used or d
     }
 
     def "Delete"() {//3.5.4
+
+        //tests fail
         when: "is valid SQL statement"
         genDao.insert("INSERT INTO scantron.instructor (instructor_id) VALUES ('64535')")
         def beforeList = genDao.select("SELECT instructor_id FROM scantron.instructor WHERE instructor_id='64535'")//this scans from NOT instructor... broke?
@@ -72,6 +76,7 @@ class GenericDaoTest extends Specification {//is this even going to be used or d
     def "Select"() {//3.5.5
         //tc#1 tested in insert
 
+        //tests pass
         when: "not SQL statement"
         genDao.select("sql statements suck ohhhhh goooood,,, stop not working")
         then: "exception thrown"

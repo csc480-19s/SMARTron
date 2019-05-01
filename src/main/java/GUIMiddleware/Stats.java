@@ -26,12 +26,12 @@ public class Stats {
         mean = meanInteger(scores).toString();
         range = Integer.toString(rangeOfScores(scores));
         median = Integer.toString(median(scores));
-        //variance = overallVariance(scores).toString();
-        //standardDeviation = String.valueOf(squareRoot(overallVariance(scores)));
-        //kr20 = kuderRichardson20(exams, key, weight).round(m).toString();
-        //kr21 = kuderRichardson21(exams, key, weight).round(m).toString();
-        //cronbach = cronbachsAlpha(exams, key, weight).round(m).toString();
-        //frequency = questionFrequency(exams);
+        variance = overallVariance(scores).toString();
+        standardDeviation = String.valueOf(squareRoot(overallVariance(scores)));
+        kr20 = kuderRichardson20(exams, key, weight).round(m).toString();
+        kr21 = kuderRichardson21(exams, key, weight).round(m).toString();
+        cronbach = cronbachsAlpha(exams, key, weight).round(m).toString();
+        frequency = questionFrequency(exams);
         percentiles = percentiles(scores);
     }
 
