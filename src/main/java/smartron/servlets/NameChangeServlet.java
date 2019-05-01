@@ -1,36 +1,32 @@
 package smartron.servlets;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import Database.DataSource;
+
 import java.io.PrintWriter;
 import java.sql.*;
-import java.io.InputStream;
-import java.util.Properties;
 
 public class NameChangeServlet extends HttpServlet {
-    @Override
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	Connection conn = null;
+	
+	@Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response){
         try{
-            ServletContext context = getServletContext();
-            InputStream is = context.getResourceAsStream("db.properties");
-            Properties props = new Properties();
-            props.load(is);
-            String url = props.getProperty("url");
-            String user = props.getProperty("user");
-            String pass = props.getProperty("password");
-
             //String email = request.getParameter("email").split("@")[0];
             String id = request.getParameter("id");
             String nameOfTest = request.getParameter("name");
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url,user,pass);
+            conn = DataSource.getInstance().getBasicDataSource().getConnection();
 
-
-            Statement stmt = conn.createStatement();
             String sql = "select * from answerkey where exam_id=?";
             PreparedStatement checkStatement = conn.prepareStatement(sql);
             checkStatement.setString(1,id);
@@ -65,6 +61,15 @@ public class NameChangeServlet extends HttpServlet {
 
         }catch (Exception e){
             e.printStackTrace();
+        } finally {
+        	if (conn != null) {
+        		try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
         }
 
     }

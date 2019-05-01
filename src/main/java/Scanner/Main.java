@@ -26,7 +26,6 @@ public class Main {
         AnswerKeyDao ansKDao = new AnswerKeyDao();
         CourseDao courDao = new CourseDao();
         ExamDao examDao = new ExamDao();
-        GenericDao gDao = new GenericDao();
 
         while (true) {
             u.RetrieveEmails();
@@ -59,7 +58,7 @@ public class Main {
                 String code = ansKey.getName().replace(".", "");
                 String instructID = "";
                 try {
-                    instructID = gDao.select("select instructor_id from answerkey where exam_id = \"" + code + "\"").get(0);
+                    instructID = ansKDao.getInstructorId(code);
                 } catch (Exception ex) {
                     //ex.printStackTrace();
                 }
@@ -84,9 +83,10 @@ public class Main {
                         //ex.printStackTrace();
                     }
                     boolean in = false;
+                    // TODO: Remove the crn functionality as it has been found to be obsolete and not of any use.
                     String crn = "";
                     try {
-                        crn = gDao.select("select course_crn from course where instructor_id = \"" + instructID + "\"").get(0);
+                        crn = courDao.selectCrn(instructID).get(0);
                     } catch (Exception ex) {
                         //ex.printStackTrace();
                     }

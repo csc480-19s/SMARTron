@@ -19,6 +19,10 @@ import Database.AnswerKeyDao;
 import smartron.entities.Answerkey;
 
 public class AnswerkeyServlet extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Gson gson = null;
 	private static HashMap<String, String> optionAnswerKey = new HashMap<>();
 	AnswerKeyDao akDao = new AnswerKeyDao();

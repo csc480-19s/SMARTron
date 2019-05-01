@@ -1,12 +1,13 @@
 package Database;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.dbcp2.BasicDataSource;
 
 public class ExamDao {
 
@@ -19,13 +20,18 @@ public class ExamDao {
 
 	private static String SELECT_EXAM = "select answers from exam where exam_id = ? "
 			+ "and instructor_id = ? and student_id = ? and course_crn = ?" + "and semester = ?";
+	
+	private static String SELECT_STUDENTS = "SELECT first_name, last_name, gender, semester, birth_date, "
+			+ "student_id, course_crn, answers FROM exam WHERE instructor_id= ? and exam_id = ?";
 
 	// Standard connection properties for the class
 	Connection con = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
+	
+	BasicDataSource basicDS = DataSource.getInstance().getBasicDataSource();
 
-	List<String> list = new ArrayList<String>();
+	List<String> list;
 	
 	public ExamDao() {
 
@@ -38,7 +44,7 @@ public class ExamDao {
 	 * @throws Exception 
 	 */
 	private Connection getConnection() throws Exception {
-		return ConnectionFactory.getInstance().getConnection();
+		return basicDS.getConnection();
 	}
 
 	/**
@@ -107,6 +113,7 @@ public class ExamDao {
 	 */
 	public List<String> selectExamId(String examId, String instId, String stdntId, String crn, String sem)
 			throws Exception {
+		list  = new ArrayList<String>();
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(SELECT_EXAM);
@@ -121,6 +128,8 @@ public class ExamDao {
 			}
 		} catch (SQLException e) {
 			throw new Exception("Could not retrieve the data for the exam with id " + examId);
+		} finally { 
+			closeConnections();
 		}
 
 		return list;
@@ -144,5 +153,32 @@ public class ExamDao {
 		} catch (SQLException e) {
 			throw new Exception("Could not close the connections to the database");
 		}
+	}
+	
+	/**
+	 * Returns a list of student based on the exam id and the instructor id
+	 * @param sql
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> selectStudents(String instId, String examId) throws Exception {
+		list = new ArrayList<String>();
+		try {
+			con = getConnection();
+			ps = con.prepareStatement(SELECT_STUDENTS);
+			ps.setString(1, instId);
+			ps.setString(2, examId);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				list.add(rs.getString(1) + rs.getString(2) + "," + rs.getString(3) + "," + rs.getString(4) + ","
+						+ rs.getString(5) + "," + rs.getString(6) + "," + rs.getString(7) + ","
+						+ rs.getString(8).substring(1, rs.getString(8).length() - 1));
+			}
+		} catch (SQLException e) {
+			throw new Exception("Could not retrieve the list of students");
+		} finally {
+			closeConnections();
+		}
+		return list;
 	}
 }
