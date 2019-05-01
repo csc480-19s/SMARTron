@@ -71,6 +71,7 @@ class Exam extends Component{
                                     fetch(`http://pi.cs.oswego.edu:13126/namechange?id=${this.state.exid}&name=${this.state.newName}`,{
                                         method: 'post'
                                     })
+                                    this.state.title1 = this.state.newName
                                     this.resetNewNames()
                                     close()
                                 }
