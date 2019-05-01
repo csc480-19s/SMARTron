@@ -24,6 +24,7 @@ public class Main {
         akey = ansKDao.selectUpdatedAnswerKey(examID,instructorID);
         String answers = "";
 
+
         for (int i = 0; i < akey.size(); i++) {
             answers = answers + akey.get(i);
         }
@@ -35,11 +36,14 @@ public class Main {
         ls = examDao.selectStudents(instructorID, examID);
         
         //System.out.println(ls.get(0));
+
         MiddlewareInterface mi = new MiddlewareInterface();
         mi.addStudentExam(answerSheet);
         for (int i = 1; i < ls.size(); i++) {
             mi.addStudentExam(ls.get(i));
+
         }
+
 
         mi.getGrades();
         //        try(FileWriter f = new FileWriter("test.json")){
