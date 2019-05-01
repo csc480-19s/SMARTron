@@ -129,7 +129,7 @@ class Home extends Component {
 
                                     </p>
                                     <button onClick={() => {
-                                        fetch(`http://pi.cs.oswego.edu:13126/exam?email=${this.props.location.state.email}&id=${this.state.random}&name=${this.state.newName}&num=${newNum}`,{
+                                        fetch(`http://pi.cs.oswego.edu:13126/exam?email=${this.props.location.state.email}&id=${this.state.random}&name=${this.state.newName}&num=${this.state.newNum}`,{
                                             method: 'post'
                                         })
                                         this.state.exams.push(<Exam problem={false} loginName={this.props.location.state.loginName} scanCode={this.state.random} email={this.props.location.state.email} list={[]} text={this.state.newName} id={this.state.random} numQuest={this.state.newNum} history={this.props.history}/>); this.setState(this.state)
