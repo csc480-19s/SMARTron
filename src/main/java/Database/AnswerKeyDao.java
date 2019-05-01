@@ -12,10 +12,12 @@ import org.apache.commons.dbcp2.BasicDataSource;
 public class AnswerKeyDao {
 
 	// Query Strings for the methods
-	private static String INSERT_ANSWER_KEY = "insert into answerkey (exam_id, instructor_id, answers) "
-			+ "values (?, ?, ?)";
+	private static String INSERT_ANSWER_KEY = "insert into answerkey (exam_id, instructor_id, answers, answer_key_length) "
+			+ "values (?, ?, ?, ?)";
 
 	private static String UPDATED_ANSWER_KEY = "update answerkey set updated_answers = ? where exam_id = ?";
+	
+	private static String UPDATE_ANSWER_KEY = "update answerkey set answers = ? where exam_id = ?";
 
 	private static String DELETE_ANSWER_KEY = "delete from answerkey where exam_id = ?";
 
@@ -25,6 +27,8 @@ public class AnswerKeyDao {
 			+ "instructor_id = ?";
 	
 	private static String SELECT_INSTRUCTOR_ID = "select instructor_id from answerkey where exam_id = ?";
+	
+	private static String SELECT_ANSWER_KEY_LENGTH = "select answer_key_length from answerkey where exam_id = ?";
 
 	// Standard connection properties for the class
 	Connection con = null;
@@ -61,16 +65,39 @@ public class AnswerKeyDao {
 	 * @param instId
 	 * @throws Exception
 	 */
-	public void addAnswerKey(String examId, String instId, String answers) throws Exception {
+	public void addAnswerKey(String examId, String instId, String answers, String answersLength) throws Exception {
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(INSERT_ANSWER_KEY);
 			ps.setString(1, examId);
 			ps.setString(2, instId);
 			ps.setString(3, answers);
+			ps.setString(4, answersLength);
 			ps.execute();
 		} catch (SQLException e) {
 			throw new Exception("Could not successfully add the answer key for the exam with id " + examId);
+		} finally {
+			closeConnections();
+		}
+	}
+	
+	/**
+	 * Adds the original answer key to the table
+	 * 
+	 * @param examId
+	 * @param instId
+	 * @param updatedAnswers
+	 * @throws Exception
+	 */
+	public void updateOriginalAnswerKey(String examId, String answers) throws Exception {
+		try {
+			con = getConnection();
+			ps = con.prepareStatement(UPDATE_ANSWER_KEY);
+			ps.setString(1, answers);
+			ps.setString(2, examId);
+			ps.execute();
+		} catch (SQLException e) {
+			throw new Exception("Could not successfully update the answer key for the exam with id " + examId);
 		} finally {
 			closeConnections();
 		}
@@ -223,5 +250,29 @@ public class AnswerKeyDao {
 			closeConnections();
 		}
 		return instId;
+	}
+	
+	/**
+	 * Returns the answer key length as an integer
+	 * @param examID
+	 * @return
+	 * @throws Exception 
+	 */
+	public int getAnswerKeyLength(String examId) throws Exception {
+		int answerKeyLength = -1;
+		try {
+			con = getConnection();
+			ps = con.prepareStatement(SELECT_ANSWER_KEY_LENGTH);
+			ps.setString(1, examId);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				answerKeyLength = Integer.valueOf(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			throw new Exception("Could not get the answer key length from the answerkey table.");
+		} finally {
+			closeConnections();
+		}
+		return answerKeyLength;
 	}
 }
