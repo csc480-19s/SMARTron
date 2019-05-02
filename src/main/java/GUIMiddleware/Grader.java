@@ -7,6 +7,7 @@ public class Grader {
 
     private List<Question> questions = new ArrayList<>();
     private int numQuestions = 0;
+    private int answerKeyErrors = 0;
 
     //questions is a list of question objects used to find stats per question
     //each index in the array corresponds to a question object
@@ -26,13 +27,15 @@ public class Grader {
 
             for (int j = 0; j < numQuestions; j++) {
                 if (studentExam.getAnswers().size() > j) {
-                    if (studentExam.getAnswers().get(j) != null && key.getAnswers().get(j).contains(studentExam.getAnswers().get(j))) {
+                    if (studentExam.getAnswers().get(j) != null && key.getAnswers() != null && key.getAnswers().get(j).contains(studentExam.getAnswers().get(j))) {
                         //Compares the jth  position in the answer array from ith studentExam to the key
                         //It cannot equal "-1", that means the  answer is blank
                         numPoints++;
                         //Increments numPoints if it passes the conditions of the if statement
                     }else if (studentExam.getAnswers().get(j).equals("error")){
                         System.out.println("Error at Student: " + studentExam.getName() + " at answer: " + studentExam.getAnswers().get(j) +  " question number: " + j);
+                    } else if (key.getAnswers().get(j).equals("error")) {
+                    	answerKeyErrors++;
                     }
                     if (studentExam.getAnswers().get(j) != null)
                         questions.get(j).increment(studentExam.getAnswers().get(j));
@@ -41,7 +44,7 @@ public class Grader {
 
                 }
             }
-            grades.add((float) numPoints / numQuestions * 100);
+            grades.add((float) numPoints / (numQuestions - answerKeyErrors) * 100);
             //This will calculate the grade for the exam at i
         }
         return grades;

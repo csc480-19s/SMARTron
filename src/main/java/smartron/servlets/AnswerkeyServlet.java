@@ -35,11 +35,9 @@ public class AnswerkeyServlet extends HttpServlet {
 		List<Answerkey> keyList = null;
 		Answerkey anserKey = null;
 		String questionJsonString = null;
-		int answerKeyLength;
 		try {
-			answerKeyLength = akDao.getAnswerKeyLength(examId);
 			int idCounter = 1;
-			
+
 			obj = akDao.selectUpdatedAnswerKey(examId, instId);
 			if (obj == null || obj.isEmpty()) {
 				obj = akDao.selectAnswerKey(examId, instId);
@@ -52,23 +50,21 @@ public class AnswerkeyServlet extends HttpServlet {
 				buildKeys();
 				keyList = new ArrayList<Answerkey>();
 				for (String key : answerKeyStr) {
-					if(idCounter <= answerKeyLength) {
-						key = key.trim();
-						System.out.println(key);
-						anserKey = new Answerkey();
-						anserKey.setQuestionId(idCounter);
-						String keys[] = new String[5];
-						if (!(key.equals("-1") || key.equals("error"))) {
-							for (int i = 0; i < key.length(); i++) {
-								keys[i] = optionAnswerKey.get(key.substring(i, i + 1));
-							}
-						} else if(key != null){
-							keys[0] = key;
+					key = key.trim();
+					System.out.println(key);
+					anserKey = new Answerkey();
+					anserKey.setQuestionId(idCounter);
+					String keys[] = new String[5];
+					if (!(key.equals("-1"))) {
+						for (int i = 0; i < key.length(); i++) {
+							keys[i] = optionAnswerKey.get(key.substring(i, i + 1));
 						}
-						anserKey.setAnswerKey(keys);
-						keyList.add(anserKey);
-						idCounter++;						
+					} else if(key != null){
+						keys[0] = key;
 					}
+					anserKey.setAnswerKey(keys);
+					keyList.add(anserKey);
+					idCounter++;
 				}
 				
 			}
@@ -102,15 +98,21 @@ public class AnswerkeyServlet extends HttpServlet {
 		try {
 			buildKeys();
 			StringBuffer updatedAnswerKey = new StringBuffer("[");
-			for (Answerkey akey : k) {
-				for (String key : akey.getAnswerKey()) {
-					if (!(key == null)) {
-						String keyCode = getKey(optionAnswerKey, key);
-						updatedAnswerKey.append(keyCode);
-					}
-				}
-				updatedAnswerKey.append(",");
-			}
+			boolean foundAnAnswer;
+            for (Answerkey akey : k) {
+                foundAnAnswer = false;
+                for (String key : akey.getAnswerKey()) {
+                    if (key != null) {
+                        String keyCode = getKey(optionAnswerKey, key);
+                        updatedAnswerKey.append(keyCode);
+                        foundAnAnswer = true;
+                    } 
+                }
+                if (!foundAnAnswer) {
+                    updatedAnswerKey.append("error");
+                }
+                updatedAnswerKey.append(",");
+            }
 			updatedAnswerKey.deleteCharAt(updatedAnswerKey.length() - 1);
 			updatedAnswerKey.append("]");
 
