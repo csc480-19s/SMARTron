@@ -35,9 +35,11 @@ public class AnswerkeyServlet extends HttpServlet {
 		List<Answerkey> keyList = null;
 		Answerkey anserKey = null;
 		String questionJsonString = null;
+		int answerKeyLength;
 		try {
+			answerKeyLength = akDao.getAnswerKeyLength(examId);
 			int idCounter = 1;
-
+			
 			obj = akDao.selectUpdatedAnswerKey(examId, instId);
 			if (obj == null || obj.isEmpty()) {
 				obj = akDao.selectAnswerKey(examId, instId);
@@ -50,21 +52,23 @@ public class AnswerkeyServlet extends HttpServlet {
 				buildKeys();
 				keyList = new ArrayList<Answerkey>();
 				for (String key : answerKeyStr) {
-					key = key.trim();
-					System.out.println(key);
-					anserKey = new Answerkey();
-					anserKey.setQuestionId(idCounter);
-					String keys[] = new String[5];
-					if (!(key.equals("-1") || key.equals("error"))) {
-						for (int i = 0; i < key.length(); i++) {
-							keys[i] = optionAnswerKey.get(key.substring(i, i + 1));
+					if(idCounter <= answerKeyLength) {
+						key = key.trim();
+						System.out.println(key);
+						anserKey = new Answerkey();
+						anserKey.setQuestionId(idCounter);
+						String keys[] = new String[5];
+						if (!(key.equals("-1") || key.equals("error"))) {
+							for (int i = 0; i < key.length(); i++) {
+								keys[i] = optionAnswerKey.get(key.substring(i, i + 1));
+							}
+						} else if(key != null){
+							keys[0] = key;
 						}
-					} else if(key != null){
-						keys[0] = key;
+						anserKey.setAnswerKey(keys);
+						keyList.add(anserKey);
+						idCounter++;						
 					}
-					anserKey.setAnswerKey(keys);
-					keyList.add(anserKey);
-					idCounter++;
 				}
 				
 			}
