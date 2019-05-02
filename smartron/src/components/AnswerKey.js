@@ -13,7 +13,8 @@ constructor(){
     makeCopy: true,
     examList:[],
     loginName:"",
-    email:""
+    email:"",
+    isEmptyAnswerKey: true
   };
   this.handleClick = this.handleClick.bind(this);
   this.handleSubmit = this.handleSubmit.bind(this);
@@ -43,12 +44,24 @@ copyAnswerKey(){
 }
 
 handleClick(item, index){
+
+  this.setState({
+    isEmptyAnswerKey: false
+  })
   var i = item.answerKey.indexOf(index);
   if(item.answerKey.includes(index)){
     item.answerKey.splice(i,1);
   }else{
     item.answerKey.push(index);
-}
+  }
+  var keyArray = this.state.answerKeys;
+   for(var i = 0; i<keyArray.length; i++){
+      if(!keyArray[i].answerKey.some(r=> this.state.keyOptions.includes(r))){
+       this.setState({
+        isEmptyAnswerKey: true
+      })
+    }
+  }
 }
 
 handleSubmit(e){
@@ -85,8 +98,8 @@ xhr.send(data);
           <h1 className = "examName" align = "center">{this.props.location.state.text}</h1>
             <div className = "items">
               {this.state.answerKeys.map( item => (
-                <div align = "center" className ={item.answerKey.length !== 0? "item": "itemEmpty"}>
-                  <div key ={item.questionId}>
+                <div align = "center">
+                  <div key ={item.questionId} className ="item">
                     <div className="keyBox">
                       <span className="questionId">
                         {item.questionId}
@@ -108,9 +121,10 @@ xhr.send(data);
                       </div>
                     ))}
                   </div>
-              <button className= "float"
-                     onClick={() => this.handleSubmit()}>Submit</button>
-          <button className= "float2"
+              <button className= {`${this.state.isEmptyAnswerKey?"floatdisabled":"float"} ${"tooltip"}`} disabled={this.state.isEmptyAnswerKey}
+                     onClick={() => this.handleSubmit()}>Submit
+                     <span className ="tooltiptext">{this.state.isEmptyAnswerKey?"Please select an answer for each question":""}</span></button>
+              <button className= "float2"
                   onClick={() => this.props.history.push({pathname:'/home',state:{loginName:this.props.location.state.loginName,email:this.props.location.state.email}})}>Return Home</button>
             </div>
           <Header history={this.props.history} email={this.props.location.state.email}/>
