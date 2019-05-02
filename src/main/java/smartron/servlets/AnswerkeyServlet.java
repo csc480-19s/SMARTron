@@ -55,7 +55,7 @@ public class AnswerkeyServlet extends HttpServlet {
 					anserKey = new Answerkey();
 					anserKey.setQuestionId(idCounter);
 					String keys[] = new String[5];
-					if (!(key.equals("-1") || key.equals("error"))) {
+					if (!(key.equals("-1"))) {
 						for (int i = 0; i < key.length(); i++) {
 							keys[i] = optionAnswerKey.get(key.substring(i, i + 1));
 						}

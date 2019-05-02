@@ -37,13 +37,14 @@ public class NameChangeServlet extends HttpServlet {
             String updatedAnswers = rs.getString(4);
             String gradeScale = rs.getString(5);
             String oldName = rs.getString(6);
+            String number = rs.getString(7);
 
             sql = "delete from answerkey where exam_id=?";
             checkStatement =  conn.prepareStatement(sql);
             checkStatement.setString(1,id);
             checkStatement.execute();
 
-            sql = "insert into answerkey (exam_id, instructor_id, answers, updated_answers, grade_scale,exam_name) values (?,?,?,?,?,?)";
+            sql = "insert into answerkey (exam_id, instructor_id, answers, updated_answers, grade_scale, exam_name, answer_key_length) values (?,?,?,?,?,?,?)";
             checkStatement = conn.prepareStatement(sql);
             checkStatement.setString(1,id);
             checkStatement.setString(2,instructorId);
@@ -51,6 +52,7 @@ public class NameChangeServlet extends HttpServlet {
             checkStatement.setString(4,updatedAnswers);
             checkStatement.setString(5,gradeScale);
             checkStatement.setString(6,nameOfTest);
+            checkStatement.setString(7,number);
             checkStatement.execute();
 
 
