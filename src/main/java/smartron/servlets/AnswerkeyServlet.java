@@ -37,7 +37,7 @@ public class AnswerkeyServlet extends HttpServlet {
 		String questionJsonString = null;
 		int answerKeyLength;
 		try {
-			answerKeyLength = akDao.selectAnswerKeyLength(examId, instId);
+			answerKeyLength = akDao.getAnswerKeyLength(examId);
 			int idCounter = 1;
 			
 			obj = akDao.selectUpdatedAnswerKey(examId, instId);
@@ -69,7 +69,6 @@ public class AnswerkeyServlet extends HttpServlet {
 						keyList.add(anserKey);
 						idCounter++;						
 					}
-					return;
 				}
 				
 			}

@@ -30,7 +30,6 @@ public class AnswerKeyDao {
 	
 	private static String SELECT_ANSWER_KEY_LENGTH = "select answer_key_length from answerkey where exam_id = ?";
 
-	private static String SELECT_ANSWER_KEY_LENGTH = "select answer_key_length from answerkey where exam_id = ? and instructor_id = ?";
 	// Standard connection properties for the class
 	Connection con = null;
 	PreparedStatement ps = null;
@@ -207,33 +206,6 @@ public class AnswerKeyDao {
 
 		return list;
 	}
-	
-	/**
-	 * Returns the answer key
-	 * 
-	 * @param examId
-	 * @param instId
-	 * @return
-	 * @throws Exception
-	 */
-	public int selectAnswerKeyLength(String examId, String instId) throws Exception {
-		int answerKeyLength = 0;
-		try {
-			con = getConnection();
-			ps = con.prepareStatement(SELECT_ANSWER_KEY_LENGTH);
-			ps.setString(1, examId);
-			ps.setString(2, instId);
-			rs = ps.executeQuery();
-			while (rs.next()) {
-				answerKeyLength = rs.getInt(1);
-			}
-		} catch (SQLException e) {
-			throw new Exception("Could not get the answer key for the exam with id " + examId);
-		}
-
-		return answerKeyLength;
-	}
-
 
 	/**
 	 * Closes the connections after a transaction has been committed
