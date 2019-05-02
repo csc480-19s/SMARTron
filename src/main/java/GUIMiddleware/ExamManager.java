@@ -53,6 +53,10 @@ public class ExamManager {
         this.studentExams.add(studentCreator.makeStudent(answers, studentData));
     }
 
+    public void addStudentExam(String[][] answersFront, String[][] answersBack,String[] studentData){
+        this.studentExams.add(studentCreator.makeStudent(answersFront, answersBack, studentData));
+    }
+
     /**
      *addStudentExam() uses the StudentCreator to add a student to the studentExams
      *answers is a multidimensional array that holds the answer data in the order it was given.
