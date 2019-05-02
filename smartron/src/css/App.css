@@ -186,3 +186,13 @@
 .topRight{
   margin-right: 3%;
 }
+
+.credit{
+	position:fixed;
+	width:120px;
+  height: 50px;
+	bottom:20px;
+  right:40px;
+  color: #003C60;
+  text-decoration: none;
+}
