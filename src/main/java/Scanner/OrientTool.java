@@ -189,7 +189,7 @@ public class OrientTool {
 
         } catch (IOException e) {
 
-            System.out.println("Error: " + e);
+            throw e;
 
         }
 
