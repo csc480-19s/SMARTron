@@ -3,6 +3,7 @@ package GUIMiddleware;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -182,6 +183,16 @@ public class Stats {
     }
 
     static List<List<Integer>> gradesByQuestion(List<List<String>> exams, List<String> answerKey, List<Integer> weight) {
+
+        System.out.println();
+        for (List<String> a : exams) {
+            System.out.println(a);
+        }
+        System.out.println();
+        System.out.println(answerKey);
+        System.out.println();
+        System.out.println(weight);
+        System.out.println();
         List<List<Integer>> examGradesByQuestion = new ArrayList<>();
         for (int i = 0; i < exams.size(); i++) {
             List<Integer> examScore = new ArrayList<>();
@@ -343,6 +354,7 @@ public class Stats {
     /* Takes in a List of Integer, outputs the lowest value */
 
     static int highestScore(List<Integer> scores) {
+
         int highestScore = 0;
         for (int i = 0; i < scores.size(); i++) {
             if (scores.get(i) > highestScore) {
@@ -457,6 +469,7 @@ public class Stats {
      * Should be between 0 and 1 but can be negative when you are a really bad test maker and your students are also really bad ツ */
 
     static List<List<String>> questionFrequency(List<List<String>> exams) {
+
         List<List<String>> questionFrequency = new ArrayList<>();
 
         for (int i = 0; i < 200; i++) {
@@ -510,9 +523,7 @@ public class Stats {
             }
 
         }
-        for (List<String> a : questionFrequency) {
-            System.out.println(a);
-        }
+
         return questionFrequency;
     }
     /* This method takes in the List<List<Strings>> that are the exams in the form of exams<question<answer>> and the answers are in 01234 format,
