@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+
 public class CourseDao {
 
 	// Query Strings for the methods
@@ -19,12 +21,16 @@ public class CourseDao {
 	private static String SELECT_COURSE = "select course_name from course where course_crn = ? and section_num = ? and"
 			+ " semester = ? and instructor_id = ?";
 
+	private static String SELECT_CRN = "select course_crn from course where instructor_id = ?";
+	
 	// Standard connection properties for the class
 	Connection con = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
 
-	List<String> list = new ArrayList<String>();
+	BasicDataSource basicDS = DataSource.getInstance().getBasicDataSource();
+	
+	List<String> list;
 
 	public CourseDao() {
 
@@ -37,7 +43,7 @@ public class CourseDao {
 	 * @throws Exception
 	 */
 	private Connection getConnection() throws Exception {
-		return ConnectionFactory.getInstance().getConnection();
+		return basicDS.getConnection();
 	}
 
 	/**
@@ -94,7 +100,17 @@ public class CourseDao {
 		}
 	}
 
+	/**
+	 * Returns a list of the courses
+	 * @param crn
+	 * @param section
+	 * @param semester
+	 * @param instId
+	 * @return
+	 * @throws Exception
+	 */
 	public List<String> selectCourse(String crn, String section, String semester, String instId) throws Exception {
+		list  = new ArrayList<String>();
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(SELECT_COURSE);
@@ -108,6 +124,8 @@ public class CourseDao {
 			}
 		} catch (SQLException e) {
 			throw new Exception("Could not get the course name for crn " + crn);
+		} finally {
+			closeConnections();
 		}
 		return list;
 	}
@@ -130,5 +148,29 @@ public class CourseDao {
 		} catch (SQLException e) {
 			throw new Exception("Could not close the connections to the database");
 		}
+	}
+	
+	/**
+	 * Returns the crn based on the Instructor Id. Will be removed when the crn functionality is removed
+	 * @param instId
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> selectCrn(String instId) throws Exception {
+		list = new ArrayList<String>();
+		try {
+			con = getConnection();
+			ps = con.prepareStatement(SELECT_CRN);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				list.add(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new Exception("Could not retrieve the crn from the course table");
+		} finally {
+			closeConnections();
+		}
+		return list;
 	}
 }

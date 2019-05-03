@@ -58,11 +58,13 @@ def fr(cir, centers):
             temp = []
             visited.append(cen)
             temp.append(c)
+            cenLast = cen
             for c1, cen1 in zip(cir, centers):
                 if cen1 not in visited:
-                    if (abs(cen[1]-cen1[1]) < (imgH*0.0075)):#0.00591 0.00745
+                    if (abs(cen[1]-cen1[1]) < (imgH*0.0075) or abs(cenLast[1]-cen1[1]) < (imgH*0.00745)):#0.00591 0.00745
                         visited.append(cen1)
                         temp.append(c1)
+                        cenLast = cen1
             groups.append(temp)
     return groups
 
@@ -83,11 +85,13 @@ def fc(cir, centers):
             temp = []
             visited.append(cen)
             temp.append(c)
+            cenLast = cen
             for c1, cen1 in zip(cir, centers):
                 if cen1 not in visited:
-                    if (abs(cen[0]-cen1[0]) < (imgW*0.00576)):#0.00456 0.00576
+                    if (abs(cen[0]-cen1[0]) < (imgW*0.00576) or abs(cenLast[0]-cen1[0]) < (imgW*0.0057)):#0.00456 0.00576
                         visited.append(cen1)
                         temp.append(c1)
+                        cenLast = cen1
             groups.append(temp)
     return groups
 
@@ -121,7 +125,7 @@ def questions(x):
                     for x in tempvisit:
                         done.append(x)
                     n.append(temp)
-        if n: #checks for question groups that did not have a full 5 circles in rows with at least one correct group
+        if n and len(n) < 5: #checks for question groups that did not have a full 5 circles in rows with at least one correct group
             for r, c in zip(row, centers):
                 if c not in done:
                     temp = []
@@ -642,7 +646,7 @@ for z in bubbledDateID:
 i = -1
 for z in bubbledQue:
     if z:
-        if len(z) >= 5:
+        if len(z) >= 4:
             i += 1
             for j,w in enumerate(z):
                 selected = [str(x[1]) for x in w]
