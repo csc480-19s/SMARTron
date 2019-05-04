@@ -1,7 +1,6 @@
 package DatabaseTest
 
 import Database.CourseDao
-import Database.GenericDao
 import spock.lang.Specification
 
 
@@ -43,13 +42,11 @@ class CourseDaoTest extends Specification {
         courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "MATT")
         List<String> after = courseDao.selectCourse("SDFGH","800","Spring2019","MATT")
         courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "MATT")
-        List<String> after2 = courseDao.selectCourse("SDFGH","800","Spring2019","MATT")
 
         then:
         thrown Exception
         before.size() == 0
         after.size() == 1
-        after2.size() == 1
         //clean up the db
         courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
     }

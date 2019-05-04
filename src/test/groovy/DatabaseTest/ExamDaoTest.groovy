@@ -2,7 +2,6 @@ package DatabaseTest
 
 import Database.AnswerKeyDao
 import Database.ExamDao
-import Database.GenericDao
 import Database.InstructorDao
 import spock.lang.Specification
 
