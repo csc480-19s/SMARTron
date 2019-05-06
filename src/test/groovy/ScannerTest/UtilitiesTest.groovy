@@ -53,32 +53,65 @@ class UtilitiesTest extends Specification {
         thrown(Exception)
     }
 
-    def "test more columns than a scantron actually has"() {
+    def "test of one more row than a scantron actually has"() {
         when:
-        def testString = ["0-0, 1", "1-0, 3", "2-0, 4", "3-0 4", "4-0, 2", "5-0, 2", "6-0, 3"]
+        def testString = ["0-0, 1", "1-0, 1", "2-0, 1", "3-0 1", "4-0, 1", "5-0, 1", "6-0, 1", "7-0 1", "8-0 1", "9-0 1",
+                          "10-0, 1", "11-0, 1", "12-0, 1", "13-0 1", "14-0, 1", "15-0, 1", "16-0, 1", "17-0 1", "18-0 1", "19-0 1"]
         def retArr = u.multi(testString)
 
         then:
-        retArr == [["1"], ["3"], ["4"], ["4"], ["2"], ["2"], ["3"]]
+        retArr == [["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"],
+                   ["1"], ["1"], ["1"], ["1"], ["1"], ["1"]]
     }
 
-    //ok this is actually way longer but I already put in the work
-    //for this stupidly long test so it is staying.
-    //Also this finds that the max rows is 10 should be 20.
-    def "test more rows than a scantron actually has"() {
+    def "test of exact rows that a scantron actually has"() {
         when:
-        def testString = ["0-0 1", "0-1 1", "0-2 1", "0-3 1", "0-4 1", "0-5 1", "0-6 1", "0-7 1", "0-8 1", "0-9 1", "0-10 1",
-                          "0-11 1", "0-12 1", "0-13 1", "0-14 1", "0-15 1", "0-16 1", "0-17 1", "0-18 1", "0-19 1", "0-20 1",
-                          "0-21 1", "0-22 1", "0-23 1", "0-24 1", "0-25 1", "0-26 1", "0-27 1", "0-28 1", "0-29 1", "0-30 1",
-                          "0-31 1", "0-32 1", "0-33 1", "0-34 1", "0-35 1", "0-36 1", "0-37 1", "0-38 1", "0-39 1", "0-40 1",
-                          "0-41 1", "0-42 1", "0-43 1", "0-44 1", "0-45 1", "0-46 1", "0-47 1", "0-48 1", "0-49 1", "0-50 1",
-                          "0-51 1"]
+        def testString = ["0-0, 1", "1-0, 1", "2-0, 1", "3-0 1", "4-0, 1", "5-0, 1", "6-0, 1", "7-0 1", "8-0 1", "9-0 1",
+                          "10-0, 1", "11-0, 1", "12-0, 1", "13-0 1", "14-0, 1", "15-0, 1", "16-0, 1", "17-0 1", "18-0 1"]
         def retArr = u.multi(testString)
 
         then:
-        retArr == [["1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1",
-                    "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1",
-                    "1", "1", "1", "1", "1", "1", "1", "1", "1",]]
+        retArr == [["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"],
+                   ["1"], ["1"], ["1"], ["1"], ["1"]]
+    }
+
+    def "test of one less row than a scantron actually has"() {
+        when:
+        def testString = ["0-0, 1", "1-0, 1", "2-0, 1", "3-0 1", "4-0, 1", "5-0, 1", "6-0, 1", "7-0 1", "8-0 1", "9-0 1",
+                          "10-0, 1", "11-0, 1", "12-0, 1", "13-0 1", "14-0, 1", "15-0, 1", "16-0, 1", "17-0 1"]
+        def retArr = u.multi(testString)
+
+        then:
+        retArr == [["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"], ["1"],
+                   ["1"], ["1"], ["1"], ["1"]]
+    }
+
+
+    def "test more one more column than a scantron actually has"() {
+        when:
+        def testString = ["0-0 1", "0-1 1", "0-2 1", "0-3 1", "0-4 1", "0-5 1"]
+        def retArr = u.multi(testString)
+
+        then:
+        retArr == [["1", "1", "1", "1", "1", "1"]]
+    }
+
+    def "test exact columns that a scantron actually has"() {
+        when:
+        def testString = ["0-0 1", "0-1 1", "0-2 1", "0-3 1", "0-4 1"]
+        def retArr = u.multi(testString)
+
+        then:
+        retArr == [["1", "1", "1", "1", "1"]]
+    }
+
+    def "test one less column than a scantron actually has"() {
+        when:
+        def testString = ["0-0 1", "0-1 1", "0-2 1", "0-3 1"]
+        def retArr = u.multi(testString)
+
+        then:
+        retArr == [["1", "1", "1", "1"]]
     }
 
     def "test the addition of a the string null"() {
