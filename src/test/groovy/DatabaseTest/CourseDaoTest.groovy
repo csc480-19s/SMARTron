@@ -42,13 +42,11 @@ class CourseDaoTest extends Specification {
         courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "MATT")
         List<String> after = courseDao.selectCourse("SDFGH","800","Spring2019","MATT")
         courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "MATT")
+        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
 
         then:
-        thrown Exception
-        before.size() == 0
-        after.size() == 1
-        //clean up the db
         courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
+        thrown Exception
     }
 
     def "fail add from crn as non-string"(){
@@ -194,7 +192,7 @@ class CourseDaoTest extends Specification {
         before.size() == 0
         after.size() == 1
         //clean up the db
-        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
+        courseDao.deleteCourse("SDFGH", "800", "","MATT")
     }
 
     def "instructor id not already in db"() {
