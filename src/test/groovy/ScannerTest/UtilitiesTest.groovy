@@ -90,9 +90,28 @@ class UtilitiesTest extends Specification {
         retArr == [["0", "error", "2"], ["1", "2", "3"]]
     }
 
+    def "test the addition of just int's"() {
+        when:
+        def failedInput = [1,2,3]
+        u.multi(failedInput)
+
+        then:
+        thrown(Exception)
+    }
+
     def "test addition on non string list"() {
         when:
         def failedInput = [1-1, 2-1]
+        u.multi(failedInput)
+
+        then:
+        thrown(Exception)
+    }
+
+
+    def "test the addition of non formatted string"() {
+        when:
+        def failedInput = ["0 0 1", "0 1 2"]
         u.multi(failedInput)
 
         then:
