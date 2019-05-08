@@ -76,12 +76,114 @@ class StatsTest extends Specification {
     }
 
     def "GradesByQuestion"() {
-    }
+        when: "Method is done normally"
+        List<List<String>> exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        List<String> answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        List<Integer> weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        List<List<Integer>> result = Stats.gradesByQuestion(exams, answerKey, weights)
+        List<List<Integer>> expectedResult = [[1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 0, 1, 1, 0, 1, 1, 1, 1], [0, 1, 1, 0, 1, 1, 1, 1, 1], [1, 0, 1, 1, 1, 1, 0, 0, 1]]
+        then: "the correct result is returned"
+        result == expectedResult
 
-    def "MeanByQuestion"() {
-    }
+        when: "alternate success test, TC#10"
+        exams = [["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "0", "1", "1", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.gradesByQuestion(exams, answerKey, weights)
+        expectedResult = [[0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 1, 0, 0, 1]]
+        then: "the correct result is returned"
+        result == expectedResult
 
-    def "DifferenceFromMean"() {
+        when: "alternate success test, TC#11"
+        exams = [["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["0", "0", "0", "0", "0", "0", "0", "0", "0"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "0", "1", "1", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.gradesByQuestion(exams, answerKey, weights)
+        expectedResult = [[0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 1, 0, 0, 1, 1], [0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 1, 0, 0, 1]]
+        then: "the correct result is returned"
+        result == expectedResult
+
+        when: "alternate success test, TC#12"
+        exams = [["2", "2", "2", "3", "4", "2", "1", "1", "4"], ["0", "1", "3", "2", "4", "0", "0", "2", "4"], ["0", "0", "3", "3", "4", "2", "3", "3", "1"], ["0", "1", "2", "3", "0", "2", "1", "0", "4"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.gradesByQuestion(exams, answerKey, weights)
+        expectedResult = [[0, 0, 1, 1, 1, 1, 1, 0, 1], [1, 1, 0, 0, 1, 0, 0, 0, 1], [1, 0, 1, 1, 1, 0, 0, 0, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1]]
+        then: "the correct result is returned"
+        result == expectedResult
+
+        when: "alternate success test, TC#13"
+        exams = [["0", "1", "3", "4", "5", "2", "error", "1", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "-1", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "3", "-1", "error", "error"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.gradesByQuestion(exams, answerKey, weights)
+        expectedResult = [[1, 1, 1, 1, 1, 1, 0, 1, 1], [1, 0, 1, 1, 0, 1, 1, 1, 1], [0, 1, 1, 0, 0, 1, 1, 1, 1], [1, 0, 1, 1, 1, 1, 0, 0, 0]]
+        then: "the correct result is returned"
+        result == expectedResult
+
+        when: "The exams are of unequal length"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1", "0", "0", "0", "0"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.gradesByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "some exam strings are not 0-4"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "8"], ["0", "0", "z", "3", "2", "2", "z", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "9", "4", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.gradesByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "some exam strings are longer than 1 char"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "32"], ["0", "01", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "11021", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "33"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.gradesByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "exams are a list of ints"
+        exams = [6, 8] as Integer[]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.gradesByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "exams and answer key are null"
+        exams = null
+        answerKey = null
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.gradesByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key is not a list of strings"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = [4, 2, 7] as Integer[]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.gradesByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key has a string that is longer than 5 chars"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = ["012341"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.gradesByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key has one or more strings that are not between 0 and 4"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = ["0", "v", "b", "2", "aeg", "l", "b", "a", "n"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.gradesByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
     }
 
     def "SquaredData"() {
@@ -134,17 +236,102 @@ class StatsTest extends Specification {
         thrown(Exception)
     }
 
-
-    def "AdditionOfData"() {
-    }
-
-    def "DivisionOfData"() {
-    }
-
-    def "SummationOfList"() {
-    }
-
     def "CronbachsAlpha"() {
+        when: "Cronbachs Alpha is done normally"
+        List<List<String>> exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        List<String> answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        List<Integer> weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        BigDecimal result = Stats.cronbachsAlpha(exams, answerKey, weights)
+        then: "the correct result is returned"
+        result == 0
+
+        when: "alternate success test, TC#10"
+        exams = [["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "0", "1", "1", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.cronbachsAlpha(exams, answerKey, weights)
+        then: "the correct result is returned"
+        result == 0
+
+        when: "alternate success test, TC#11"
+        exams = [["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["0", "0", "0", "0", "0", "0", "0", "0", "0"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "0", "1", "1", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.cronbachsAlpha(exams, answerKey, weights)
+        then: "the correct result is returned"
+        result == 0.5625
+
+        when: "alternate success test, TC#12"
+        exams = [["2", "2", "2", "3", "4", "2", "1", "1", "4"], ["0", "1", "3", "2", "4", "0", "0", "2", "4"], ["0", "0", "3", "3", "4", "2", "3", "3", "1"], ["0", "1", "2", "3", "0", "2", "1", "0", "4"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.cronbachsAlpha(exams, answerKey, weights)
+        then: "the correct result is returned"
+        result == 0.642857
+
+        when: "The exams are of unequal length"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1", "0", "0", "0", "0"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.cronbachsAlpha(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "some exam strings are not 0-4"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "8"], ["0", "0", "z", "3", "2", "2", "z", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "9", "4", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.cronbachsAlpha(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "some exam strings are longer than 1 char"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "32"], ["0", "01", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "11021", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "33"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.cronbachsAlpha(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "exams are a list of ints"
+        exams = [6, 8] as Integer[]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.cronbachsAlpha(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "exams and answer key are null"
+        exams = null
+        answerKey = null
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.cronbachsAlpha(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key is not a list of strings"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = [4, 2, 7] as Integer[]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.cronbachsAlpha(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key has a string that is longer than 5 chars"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = ["012341"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.cronbachsAlpha(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key has one or more strings that are not between 0 and 1"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = ["a", "v", "b", "f", "aeg", "l", "b", "a", "n"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.cronbachsAlpha(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
     }
 
     def "LowestScore"() {
@@ -255,26 +442,471 @@ class StatsTest extends Specification {
     }
 
     def "ProportionPassingByQuestion"() {
+        when: "the method is done normally"
+        List<List<String>> exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        List<String> answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        List<Integer> weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        List<BigDecimal> result = Stats.proportionPassingByQuestion(exams, answerKey, weights)
+        List<BigDecimal> expectedResult = [0.75, 0.5, 1, 0.75, 0.75, 1, 0.75, 0.75, 0]
+        then: "the correct result is returned"
+        result == expectedResult
+
+        when: "alternate success test, TC#10"
+        exams = [["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "0", "1", "1", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.proportionPassingByQuestion(exams, answerKey, weights)
+        expectedResult = [0, 0, 0, 0, 0, 0.25, 0, 0, 0]
+        then: "the correct result is returned"
+        result == expectedResult
+
+        when: "alternate success test, TC#11"
+        exams = [["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["0", "0", "0", "0", "0", "0", "0", "0", "0"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "0", "1", "1", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.proportionPassingByQuestion(exams, answerKey, weights)
+        expectedResult = [0.25, 0, 0, 0, 0.25, 0.25, 0, 0.25, 0]
+        then: "the correct result is returned"
+        result == expectedResult
+
+        when: "alternate success test, TC#12"
+        exams = [["2", "2", "2", "3", "4", "2", "1", "1", "4"], ["0", "1", "3", "2", "4", "0", "0", "2", "4"], ["0", "0", "3", "3", "4", "2", "3", "3", "1"], ["0", "1", "2", "3", "0", "2", "1", "0", "4"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.proportionPassingByQuestion(exams, answerKey, weights)
+        expectedResult = [0.75, 0.5, 0.75, 0.75, 1, 0.5, 0.5, 0.25, 0]
+        then: "the correct result is returned"
+        result == expectedResult
+
+        when: "The exams are of unequal length"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1", "0", "0", "0", "0"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.proportionPassingByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "some exam strings are not 0-4"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "8"], ["0", "0", "z", "3", "2", "2", "z", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "9", "4", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.proportionPassingByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "some exam strings are longer than 1 char"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "32"], ["0", "01", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "11021", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "33"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.proportionPassingByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "exams are a list of ints"
+        exams = [6, 8] as Integer[]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.proportionPassingByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "exams and answer key are null"
+        exams = null
+        answerKey = null
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.proportionPassingByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key is not a list of strings"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = [4, 2, 7] as Integer[]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.proportionPassingByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key has a string that is longer than 5 chars"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = ["012341"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.proportionPassingByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key has one or more strings that are not between 0 and 4"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = ["a", "v", "b", "f", "aeg", "l", "b", "a", "n"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.proportionPassingByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
     }
 
     def "ProportionFailingByQuestion"() {
+        when: "the method is done normally"
+        List<List<String>> exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        List<String> answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        List<Integer> weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        List<BigDecimal> result = Stats.proportionFailingByQuestion(exams, answerKey, weights)
+        List<BigDecimal> expectedResult = [0.25, 0.5, 0, 0.25, 0.25, 0, 0.25, 0.25, 1]
+        then: "the correct result is returned"
+        result == expectedResult
+
+        when: "alternate success test, TC#10"
+        exams = [["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "0", "1", "1", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.proportionFailingByQuestion(exams, answerKey, weights)
+        expectedResult = [1, 1, 1, 1, 1, 0.75, 1, 1, 1]
+        then: "the correct result is returned"
+        result == expectedResult
+
+        when: "alternate success test, TC#11"
+        exams = [["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["0", "0", "0", "0", "0", "0", "0", "0", "0"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "0", "1", "1", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.proportionFailingByQuestion(exams, answerKey, weights)
+        expectedResult = [0.75, 1, 1, 1, 0.75, 0.75, 1, 0.75, 1]
+        then: "the correct result is returned"
+        result == expectedResult
+
+        when: "alternate success test, TC#12"
+        exams = [["2", "2", "2", "3", "4", "2", "1", "1", "4"], ["0", "1", "3", "2", "4", "0", "0", "2", "4"], ["0", "0", "3", "3", "4", "2", "3", "3", "1"], ["0", "1", "2", "3", "0", "2", "1", "0", "4"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.proportionFailingByQuestion(exams, answerKey, weights)
+        expectedResult = [0.25, 0.5, 0.25, 0.25, 0, 0.5, 0.5, 0.75, 1]
+        then: "the correct result is returned"
+        result == expectedResult
+
+        when: "The exams are of unequal length"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1", "0", "0", "0", "0"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.proportionFailingByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "some exam strings are not a-e"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "8"], ["0", "0", "z", "3", "2", "2", "z", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "9", "4", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.proportionFailingByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "some exam strings are longer than 1 char"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "32"], ["0", "01", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "11021", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "33"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.proportionFailingByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "exams are a list of ints"
+        exams = [6, 8] as Integer[]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.proportionFailingByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "exams and answer key are null"
+        exams = null
+        answerKey = null
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.proportionFailingByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key is not a list of strings"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = [4, 2, 7] as Integer[]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.proportionFailingByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key has a string that is longer than 5 chars"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = ["012341"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.proportionFailingByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key has one or more strings that are not between 0 and 4"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = ["a", "v", "b", "f", "aeg", "l", "b", "a", "n"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.proportionFailingByQuestion(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
     }
 
     def "KuderRichardson21"() {
+
+        when: "kr21 is done normally"
+        List<List<String>> exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        List<String> answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        List<Integer> weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        BigDecimal result = Stats.kuderRichardson21(exams, answerKey, weights)
+        then: "the correct result is returned"
+        result == 0
+
+        when: "alternate success test, TC#10"
+        exams = [["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "0", "1", "1", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.kuderRichardson21(exams, answerKey, weights)
+        then: "the correct result is returned"
+        result == 0
+
+        when: "alternate success test, TC#11"
+        exams = [["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["0", "0", "0", "0", "0", "0", "0", "0", "0"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "0", "1", "1", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.kuderRichardson21(exams, answerKey, weights)
+        then: "the correct result is returned"
+        result == 0
+
+        when: "alternate success test, TC#12"
+        exams = [["2", "2", "2", "3", "4", "2", "1", "1", "4"], ["0", "1", "3", "2", "4", "0", "0", "2", "4"], ["0", "0", "3", "3", "4", "2", "3", "3", "1"], ["0", "1", "2", "3", "0", "2", "1", "0", "4"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.kuderRichardson20(exams, answerKey, weights)
+        then: "the correct result is returned"
+        result == 0.482142857
+
+        when: "The exams are of unequal length"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1", "0", "0", "0", "0"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.kuderRichardson21(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "some exam strings are not a-e"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "8"], ["0", "0", "z", "3", "2", "2", "z", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "9", "4", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.kuderRichardson21(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "some exam strings are longer than 1 char"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "32"], ["0", "01", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "11021", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "33"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.kuderRichardson21(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "exams are a list of ints"
+        exams = [6, 8] as Integer[]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.kuderRichardson21(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "exams and answer key are null"
+        exams = null
+        answerKey = null
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.kuderRichardson21(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key is not a list of strings"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = [4, 2, 7] as Integer[]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.kuderRichardson21(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key has a string that is longer than 5 chars"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.kuderRichardson21(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key has one or more strings that are not between 0 and 4"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = ["a", "v", "b", "f", "aeg", "l", "b", "a", "n"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.kuderRichardson21(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
     }
 
     def "KuderRichardson20"() {
+
+        when: "The method is used correctly"
+        List<List<String>> exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        List<String> answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        List<Integer> weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        BigDecimal result = Stats.kuderRichardson20(exams, answerKey, weights)
+        then: "the correct result is returned"
+        result == 0
+
+        when: "alternate success test, TC#10"
+        exams = [["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "0", "1", "1", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.kuderRichardson20(exams, answerKey, weights)
+        then: "the correct result is returned"
+        result == 0
+
+        when: "alternate success test, TC#11"
+        exams = [["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["0", "0", "0", "0", "0", "0", "0", "0", "0"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "0", "1", "1", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.kuderRichardson20(exams, answerKey, weights)
+        then: "the correct result is returned"
+        result == 0.5625
+
+        when: "alternate success test, TC#12"
+        exams = [["2", "2", "2", "3", "4", "2", "1", "1", "4"], ["0", "1", "3", "2", "4", "0", "0", "2", "4"], ["0", "0", "3", "3", "4", "2", "3", "3", "1"], ["0", "1", "2", "3", "0", "2", "1", "0", "4"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        result = Stats.kuderRichardson20(exams, answerKey, weights)
+        then: "the correct result is returned"
+        result == 0.642857
+
+        when: "The exams are of unequal length"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1", "0", "0", "0", "0"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.kuderRichardson20(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "some exam strings are not 0-4"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "8"], ["0", "0", "z", "3", "2", "2", "z", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "9", "4", "2", "3", "2", "3"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.kuderRichardson20(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "some exam strings are longer than 1 char"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "32"], ["0", "01", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "11021", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "33"]]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.kuderRichardson20(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "exams are a list of ints"
+        exams = [6, 8] as Integer[]
+        answerKey = ["0", "1", "2", "3", "04", "2", "1", "0", "01234"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.kuderRichardson20(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "exams and answer key are null"
+        exams = null
+        answerKey = null
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.kuderRichardson20(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key is not a list of strings"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = [4, 2, 7] as Integer[]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.kuderRichardson20(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key has a string that is longer than 5 chars"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = ["012341"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.kuderRichardson20(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "answer key has one or more strings that are not between 0 and 4"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        answerKey = ["a", "v", "b", "f", "aeg", "l", "b", "a", "n"]
+        weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Stats.kuderRichardson20(exams, answerKey, weights)
+        then: "exception thrown"
+        thrown(Exception)
     }
 
     def "QuestionFrequency"() {
+        when: "The method is used correctly"
+        List<List<String>> exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "3"]]
+        List<List<String>> result = Stats.questionFrequency(exams)
+        List<List<String>> expectedResult = [["3", "1", "0", "0", "0"], ["2", "2", "0", "0", "0"], ["0", "0", "4", "0", "0"], ["0", "1", "0", "3", "0"], ["0", "0", "1", "0", "3"], ["0", "0", "4", "0", "0"], ["0", "3", "0", "1", "0"], ["3", "0", "1", "0", "0"], ["0", "1", "1", "2", "0"]]
+        then: "the correct result is returned"
+        result == expectedResult
+
+        when: "alternate success test, TC#10"
+        exams = [["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "0", "1", "1", "2", "3", "2", "3"]]
+        result = Stats.questionFrequency(exams)
+        expectedResult = [["0", "0", "4", "0", "0"], ["4", "0", "0", "0", "0"], ["1", "3", "0", "0", "0"], ["0", "4", "0", "0", "0"], ["0", "4", "0", "0", "0"], ["3", "0", "1", "0", "0"], ["0", "0", "0", "4", "0"], ["0", "0", "1", "3", "0"], ["0", "0", "0", "4", "0"]]
+        then: "the correct result is returned"
+        result == expectedResult
+
+        when: "alternate success test, TC#11"
+        exams = [["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["0", "0", "0", "0", "0", "0", "0", "0", "0"], ["2", "0", "1", "1", "1", "0", "3", "3", "3"], ["2", "0", "0", "1", "1", "2", "3", "2", "3"]]
+        result = Stats.questionFrequency(exams)
+        expectedResult = [["1", "0", "3", "0", "0"], ["4", "0", "0", "0", "0"], ["2", "2", "0", "0", "0"], ["1", "3", "0", "0", "0"], ["1", "3", "0", "0", "0"], ["3", "0", "1", "0", "0"], ["1", "0", "0", "3", "0"], ["1", "0", "1", "2", "0"], ["1", "0", "0", "3", "0"]]
+        then: "the correct result is returned"
+        result == expectedResult
+
+        when: "alternate success test, TC#12"
+        exams = [["2", "2", "2", "3", "4", "2", "1", "1", "4"], ["0", "1", "3", "2", "4", "0", "0", "2", "4"], ["0", "0", "3", "3", "4", "2", "3", "3", "1"], ["0", "1", "2", "3", "0", "2", "1", "0", "4"]]
+        result = Stats.questionFrequency(exams)
+        expectedResult = [["3", "0", "1", "0", "0"], ["1", "2", "1", "0", "0"], ["0", "0", "2", "2", "0"], ["0", "0", "1", "3", "0"], ["1", "0", "0", "0", "3"], ["1", "0", "3", "0", "0"], ["1", "2", "0", "1", "0"], ["1", "1", "1", "1", "0"], ["0", "1", "0", "0", "3"]]
+        then: "the correct result is returned"
+        result == expectedResult
+
+        when: "The exams are of unequal length"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "3"], ["0", "0", "2", "3", "2", "2", "1", "0", "1", "0", "0", "0", "0"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2"]]
+        Stats.questionFrequency(exams)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "some exam strings are not 0-4"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "8"], ["0", "0", "z", "3", "2", "2", "z", "0", "1"], ["1", "1", "2", "1", "4", "2", "1", "0", "2"], ["0", "0", "2", "9", "4", "2", "3", "2", "3"]]
+        Stats.questionFrequency(exams)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "some exam strings are longer than 1 char"
+        exams = [["0", "1", "2", "3", "4", "2", "1", "0", "32"], ["0", "01", "2", "3", "2", "2", "1", "0", "1"], ["1", "1", "2", "1", "4", "2", "11021", "0", "2"], ["0", "0", "2", "3", "4", "2", "3", "2", "33"]]
+        Stats.questionFrequency(exams)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "exams are a list of ints"
+        exams = [6, 8] as Integer[]
+        Stats.questionFrequency(exams)
+        then: "exception thrown"
+        thrown(Exception)
+
+        when: "exams null"
+        exams = null
+        Stats.questionFrequency(exams)
+        then: "exception thrown"
+        thrown(Exception)
     }
 
-    def "Percentiles"() {
-    }
-
-    def "SquareRoot"() {
-    }
-
-    def "Quartiles"() {
+    def "squareRoot"() {
+        when: ""
+        BigDecimal input = 9.00000
+        BigDecimal result = Stats.squareRoot(input)
+        then: "result is the square root"
+        result == 3.0000
     }
 }

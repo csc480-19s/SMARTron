@@ -4,7 +4,7 @@ import Database.InstructorDao
 import spock.lang.Specification
 
 //QMR section 3.6
-class   InstructorDaoTest extends Specification {//TODO: possibly look into deriving more tests
+class InstructorDaoTest extends Specification {
 
     def "AddInstructor"() {//3.6.2
         given: "an instructors information"
@@ -75,7 +75,7 @@ class   InstructorDaoTest extends Specification {//TODO: possibly look into deri
         beforeList.size() == 0
         afterList.size() == 0
 
-        when: "the instructor was in the database"//this is problematic... (1) first run inst not deleted<bug?> (2) run again and exception thrown since inst still in database
+        when: "the instructor was in the database"
         instDao.addInstructor(instID, instFName, instLName)
         beforeList = instDao.selectInstructor(instFName, instLName)
         instDao.deleteInstructor(instID)
@@ -111,7 +111,7 @@ class   InstructorDaoTest extends Specification {//TODO: possibly look into deri
         given:
         InstructorDao instDao = new InstructorDao()
 
-        when: "empty string"//returns [""], is this intened?
+        when: "empty string"
         def list = instDao.selectInstructor("", "")
         then:"nothing happens, nothing returned"
         list.size() == 0
