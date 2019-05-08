@@ -117,6 +117,7 @@ class MiddlewareInterfaceTest extends Specification {
     }
 
     def "fail getExamGrades from invalid strings"() {
+        when:
         String second = "Dilbert is #1"
         mi.addStudentExam(second)
         String secon = "Frank,M,67,11/13/15,FGHSD,TFGRW,1,2,1,1,2,2,1,1,1,2,0,1,2,1,3,2,0,3,3,2,0,1,2,3,1,-1,-1," +
@@ -124,7 +125,6 @@ class MiddlewareInterfaceTest extends Specification {
                 ",-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1" +
                 ",-1,-1,-1"
         mi.addStudentExam(secon)
-        when:
         int before = mi.getStudentNumberGrades().size()
         int befor = mi.getKey().answers.size()
         Class aClass = mi.getClass()
@@ -165,6 +165,7 @@ class MiddlewareInterfaceTest extends Specification {
     }
 
     def "fail getExamLetterGrades from invalid strings"() {
+        when:
         String second = "Dilbert is #1"
         mi.addStudentExam(second)
         String secon = "Frank,M,67,11/13/15,FGHSD,TFGRW,1,2,1,1,2,2,1,1,1,2,0,1,2,1,3,2,0,3,3,2,0,1,2,3,1,-1,-1," +
@@ -172,7 +173,6 @@ class MiddlewareInterfaceTest extends Specification {
                 ",-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1" +
                 ",-1,-1,-1"
         mi.addStudentExam(secon)
-        when:
         Class aClass = mi.getClass()
         Method method = aClass.getDeclaredMethod("getExamGrades")
         method.setAccessible(true)
@@ -213,6 +213,7 @@ class MiddlewareInterfaceTest extends Specification {
     }
 
     def "fail examGradeIntegerConverter from invalid strings"() {
+        when:
         String second = "Dilbert is #1"
         mi.addStudentExam(second)
         String secon = "Frank,M,67,11/13/15,FGHSD,TFGRW,1,2,1,1,2,2,1,1,1,2,0,1,2,1,3,2,0,3,3,2,0,1,2,3,1,-1,-1," +
@@ -220,7 +221,6 @@ class MiddlewareInterfaceTest extends Specification {
                 ",-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1" +
                 ",-1,-1,-1"
         mi.addStudentExam(secon)
-        when:
         Class aClass = mi.getClass()
         Method method = aClass.getDeclaredMethod("getExamGrades")
         method.setAccessible(true)
@@ -266,6 +266,7 @@ class MiddlewareInterfaceTest extends Specification {
     }
 
     def "fail assignStudentGrades from invalid strings"() {
+        when:
         String second = "Dilbert is #1"
         mi.addStudentExam(second)
         String secon = "Frank,M,67,11/13/15,FGHSD,TFGRW,1,2,1,1,2,2,1,1,1,2,0,1,2,1,3,2,0,3,3,2,0,1,2,3,1,-1,-1," +
@@ -273,7 +274,6 @@ class MiddlewareInterfaceTest extends Specification {
                 ",-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1" +
                 ",-1,-1,-1"
         mi.addStudentExam(secon)
-        when:
         Class aClass = mi.getClass()
         Method method = aClass.getDeclaredMethod("getExamGrades")
         method.setAccessible(true)
@@ -320,6 +320,7 @@ class MiddlewareInterfaceTest extends Specification {
     }
 
     def "fail getStats from invalid strings"() {
+        when:
         String second = "Dilbert is #1"
         mi.addStudentExam(second)
         String secon = "Frank,M,67,11/13/15,FGHSD,TFGRW,1,2,1,1,2,2,1,1,1,2,0,1,2,1,3,2,0,3,3,2,0,1,2,3,1,-1,-1," +
@@ -327,7 +328,6 @@ class MiddlewareInterfaceTest extends Specification {
                 ",-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1" +
                 ",-1,-1,-1"
         mi.addStudentExam(secon)
-        when:
         Class aClass = mi.getClass()
         Method method = aClass.getDeclaredMethod("getExamGrades")
         method.setAccessible(true)
@@ -385,6 +385,7 @@ class MiddlewareInterfaceTest extends Specification {
     }
 
     def "fail getGrades from invalid strings"() {
+        when:
         String second = "Dilbert is #1"
         mi.addStudentExam(second)
         String secon = "Frank,M,67,11/13/15,FGHSD,TFGRW,1,2,1,1,2,2,1,1,1,2,0,1,2,1,3,2,0,3,3,2,0,1,2,3,1,-1,-1," +
@@ -392,7 +393,6 @@ class MiddlewareInterfaceTest extends Specification {
                 ",-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1" +
                 ",-1,-1,-1"
         mi.addStudentExam(secon)
-        when:
         int before = mi.getStudentNumberGrades().size()
         int befor = mi.getKey().answers.size()
         Class aClass = mi.getClass()

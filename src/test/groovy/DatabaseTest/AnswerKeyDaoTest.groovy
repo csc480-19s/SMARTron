@@ -161,8 +161,7 @@ class AnswerKeyDaoTest extends Specification {
         akd.deleteAnswerKey("Midterm")
     }
 
-    //Should throw Exception based on the code, but returns an empty list
-    //The exception should be thrown from select
+
     def "test deletion of an exam"() {
 
         when:
