@@ -59,7 +59,7 @@ class Exam extends Component{
                 <div className={"exam"}>
 
                     <a className={"editName"}>{this.state.title1} </a>
-                    <Popup onClose={this.resetNewNames} modal trigger={<FontAwesomeIcon icon={faPencilAlt}/>}>
+                    <Popup onClose={this.resetNewNames} modal trigger={<FontAwesomeIcon className={"edit"} icon={faPencilAlt}/>}>
                         {close =>
                             <div className={"changeName"}>
                                 <h1>Change name of test {this.state.title1}</h1>

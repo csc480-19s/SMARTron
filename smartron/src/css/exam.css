@@ -47,3 +47,11 @@
     color: #003C60;
 
 }
+
+.edit{
+    cursor: pointer;
+    border-radius: 3px;
+}
+.edit:hover{
+    color: #003C60;
+}
