@@ -21,6 +21,16 @@ class CourseDaoTest extends Specification {
         courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
     }
 
+    def "test selectCrn method"() {
+        when:
+        courseDao.addCourse('SDFGH', 'Software Design', '800', 'Spring2019', 'MATT')
+        def result = courseDao.selectCrn('MATT')
+        courseDao.deleteCourse('SDFGH', '800', 'Spring2019', 'MATT')
+
+        then:
+        result == 'SDFGH'
+    }
+
     //test trying duplicates and test deleting when not in db
     def "delete a course from db when not in it"() {
         when:
