@@ -30,3 +30,4 @@ hs_err_pid*
 
 # to ignore the .idea file
 *.idea
+/target/
