@@ -9,7 +9,7 @@ import java.lang.reflect.Method
 class StudentTest extends Specification{
 
     Student student = new Student()
-    def testString = ['10', '15', '14', '4', '14', '0', '20', '18', '25', '14', '9', '19', '11', '9', '0', '13', '0', '0', '0', '0', '13', '1', '1', '1', '7', '9', '2', '8', '0', '3', '0', '4', '3', '9', '7', '4', '1', '2', '3', '4', '5', '6']
+    def testString = ['10', '15', '14', '4', '14', '0', '20', '18', '25', '14', '9', '19', '11', '9', '0', '13', '0', '0', '0', '0', '13', '1', '1', '1', '7', '9', '2', '8', '0', '3', '0', '4', '3', '9', '7', '4', '1', '2', '3', '4', '5', '6', '1']
 
     def "This test the correct initializeAnswers method"(){
 
@@ -219,7 +219,7 @@ class StudentTest extends Specification{
         method.invoke(student)
 
         then:
-        student.getCode() == 'ABCDEF'
+        student.getCode() == 'BCDEFA'
     }
 
     def "Test incorrect input of findCode"() {
@@ -234,7 +234,7 @@ class StudentTest extends Specification{
         method.invoke(student)
 
         then:
-        student.getCode() == "A.CDEF"
+        student.getCode() == "B.DEFA"
     }
 
     def "Test the inbounds of alpha converter"() {
@@ -283,10 +283,6 @@ class StudentTest extends Specification{
         student.getId() == "803043974"
         student.getName() == "JONDN TRYNISKI M    "
 
-    }
-
-    def "Test the initialization from db"() {
-        //Need to insert into db pull it and try that
     }
 
     //Never gets the letter grade?!
