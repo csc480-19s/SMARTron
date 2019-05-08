@@ -138,7 +138,6 @@ class Home extends Component {
                             </div>
                         }
                     </Popup>
-                    <select className={"select"} onChange={this.sort}><option value={"recent"}>Newest First </option> <option value={"alpha"}>Oldest First</option></select>
                 </div>
                 <ExamList loginName={this.props.location.state.loginName} email={this.props.location.state.email} exams={this.state.exams2} history={this.props.history}>{this.state.swap ? this.state.exams2 : this.state.exams}</ExamList>
 
