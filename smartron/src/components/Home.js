@@ -101,11 +101,11 @@ class Home extends Component {
             <div>
                 <h1 className={"welcome"}> Welcome, {this.props.location.state.loginName}</h1>
                 <div className={"buttons"}>
-                    <Popup onClose={this.resetNewTest} onOpen={this.generateCode} modal trigger={<button className={"scanButton"}>New Test Scan</button>}>
+                    <Popup onClose={this.resetNewTest} onOpen={this.generateCode} modal trigger={<button className={"scanButton"}>Create New Test</button>}>
                         {close =>
                             <div className={"modal"}>
                                 <a className={"closeButton"} onClick={close}> &times; </a>
-                                <h1> New Test Scan</h1>
+                                <h1> Create New Test</h1>
                                 <form>
                                     <label> Enter name of test: <input name={"newName"} value={this.state.newName}
                                         onChange={this.handleName} /></label> <br />
