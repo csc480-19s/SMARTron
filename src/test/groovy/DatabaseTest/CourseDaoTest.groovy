@@ -21,6 +21,16 @@ class CourseDaoTest extends Specification {
         courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
     }
 
+    def "test the selectCrn method"() {
+        when:
+        courseDao.addCourse('SDFGH', 'Software Design', '800', 'Spring2019', 'MATT')
+        def result = courseDao.selectCrn('MATT')
+        courseDao.deleteCourse('SDFGH', '800', 'Spring2019', 'MATT')
+
+        then:
+        result == ['SDFGH']
+    }
+
     //test trying duplicates and test deleting when not in db
     def "delete a course from db when not in it"() {
         when:
@@ -42,13 +52,14 @@ class CourseDaoTest extends Specification {
         courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "MATT")
         List<String> after = courseDao.selectCourse("SDFGH","800","Spring2019","MATT")
         courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "MATT")
+        //clean up the db
+        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
 
         then:
         thrown Exception
         before.size() == 0
         after.size() == 1
-        //clean up the db
-        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
+
     }
 
     def "fail add from crn as non-string"(){
@@ -121,12 +132,13 @@ class CourseDaoTest extends Specification {
         List<String> before = courseDao.selectCourse("SDFGH","800","Spring2019","MATT")
         courseDao.addCourse("SDFGH", "", "800", "Spring2019", "MATT")
         List<String> after = courseDao.selectCourse("SDFGH","800","Spring2019","MATT")
+        //clean up the db
+        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
 
         then:
         before.size() == 0
         after.size() == 1
-        //clean up the db
-        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
+
     }
 
     def "section not string"(){
@@ -154,14 +166,15 @@ class CourseDaoTest extends Specification {
         List<String> before = courseDao.selectCourse("SDFGH","","Spring2019","MATT")
         courseDao.addCourse("SDFGH", "Software Design", "", "Spring2019", "MATT")
         List<String> after = courseDao.selectCourse("SDFGH","","Spring2019","MATT")
-
-        then:
-        before.size() == 0
-        after.size() == 1
         //clean up the db
         courseDao.deleteCourse("SDFGH", "", "Spring2019","MATT")
         //clean up the db
         courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
+
+        then:
+        before.size() == 0
+        after.size() == 1
+
     }
 
     def "semester is too long"() {
@@ -189,22 +202,23 @@ class CourseDaoTest extends Specification {
         List<String> before = courseDao.selectCourse("SDFGH","800","","MATT")
         courseDao.addCourse("SDFGH", "Software Design", "800", "", "MATT")
         List<String> after = courseDao.selectCourse("SDFGH","800","","MATT")
+        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
 
         then:
         before.size() == 0
         after.size() == 1
         //clean up the db
-        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
     }
 
     def "instructor id not already in db"() {
         when:
         courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "DILBERT")
+        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
 
         then:
         thrown Exception
         //clean up the db
-        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
+
     }
 
     def "instructor is empty string"() {
@@ -212,14 +226,13 @@ class CourseDaoTest extends Specification {
         List<String> before = courseDao.selectCourse("SDFGH","800","Spring2019","")
         courseDao.addCourse("SDFGH", "Software Design", "800", "Spring2019", "")
         List<String> after = courseDao.selectCourse("SDFGH","800","Spring2019","")
+        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
+        //clean up the db
+        courseDao.deleteCourse("SDFGH", "800", "Spring2019","")
 
         then:
         before.size() == 0
         after.size() == 1
-        //clean up the db
-        courseDao.deleteCourse("SDFGH", "800", "Spring2019","MATT")
-        //clean up the db
-        courseDao.deleteCourse("SDFGH", "800", "Spring2019","")
     }
 
     def "instructor is too long"() {
