@@ -5,6 +5,7 @@ import spock.lang.Specification
 
 //QMR section 3.6
 class   InstructorDaoTest extends Specification {//TODO: possibly look into deriving more tests
+
     def "AddInstructor"() {//3.6.2
         given: "an instructors information"
         InstructorDao instDao = new InstructorDao()
@@ -125,6 +126,17 @@ class   InstructorDaoTest extends Specification {//TODO: possibly look into deri
         instDao.selectInstructor(5, 6)
         then: "exception thrown"
         thrown(Exception)
+
+    }
+
+    def "test the getInstIdfromEmail method"(){
+        when:
+        InstructorDao id = new InstructorDao()
+        id.addInstructor('jtrynisk', 'Jondn', 'Tryniski')
+        def result = id.getInstIdFromEmail('jtrynisk@oswego.edu')
+
+        then:
+        result == ['jtrynisk']
 
     }
 }

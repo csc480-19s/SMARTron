@@ -1,8 +1,6 @@
 package DatabaseTest
 
-import Database.AnswerKeyDao
 import Database.ExamDao
-import Database.InstructorDao
 import spock.lang.Specification
 
 class ExamDaoTest extends Specification{
@@ -322,6 +320,17 @@ class ExamDaoTest extends Specification{
         thrown Exception
         //clean up the db
         examDao.deleteExam("69696")
+    }
+
+    def "test the selectStudents method"() {
+        when:
+        examDao.addExam("Dilbert", "Johnson", "804991926", "Spring2019",
+                "02/17/1997", "54322", "123456789", "69696", "answers")
+        def result = examDao.selectStudents('123456789', '69696')
+        examDao.deleteExam('69696')
+
+        then:
+        result == ['Dilbert Johnson']
     }
 
 }
