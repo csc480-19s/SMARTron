@@ -8,7 +8,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class ResultServlet extends HttpServlet {
-    String instID;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	String instID;
     String examID;
     String[] args = new String[2];
 

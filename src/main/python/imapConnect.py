@@ -80,7 +80,7 @@ class Main(FetchEmail):
         imap_host = 'cs.oswego.edu'
         imap_user = smartronUsername
         imap_pass = smartronPassword
-        download_folder = '/images/'
+        download_folder = 'images/'
 
         self = FetchEmail(imap_host,imap_user,imap_pass)
         

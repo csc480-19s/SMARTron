@@ -72,6 +72,7 @@ public class MiddlewareInterface {
 
     private void getExamGrades(){
         this.key = studentExams.get(0);
+        this.studentExams.remove(0);
         this.studentNumberGrades = grader.getGrades(studentExams, key);
     }
 
@@ -122,9 +123,37 @@ public class MiddlewareInterface {
         jsonBuilder.buildMainpageJSON();
         jsonBuilder.buildAnswerKeyJSON(this.key);
         jsonBuilder.buildByStudentJSON(this.studentExams);
-        jsonBuilder.buildByQuestion(this.grader.getStatsByQuestion());
-        //jsonBuilder.buildStatsJSON(stats);
+        jsonBuilder.buildByQuestion(this.grader.getStatsByQuestion(), grader.getExamLength());
+        jsonBuilder.buildStatsJSON(stats, this.studentExams);
 
     }
     //This makes the json for the gui
+
+    public List<Float> getStudentNumberGrades() {
+        return studentNumberGrades;
+    }
+
+    public List<String> getStudentLetterGrades() {
+        return studentLetterGrades;
+    }
+
+    public List<Integer> getStudentGradesForStats() {
+        return studentGradesForStats;
+    }
+
+    public Stats getstats(){
+        return stats;
+    }
+
+    public String getExamId(){
+        return examID;
+    }
+
+    public List<Student> getStudentExams() {
+        return studentExams;
+    }
+
+    public Student getKey() {
+        return key;
+    }
 }

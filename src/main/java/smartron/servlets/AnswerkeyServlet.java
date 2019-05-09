@@ -19,6 +19,10 @@ import Database.AnswerKeyDao;
 import smartron.entities.Answerkey;
 
 public class AnswerkeyServlet extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Gson gson = null;
 	private static HashMap<String, String> optionAnswerKey = new HashMap<>();
 	AnswerKeyDao akDao = new AnswerKeyDao();
@@ -51,7 +55,7 @@ public class AnswerkeyServlet extends HttpServlet {
 					anserKey = new Answerkey();
 					anserKey.setQuestionId(idCounter);
 					String keys[] = new String[5];
-					if (!(key.equals("-1") || key.equals("error"))) {
+					if (!(key.equals("-1"))) {
 						for (int i = 0; i < key.length(); i++) {
 							keys[i] = optionAnswerKey.get(key.substring(i, i + 1));
 						}
@@ -70,7 +74,7 @@ public class AnswerkeyServlet extends HttpServlet {
 
 		gson = new Gson();
 		questionJsonString = gson.toJson(keyList);
-		System.out.println("Size of KeyList" + keyList.size());
+
 		PrintWriter out = response.getWriter();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
@@ -94,15 +98,21 @@ public class AnswerkeyServlet extends HttpServlet {
 		try {
 			buildKeys();
 			StringBuffer updatedAnswerKey = new StringBuffer("[");
-			for (Answerkey akey : k) {
-				for (String key : akey.getAnswerKey()) {
-					if (!(key == null)) {
-						String keyCode = getKey(optionAnswerKey, key);
-						updatedAnswerKey.append(keyCode);
-					}
-				}
-				updatedAnswerKey.append(",");
-			}
+			boolean foundAnAnswer;
+            for (Answerkey akey : k) {
+                foundAnAnswer = false;
+                for (String key : akey.getAnswerKey()) {
+                    if (key != null) {
+                        String keyCode = getKey(optionAnswerKey, key);
+                        updatedAnswerKey.append(keyCode);
+                        foundAnAnswer = true;
+                    } 
+                }
+                if (!foundAnAnswer) {
+                    updatedAnswerKey.append("error");
+                }
+                updatedAnswerKey.append(",");
+            }
 			updatedAnswerKey.deleteCharAt(updatedAnswerKey.length() - 1);
 			updatedAnswerKey.append("]");
 

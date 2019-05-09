@@ -79,7 +79,7 @@ class QuestionTest extends Specification {
         question.increment("-1")
 
         then:
-        buffer.toString() == "SMARTron question object add Error\n"
+        buffer.toString() == ""
 
     }
 
@@ -90,7 +90,7 @@ class QuestionTest extends Specification {
         question.increment("5")
 
         then:
-        buffer.toString() == "SMARTron question object add Error\n"
+        buffer.toString() == ""
 
     }
 
@@ -111,4 +111,27 @@ class QuestionTest extends Specification {
 
     }
 
+    def "test the addition of an incorrect type"() {
+        when:
+        question.increment(1)
+
+        then:
+        thrown(Exception)
+    }
+
+    def "test is not a valid string"() {
+        when:
+        question.increment("1112")
+
+        then:
+        thrown(Exception)
+    }
+
+    def "test null"() {
+        when:
+        question.increment(null)
+
+        then:
+        thrown(Exception)
+    }
 }

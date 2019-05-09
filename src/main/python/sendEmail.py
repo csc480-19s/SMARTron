@@ -26,12 +26,12 @@ class SendEmail():
 
         #defines structure of email object
         msg = MIMEMultipart()
-        msg['Subject'] = 'SMARTron Scans Recieved'
+        msg['Subject'] = 'SMARTron Scans Received'
         msg['From'] = fromaddr
         msg['To'] = toaddrs
 
         # fill in this part with desired message to be sent
-        text = "This is a Real Trial Test!"
+        text = "SMARTron scans were received and are being processed."
         part = MIMEText(text, 'plain')
 
         # attach message to email object
@@ -73,7 +73,7 @@ class SendEmail():
         msg.attach(attachment)
 
         # fill in this part with desired message to be sent
-        text = "This is a Real Trial Test!"
+        text = "SMARTron scans are processed and ready to be viewed."
         part = MIMEText(text, 'plain')
 
         # attach message to email object
