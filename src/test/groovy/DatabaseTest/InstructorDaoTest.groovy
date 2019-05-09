@@ -3,70 +3,90 @@ package DatabaseTest
 import Database.InstructorDao
 import spock.lang.Specification
 
+/*
+*
+* Author: Sean McGrath
+*
+ */
 //QMR section 3.6
 class InstructorDaoTest extends Specification {
 
-    def "AddInstructor"() {//3.6.2
-        given: "an instructors information"
+
+    def "AddInstructor - the instructors information are all nonempty strings of size =< 200; Test#1"() {
+        //assumes there is not already an instructor with this name in the system
+        when: ""
         InstructorDao instDao = new InstructorDao()
         def instIDSize200 = "STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID2135243STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID21352"
-        def instIDSize201 = "1STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID2135243STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID21352"
         def instFName = "Test"
-        def fNLong = "1STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524"
         def instLName = "Instructor"
-        def lNLong = "1STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524"
-
-        when: "the instructors information are all nonempty strings of size =< 200; Test#1"
-        //assumes there is not already an instructor with this name in the system
         instDao.addInstructor(instIDSize200, instFName, instLName)
         def list = instDao.selectInstructor(instFName, instLName)
         instDao.deleteInstructor(instIDSize200)//cleanup
         then: "list contains that id"//TC#1
         list == [instIDSize200]
         notThrown(Exception)
+    }
 
-        when: "the instructor is already in the database"
+    def "AddInstructor - the instructor is already in the database"() {
+        when: ""
+        InstructorDao instDao = new InstructorDao()
+        def instIDSize200 = "STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID2135243STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID21352"
+        def instFName = "Test"
+        def instLName = "Instructor"
         instDao.addInstructor(instIDSize200, instFName, instLName)
         instDao.addInstructor(instIDSize200, instFName, instLName)
-        then:  "exception thrown"
+        then: "exception thrown"
         thrown(Exception)
         instDao.deleteInstructor(instIDSize200)
+    }
 
-        when: "the instructor information is empty strings; Test#2"
-        instDao.addInstructor("","","")
+    def "AddInstructor - the instructor information is empty strings; Test#2"() {
+        when: ""
+        InstructorDao instDao = new InstructorDao()
+        instDao.addInstructor("", "", "")
         then: "an exception is thrown, cannot be added to table"//TC#2
         thrown(Exception)
+    }
 
-        when: "the instructor information are all null; Test#3"
+    def "AddInstructor - the instructor information are all null; Test#3"() {
+        when: ""
+        InstructorDao instDao = new InstructorDao()
         instDao.addInstructor(null, null, null)
         then: "an exception is thrown"//TC#3
         thrown(Exception)
+    }
 
-        when: "the information are not strings"
-        instDao.addInstructor(5,17,54)
+    def "AddInstructor - the information are not strings"() {
+        when: ""
+        InstructorDao instDao = new InstructorDao()
+        instDao.addInstructor(5, 17, 54)
         then: "an exception is thrown"//TC#4
         thrown(Exception)
+    }
 
-        when: "the instructor ID is larger than 200"
+    def "AddInstructor - the instructor ID is larger than 200"() {
+        when: ""
+        InstructorDao instDao = new InstructorDao()
         instDao.addInstructor(instIDSize201, instFName, instLName)
         then: "an exception is thrown"//TC#5, only id
         thrown(Exception)
+    }
 
-        when: "All values are larger than size 200"
+    def "AddInstructor - All values are larger than size 200"() {
+        when: ""
+        InstructorDao instDao = new InstructorDao()
         instDao.addInstructor(instIDSize201, fNLong, lNLong)
         then: "an exception is thrown"//full TC#5
         thrown(Exception)
     }
 
-    def "DeleteInstructor"() {//3.6.3
-        given: "an instructors information"
+
+    def "DeleteInstructor - the instructor was not in the database already"() {
+        when: ""
         InstructorDao instDao = new InstructorDao()
         def instID = "TESTID213524987j6htr4u34u"
-        def longInstID = "1STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID2135243STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID21352"
         def instFName = "Test"
         def instLName = "Instructor"
-
-        when: "the instructor was not in the database already"
         def beforeList = instDao.selectInstructor(instFName, instLName)
         instDao.deleteInstructor(instID)
         def afterList = instDao.selectInstructor(instFName, instLName)
@@ -74,62 +94,84 @@ class InstructorDaoTest extends Specification {
         notThrown(Exception)
         beforeList.size() == 0
         afterList.size() == 0
+    }
 
-        when: "the instructor was in the database"
+    def "DeleteInstructor - the instructor was in the database"() {
+        when: ""
+        InstructorDao instDao = new InstructorDao()
+        def instID = "TESTID213524987j6htr4u34u"
+        def instFName = "Test"
+        def instLName = "Instructor"
         instDao.addInstructor(instID, instFName, instLName)
-        beforeList = instDao.selectInstructor(instFName, instLName)
+        def beforeList = instDao.selectInstructor(instFName, instLName)
         instDao.deleteInstructor(instID)
-        afterList = instDao.selectInstructor(instFName, instLName)
+        def afterList = instDao.selectInstructor(instFName, instLName)
         then: "instructor should be removed"
         notThrown(Exception)
         beforeList.size() == 1
         afterList.size() == 0
+    }
 
-        when: "instructor ID is too long"
+    def "DeleteInstructor - instructor ID is too long"() {
+        when: ""
+        InstructorDao instDao = new InstructorDao()
+        def longInstID = "1STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID2135243STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID213524STID21352"
         instDao.deleteInstructor(longInstID)
         then: "exception thrown"
         thrown(Exception)
+    }
 
-        when: "the ID is an empty string"
+    def "DeleteInstructor - the ID is an empty string"() {
+        when: ""
+        InstructorDao instDao = new InstructorDao()
         instDao.deleteInstructor("")
         then: "Exception thrown"
         thrown(Exception)
+    }
 
-        when: "the ID is null"
+    def "DeleteInstructor - the ID is null"() {
+        when: ""
+        InstructorDao instDao = new InstructorDao()
         instDao.deleteInstructor(null)
         then: "an exception is thrown"
         thrown(Exception)
+    }
 
-        when: "the ID is not a string"
+    def "DeleteInstructor - the ID is not a string"() {
+        when: ""
+        InstructorDao instDao = new InstructorDao()
         instDao.deleteInstructor(5)
         then: "an exception is thrown"
         thrown(Exception)
     }
 
-    def "SelectInstructor"(){
-        //TC#1 tested already above
-        given:
-        InstructorDao instDao = new InstructorDao()
 
-        when: "empty string"
+    def "SelectInstructor - empty string"() {
+        when: ""
+        InstructorDao instDao = new InstructorDao()
         def list = instDao.selectInstructor("", "")
-        then:"nothing happens, nothing returned"
+        then: "nothing happens, nothing returned"
         list.size() == 0
         noExceptionThrown()
+    }
 
-        when: "null"
+    def "SelectInstructor - null"() {
+        when: ""
+        InstructorDao instDao = new InstructorDao()
         instDao.selectInstructor(null, null)
         then: "exception thrown"
         thrown(Exception)
+    }
 
-        when: "not string"
+    def "SelectInstructor - not string"() {
+        when: ""
+        InstructorDao instDao = new InstructorDao()
         instDao.selectInstructor(5, 6)
         then: "exception thrown"
         thrown(Exception)
-
     }
 
-    def "test the getInstIdfromEmail method"(){
+    def "test the getInstIdfromEmail method"() {//almsot useless but can keep anyway :P
         when:
         InstructorDao id = new InstructorDao()
         id.addInstructor('jtrynisk', 'Jondn', 'Tryniski')
