@@ -161,6 +161,7 @@ public class CourseDao {
 		try {
 			con = getConnection();
 			ps = con.prepareStatement(SELECT_CRN);
+			ps.setString(1, instId);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				list.add(rs.getString(1));

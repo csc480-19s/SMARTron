@@ -8,6 +8,7 @@ public class ExamManager {
 
 //This class is a high level controller for making student objects, grade them, and process them
 
+
     private List<Student> studentExams = new ArrayList<>();
     private List<Integer> studentGradesForStats = new ArrayList<>();
     private List<Float> studentNumberGrades = new ArrayList<>();
@@ -17,6 +18,7 @@ public class ExamManager {
     private LetterConverter letterConverter = new LetterConverter();
     private StudentCreator studentCreator = new StudentCreator();
     private Student key = new Student();
+    //The bottom two variables are unused and can be removed I am guessing.SS
     private String examName = "";
     private String examID = "";
 
@@ -122,5 +124,29 @@ public class ExamManager {
     
     public Student getKey() {
         return key;
+    }
+
+    public List<Student> getStudentExams() {
+        return studentExams;
+    }
+
+    public List<Float> getStudentNumberGrades() {
+        return studentNumberGrades;
+    }
+
+    public List<String> getStudentLetterGrades() {
+        return studentLetterGrades;
+    }
+
+    public List<Integer> getStudentGradesForStats() {
+        return studentGradesForStats;
+    }
+
+    public Stats getstats(){
+        return stats;
+    }
+
+    public String getExamId(){
+        return examID;
     }
 }

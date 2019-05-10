@@ -1,27 +1,16 @@
 package DatabaseTest
 
 import Database.AnswerKeyDao
-import spock.lang.Ignore
 import spock.lang.Specification
 
 class AnswerKeyDaoTest extends Specification {
 
     AnswerKeyDao akd = new AnswerKeyDao()
 
-    //for mocking later, just need working tests for now
-    /*def setup() {
-
-
-        answerKeyDao = Mock(AnswerKeyDao)
-
-    }*/
-
-
     def "correct addition of an answerkey"() {
 
         when:
-        //This simply ensures that the exam is not already in the DB
-        akd.addAnswerKey('midterm', 'MATT', 'a,b,c,d')
+        akd.addAnswerKey('midterm', 'MATT', 'a,b,c,d', "4")
 
 
         then:
@@ -29,6 +18,96 @@ class AnswerKeyDaoTest extends Specification {
         result == ['a,b,c,d']
         //Cleanup of the insert
         akd.deleteAnswerKey("midterm")
+    }
+
+    def "test getInstructorID method"() {
+        when: akd.addAnswerKey('midterm', 'jtrynisk', 'a,b,c,d', '4')
+        def result = akd.getInstructorId('midterm')
+        akd.deleteAnswerKey('midterm')
+
+        then:
+        result == 'jtrynisk'
+
+    }
+
+    def "test getting the length of the answerkey"() {
+        when:
+        akd.addAnswerKey('midterm', 'jtrynisk', 'a,b,c,d,e', '5')
+        def result = akd.getAnswerKeyLength('midterm')
+
+        then:
+        result == 5
+        result != 4 || 6
+        akd.deleteAnswerKey('midterm')
+    }
+
+    def "test the addUpdateAnswerKey method"() {
+        when:
+        akd.addAnswerKey('midterm', 'jtrynisk', 'a,b,c,d', '4')
+        akd.addUpdatedAnswerKey('midterm', 'e,e,e,e')
+
+        then:
+        def result = akd.selectUpdatedAnswerKey('midterm', 'jtrynisk')
+        result == ['e,e,e,e']
+        akd.deleteAnswerKey('midterm')
+    }
+
+    def "test the updateAnswerKey method"() {
+        when:
+        akd.addAnswerKey('midterm', 'jtrynisk', 'a,b,c,d', '4')
+        akd.updateOriginalAnswerKey('midterm', 'e,e,e,e')
+        def result = akd.selectAnswerKey('midterm', 'jtrynisk')
+
+        then:
+        result == ['e,e,e,e']
+        akd.deleteAnswerKey('midterm')
+    }
+
+    def "test adding more answers than original through addUpdatedAnswerKey"() {
+        when:
+        akd.addAnswerKey('midterm', 'jtrynisk', 'a,b,c,d', '4')
+        akd.addUpdatedAnswerKey('midterm', 'a,b,c,d,e')
+        def result = akd.selectUpdatedAnswerKey('midterm', 'jtrynisk')
+        akd.deleteAnswerKey('midterm')
+
+        then:
+        result == ['a,b,c,d']
+    }
+
+    def "test adding less answers than original through addUpdatedAnswerKey"() {
+        when:
+        akd.addAnswerKey('midterm', 'jtrynisk', 'a,b,c,d', '4')
+        akd.addUpdatedAnswerKey('midterm', 'a,b,c')
+        def result = akd.selectUpdatedAnswerKey('midterm', 'jtrynisk')
+        akd.deleteAnswerKey('midterm')
+
+        then:
+        result == ['a,b,c,d']
+
+    }
+
+    def "test adding more answers than origin through updateAnswerKey"() {
+        when:
+        akd.addAnswerKey('midterm', 'jtrynisk', 'a,b,c,d', '4')
+        akd.updateOriginalAnswerKey('midterm', 'a,b,c,d,e')
+        def result = akd.selectAnswerKey('midterm', 'jtrynisk')
+        akd.deleteAnswerKey('midterm')
+
+        then:
+        result == ['a,b,c,d']
+
+    }
+
+    def "test adding less answers than original through updateAnswerKey"() {
+        when:
+        akd.addAnswerKey('midterm', 'jtrynisk', 'a,b,c,d', '4')
+        akd.updateOriginalAnswerKey('midterm', 'a,b,c')
+        def result = akd.selectAnswerKey('midterm', 'jtrynisk')
+        akd.deleteAnswerKey('midterm')
+
+        then:
+        result == ['a,b,c,d']
+
     }
 
     def "incorrect examid"() {
@@ -41,7 +120,7 @@ class AnswerKeyDaoTest extends Specification {
 
     }
 
-    def "incorrect instructerID"() {
+    def "incorrect instructorID"() {
 
         when:
         akd.addAnswerKey("Midterm", Oswego)
@@ -82,9 +161,7 @@ class AnswerKeyDaoTest extends Specification {
         akd.deleteAnswerKey("Midterm")
     }
 
-    //Should throw Exception based on the code, but returns an empty list
-    //The exception should be thrown from select
-    @Ignore
+
     def "test deletion of an exam"() {
 
         when:
@@ -100,7 +177,6 @@ class AnswerKeyDaoTest extends Specification {
     }
 
 //Another failure of throwing an exception...le sad
-    @Ignore
     def "test error throwing of a delete of an exam"() {
 
         when:
@@ -114,7 +190,7 @@ class AnswerKeyDaoTest extends Specification {
     def "test addition of an updated answer key"() {
 
         when:
-        akd.addAnswerKey('Midterm', 'MATT', 'a,b,c')
+        akd.addAnswerKey('Midterm', 'MATT', 'a,b,c', "3")
         akd.addUpdatedAnswerKey('Midterm', 'a,b,c,d,e,f')
 
         then:
@@ -126,7 +202,6 @@ class AnswerKeyDaoTest extends Specification {
 
 //This should throw an error as that test doesnt exist, midterm is null through
 //the selectUpdated. the non existent test ends up being an empty list
-    @Ignore
     def "test thrown exception of an updated answer key"() {
 
         when:
@@ -142,7 +217,6 @@ class AnswerKeyDaoTest extends Specification {
     }
 
 //What I am learning is ain't nothing throwing exceptions that should... :(
-    @Ignore
     def 'test throwing an exception for selecting an answer key that doesnt exist'() {
 
         when:

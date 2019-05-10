@@ -93,8 +93,7 @@ public class InstructorDao {
 	/**
 	 * Returns an instructor and their information from the database
 	 * 
-	 * @param instId
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public List<String> selectInstructor(String firstName, String lastName) throws Exception {
 		list  = new ArrayList<String>();
