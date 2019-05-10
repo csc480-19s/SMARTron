@@ -36,10 +36,15 @@ public class main {
 		
 		testLogin(mainDriver,loginEmail);
 		testNamesDisplay(mainDriver,loginEmail);
-		testCreateTestScan(mainDriver);
+		String temp = testCreateTestScan(mainDriver);
+		checkChangeName(mainDriver,temp);
 		testResults(mainDriver);
+		testCreateTestScan(mainDriver);
+		checkKey(mainDriver);
 		testNewTestStillOnPage(mainDriver);
+		testCreateTestScan(mainDriver);
 		testChangeKey(mainDriver);
+		logOutTest(mainDriver);
 		
 		mainDriver.quit();
 		//mainDriver.close();
@@ -50,7 +55,7 @@ public class main {
 	{
 		//Navigates to localhost where our website is
 		//driver.get("http://localhost:3000");
-		driver.get("http://cs.oswego.edu/~smartron");
+		driver.get("http://pi.cs.oswego.edu:13126/");
 		driver.manage().window().maximize();
 		// Can find elements on the page a number of ways, xPath is my preferred method.
 		WebElement email = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/button"));
@@ -81,16 +86,16 @@ public class main {
 				
 				//Signing in by finding and filling out the email and password fields incorrectly
 				WebElement user = driver.findElement(By.xpath("//*[@id=\"identifierId\"]"));
-				user.sendKeys("badEmail@gmall.com");
-				Thread.sleep(1000);
+				//user.sendKeys("badEmail@gmall.com");
+				//Thread.sleep(5000);
 				
 				
 				WebElement nextButton = driver.findElement(By.xpath("//*[@id=\"identifierNext\"]/content/span"));
-				nextButton.click();
+				//nextButton.click();
 				driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-				printMe(existsElement("//*[@id=\"view_container\"]/div/div/div[2]/div/div[1]/div/form/content/section/div/content/div[1]/div/div[2]/div[2]/div",driver),"Incorrect Login Test");
+				//printMe(existsElement("//*[@id=\"view_container\"]/div/div/div[2]/div/div[1]/div/form/content/section/div/content/div[1]/div/div[2]/div[2]/div",driver),"Incorrect Login Test");
 				
-				user.clear();
+				//user.clear();
 				//Signing in by finding and filling out the email and password fields
 				user.sendKeys(emailString);
 				nextButton.click();
@@ -99,7 +104,7 @@ public class main {
 				WebElement password = driver.findElement(By.xpath("//*[@id=\"password\"]/div[1]/div/div[1]/input"));
 				
 				password.sendKeys("HiPeople");
-				WebElement nextButton2 = driver.findElement(By.xpath("//*[@id=\"identifierNext\"]/div[2]"));
+				WebElement nextButton2 = driver.findElement(By.xpath("//*[@id=\"passwordNext\"]/content/span"));
 				nextButton2.click();
 			}
 		}
@@ -114,7 +119,7 @@ public class main {
 	}
 
 	public static void testNamesDisplay(WebDriver driver,String email) {
-		WebElement emailDisplay = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/header/h1[3]"));
+		WebElement emailDisplay = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/header/div/h1"));
 		
 		printMe(emailDisplay.getText().equalsIgnoreCase(email),"Email display");
 		
@@ -129,7 +134,7 @@ public class main {
 		
 	}
 	
-	public static void testCreateTestScan(WebDriver driver) throws InterruptedException
+	public static String testCreateTestScan(WebDriver driver) throws InterruptedException
 	{
 		String newTestName = "TestName01";
 		
@@ -150,14 +155,37 @@ public class main {
 		
 		WebElement okButton = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[1]/div[2]/div/div/div[2]/div/button"));
 		okButton.click();
-		
-		printMe(existsElement("//*[@id=\"root\"]/div/div/div[4]/div",driver),"New exam Displayed");
-		
+		String examXPath = "//*[@id=\"root\"]/div/div/div[2]/div/a";
+		printMe(existsElement(examXPath,driver),"New exam Displayed");
+		return examXPath;
 		//WebElement newExam = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div"));
 		//printMe(newExam.getText().equals(newTestName),"New exam displays correct name");
 		//Testing answer key of new exam has correct amount of questions
 		//Thread.sleep(100000);
-		WebElement newExamAnswerKeyBtn=driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[4]/div/button[2]"));
+		
+	}
+	
+	public static void checkChangeName(WebDriver driver, String examXPathString) {
+		//if(existsElement("//*[@id=\"root\"]/div/div/div[2]/div/svg",driver)) {
+		WebElement editBtn = driver.findElement(By.className("fa-pencil-alt"));
+		editBtn.click();
+	
+		WebElement textField = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[2]/div/div[2]/div/div/form/label/input"));
+		String text = "Edit Check 123-=!";
+		textField.sendKeys(text);
+		
+		WebElement submitName = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[2]/div/div[2]/div/div/button[1]"));
+		submitName.click();
+		//*[@id="root"]/div/div/div[2]/div/a
+		WebElement nameCheck = driver.findElement(By.xpath(examXPathString));
+		printMe(text.equals(nameCheck.getText()),"Name Change Test");
+	//} else {
+		//printMe(false,"Name Change Btn Found");
+	//}
+	}
+	
+	public static void checkKey(WebDriver driver) {
+		WebElement newExamAnswerKeyBtn=driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div[2]/div/button[2]"));
 		newExamAnswerKeyBtn.click();
 		
 		boolean lastQuestionCheck = existsElement("//*[@id=\"root\"]/div/div/div[2]/div/div[35]",driver);
@@ -174,45 +202,47 @@ public class main {
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		//*[@id="root"]/div/div/div[2]/div/button[2]
 		//checks if all the tabs on the results pags display
-		if(existsElement("//*[@id=\"root\"]/div/div/div/div/header/div/div/div/div/button[1]/span[1]/span",driver)
-				&& existsElement("//*[@id=\"root\"]/div/div/div/div/header/div/div/div/div/button[2]",driver)
-				&& existsElement("//*[@id=\"root\"]/div/div/div/div/header/div/div/div/div/button[3]",driver)) 
+		if(existsElement("//*[@id=\"root\"]/div/div/div/div[2]/div/div/header/div/div/div/div/button[1]/span[1]/span",driver)
+				&& existsElement("//*[@id=\"root\"]/div/div/div/div[2]/div/div/header/div/div/div/div/button[2]/span[1]/span",driver)
+				&& existsElement("//*[@id=\"root\"]/div/div/div/div[2]/div/div/header/div/div/div/div/button[3]/span[1]/span",driver)) 
 		{
 			printMe(true,"Results page buttons displayed correctly");
 			
 			//Checks if the statistics tab works
-			WebElement statisticsButton = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/header/div/div/div/div/button[1]/span[1]/span"));
-			statisticsButton.click();
+			//WebElement statisticsButton = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div[2]/div/div/header/div/div/div/div/button[1]"));
+			//statisticsButton.click();
 	
-			printMe(existsElement("//*[@id=\"root\"]/div/div/div/div/div/div/div[1]/div/div[1]/div/table/tbody/tr[2]/td",driver),"Statistics Report Table displayed correctly");
-			printMe(existsElement("//*[@id=\"root\"]/div/div/div/div/div/div/div[1]/div/div[2]/div/div[1]/ul/li/span",driver),"Statistics Report Graph displayed correctly");
+			printMe(existsElement("//*[@id=\"root\"]/div/div/div/div[2]/div/div/div/div/div[1]/div/div/div/div[1]/table/thead/tr/th[1]",driver),"Statistics Report Table displayed");
+			printMe(existsElement("//*[@id=\"root\"]/div/div/div/div[2]/div/div/div/div/div[1]/div/div/div/div[2]/table/thead/tr/th[1]",driver),"Statistics Report Table 2 displayed");
+			//This was removed
+			//printMe(existsElement("//*[@id=\"root\"]/div/div/div/div[2]/div/div/div/div/div[1]/div/div/div/div[3]/svg",driver),"Statistics Report Graph displayed correctly");
 			
 			//Checks if the by question results displays correctly
-			WebElement byQuestionButton = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/header/div/div/div/div/button[2]/span[1]/span"));
+			WebElement byQuestionButton = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div[2]/div/div/header/div/div/div/div/button[2]"));
 			byQuestionButton.click();
 			
 			Thread.sleep(1000);
-			printMe(existsElement("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div/div/div[1]",driver),"By Question Table displayed correctly");
+			printMe(existsElement("//*[@id=\"root\"]/div/div/div/div[2]/div/div/div/div/div[2]/div/div/div/table/thead/tr/th[1]",driver),"By Question Table displays");
 			printMe(existsElement("//*[@id=\"root\"]/div/div/div/div/div/div/div[2]/div/div/div[2]",driver),"By Question Graph displayed correctly");
 
 			//Checks if the By student reults displays correctly
-			WebElement byStudentsButton = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div/header/div/div/div/div/button[3]/span[1]/span"));
+			WebElement byStudentsButton = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div[2]/div/div/header/div/div/div/div/button[3]"));
 			byStudentsButton.click();
 			
-			printMe(existsElement("//*[@id=\"root\"]/div/div/div/div/div/div/div[3]/div/div/div/table",driver),"By Students report displayed correctly");
+			printMe(existsElement("//*[@id=\"root\"]/div/div/div/div[2]/div/div/div/div/div[3]/div/div/div/table/thead/tr/th[1]",driver),"By Students table displayed correctly");
 			
 		}
 		else
 			printMe(false,"Results page buttons displayed correctly");
 		
-		
+		driver.navigate().back();
 		
 	}
 	
 	public static void testNewTestStillOnPage(WebDriver driver) 
 	{
 		//Testing if a newly created exam is displayed after a redirect
-		driver.navigate().back();
+		//driver.navigate().back();
 		printMe(existsElement("//*[@id=\"root\"]/div/div/div[4]/div",driver),"Newly created exam stays on home page");
 	}
 	
@@ -227,6 +257,14 @@ public class main {
 		printMe(keyHeading.getText().equalsIgnoreCase("Answer Key"), "Answer Key Page is Navigated to correctly");
 		
 		printMe(existsElement("//*[@id=\"root\"]/div/div/div[2]/div/div[1]/div/div/span[1]",driver),"Test key displays");
+	}
+	
+	public static void logOutTest(WebDriver driver) {
+		WebElement loBtn = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/header/div/button"));
+		loBtn.click();
+		
+		WebElement info = driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/p"));
+		printMe(info.getText().equals("Welcome to SMARTron, please login with your LakerNet account"),"Log Out Test");
 	}
 	
 	//Checks if a passed XPath exists as an element on the page
@@ -267,29 +305,35 @@ public class main {
 	}
 }
 
-/*OUTPUT from April 15th:
- * 
-Starting ChromeDriver 2.46.628402 (536cd7adbad73a3783fdc2cab92ab2ba7ec361e1) on port 33744
+/*
+ * Output from May 8th
+Starting ChromeDriver 2.46.628402 (536cd7adbad73a3783fdc2cab92ab2ba7ec361e1) on port 16099
 Only local connections are allowed.
 Please protect ports used by ChromeDriver and related test frameworks to prevent access by malicious code.
-Apr 15, 2019 12:46:49 PM org.openqa.selenium.remote.ProtocolHandshake createSession
+May 08, 2019 11:45:10 AM org.openqa.selenium.remote.ProtocolHandshake createSession
 INFO: Detected dialect: OSS
-1 Incorrect Login Test - has Passed!
-2 TestLogin - has Passed!
-3 Email display - has Passed!
-4 Welcome username should contain comp science - has Passed!
-5 Scan Code displayed - has Passed!
-6 New exam Displayed - has Passed!
-7 Newly created exam has correct amount of questions in answerKey - has Failed!
-8 Results page buttons displayed correctly - has Passed!
-9 Statistics Report Table displayed correctly - has Passed!
-10 Statistics Report Graph displayed correctly - has Passed!
-11 By Question Table displayed correctly - has Passed!
-12 By Question Graph displayed correctly - has Passed!
-13 By Students report displayed correctly - has Passed!
-14 Newly created exam stays on home page - has Failed!
-15 Answer Key Page is Navigated to correctly - has Passed!
-16 Test key displays - has Passed!
--14- tests passed and -2- tests failed out of -16- total tests. Giving us -87%- have passed.
+1 TestLogin - has Passed!
+2 Email display - has Passed!
+3 Welcome username should contain comp science - has Passed!
+4 Scan Code displayed - has Passed!
+5 New exam Displayed - has Passed!
+6 Name Change Test - has Passed!
+7 Results page buttons displayed correctly - has Passed!
+8 Statistics Report Table displayed - has Passed!
+9 Statistics Report Table 2 displayed - has Passed!
+10 Statistics Report Graph displayed correctly - has Failed!
+11 By Question Table displays - has Passed!
+12 By Question Graph displayed correctly - has Failed!
+13 By Students table displayed correctly - has Passed!
+14 Scan Code displayed - has Passed!
+15 New exam Displayed - has Passed!
+16 Newly created exam has correct amount of questions in answerKey - has Failed!
+17 Newly created exam stays on home page - has Failed!
+18 Scan Code displayed - has Passed!
+19 New exam Displayed - has Passed!
+20 Answer Key Page is Navigated to correctly - has Passed!
+21 Test key displays - has Failed!
+22 Log Out Test - has Passed!
+-17- tests passed and -5- tests failed out of -22- total tests. Giving us -77%- have passed.
  *
  */
