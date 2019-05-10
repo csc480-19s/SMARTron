@@ -24,3 +24,10 @@ hs_err_pid*
 
 # to ignore the databae file
 *.properties
+
+# Because MacOS hates us
+*.DS_Store
+
+# to ignore the .idea file
+*.idea
+/target/
