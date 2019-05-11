@@ -71,7 +71,7 @@ class Home extends Component {
         this.setState(this.state)
     }
     handleName(event) {
-        if (event.target.value.length < 21) {
+        if (event.target.value.length < 100) {
             this.setState({ newName: event.target.value });
 
         }

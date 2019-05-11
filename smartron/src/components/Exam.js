@@ -40,9 +40,11 @@ class Exam extends Component{
     navAnswerKey(){
       this.props.history.push({pathname:"/answerKey",state:{id:this.state.exid,text:this.state.title1, loginName:this.props.loginName,exams:this.props.list,email:this.props.email}});
     }
-    handleName(event){
-        this.setState({newName: event.target.value});
+    handleName(event) {
+        if (event.target.value.length < 100) {
+            this.setState({ newName: event.target.value });
 
+        }
     }
     suppressEnter(event){
         if (event.which === 13) {
