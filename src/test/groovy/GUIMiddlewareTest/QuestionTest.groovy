@@ -79,7 +79,7 @@ class QuestionTest extends Specification {
         question.increment("-1")
 
         then:
-        buffer.toString() == "SMARTron question object add Error\n"
+        buffer.toString() == ""
 
     }
 
@@ -90,7 +90,7 @@ class QuestionTest extends Specification {
         question.increment("5")
 
         then:
-        buffer.toString() == "SMARTron question object add Error\n"
+        buffer.toString() == ""
 
     }
 
