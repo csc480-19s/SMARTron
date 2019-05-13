@@ -13,7 +13,8 @@ class Exam extends Component{
             title1: props.text,
             problem: props.problem,
             exid: props.scanCode,
-            newName:""
+            newName:"",
+            visible:true
         }
         console.log(props.problem)
 
@@ -57,9 +58,27 @@ class Exam extends Component{
     }
     render() {
         return(
-            <div>
+            <div>{this.state.visible ?
                 <div className={"exam"}>
+                    <Popup modal trigger={<a className={"closeButton2"}> &times; </a>}>
+                        {close =>
+                        <div className={"changeName"}>
+                            <h1> Do you wish to delete test {this.state.title1}?</h1>
+                            <h2>This will PERMANENTLY erase this test and its results from your account </h2>
+                            <h2>This action cannot be undone</h2>
+                            <button onClick={()=>{
+                                fetch(`http://pi.cs.oswego.edu:13126/namechange?id=${this.state.exid}`,{
+                                    method: 'delete'
+                                })
+                                this.setState({visible:false})
+                            }} style={{background: '#aa0000',color:'white'}}>Delete</button>
+                            <button onClick={close}>Cancel</button>
 
+
+                        </div>
+                        }
+
+                    </Popup>
                     <a className={"editName"}>{this.state.title1} </a>
                     <Popup onClose={this.resetNewNames} modal trigger={<FontAwesomeIcon className={"edit"} icon={faPencilAlt}/>}>
                         {close =>
@@ -95,14 +114,12 @@ class Exam extends Component{
                     </Popup>
 
 
-
                     <>    Scan Code: {this.props.scanCode}</>
-
                     <button onClick={this.navResults}>View Results</button>
                     <button onClick={this.navAnswerKey}>Edit Answer Key</button>
                     {this.props.problem ? <img className={"alert"} src={alert} height={25} /> : null}
 
-                </div>
+                </div>: null}
             </div>
 
         )
