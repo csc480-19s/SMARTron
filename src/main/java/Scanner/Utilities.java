@@ -213,7 +213,7 @@ public class Utilities {
 
         for (int i = 0; i < array.length; i++) {
             for (int k = 0; k < array[i].length; k++) {
-                if (array[i][k] == null) {
+                if (array[i][k] == null || array[i][k].equalsIgnoreCase("null")) {
                     array[i][k] = "error";
                 }
             }
