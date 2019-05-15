@@ -4,7 +4,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Database.AnswerKeyDao;
 import Database.DataSource;
+import Database.ExamDao;
 
 import java.io.PrintWriter;
 import java.sql.*;
@@ -60,6 +62,7 @@ public class NameChangeServlet extends HttpServlet {
 
             PrintWriter out = response.getWriter();
            out.println(oldName + " " + id + " " + nameOfTest );
+           conn.close();
 
         }catch (Exception e){
             e.printStackTrace();
@@ -75,5 +78,48 @@ public class NameChangeServlet extends HttpServlet {
         }
 
     }
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
+        try{
+
+            //String email = request.getParameter("email").split("@")[0];
+            String id = request.getParameter("id");
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            conn = DataSource.getInstance().getBasicDataSource().getConnection();
+
+
+            String sql = "delete from answerkey where exam_id=?";
+            PreparedStatement checkStatement = conn.prepareStatement(sql);
+            checkStatement.setString(1,id);
+            checkStatement.execute();
+
+            sql = "delete from exam where exam_id = ?";
+            checkStatement = conn.prepareStatement(sql);
+            checkStatement.setString(1,id);
+            checkStatement.execute();
+
+
+
+
+
+            PrintWriter out = response.getWriter();
+            out.println( id + "Deleted"  );
+            conn.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 
 }
