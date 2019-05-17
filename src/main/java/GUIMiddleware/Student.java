@@ -90,7 +90,7 @@ public class Student {
             if (studentData.get(i) != null && !studentData.get(i).equals("error") && !studentData.get(i).equals("-1")) {
                 temp = temp + this.alphaConverter(studentData.get(i));
             } else {
-                temp = temp + ".";
+                temp = temp + " ";
             }
         }
 
@@ -101,7 +101,7 @@ public class Student {
         if (studentData.get(20) != null && !studentData.get(20).equals("-1") && !studentData.get(20).equals("error")) {
             this.sex = studentData.get(20);
         } else {
-            this.sex = ".";
+            this.sex = " ";
         }
     }
 
@@ -109,7 +109,7 @@ public class Student {
         if (studentData.get(21) != null && !studentData.get(21).equals("-1") && !studentData.get(21).equals("error")) {
             this.grade = studentData.get(21);
         } else {
-            this.grade = ".";
+            this.grade = " ";
         }
     }
 
@@ -120,7 +120,7 @@ public class Student {
             if (studentData.get(i) != null && !studentData.get(i).equals("error") && !studentData.get(i).equals("-1")) {
                 temp = temp + this.alphaConverter(studentData.get(i));
             } else {
-                temp = temp + ".";
+                temp = temp + " ";
             }
         }
         this.birthday = temp;
@@ -133,7 +133,7 @@ public class Student {
             if (studentData.get(i) != null && !studentData.get(i).equals("error") && !studentData.get(i).equals("-1")) {
                 temp = temp + studentData.get(i);
             } else {
-                temp = temp + ".";
+                temp = temp + " ";
             }
         }
         this.id = temp;
@@ -146,7 +146,7 @@ public class Student {
             if (studentData.get(i) != null && !studentData.get(i).equals("error") && !studentData.get(i).equals("-1")) {
                 temp = temp + studentData.get(i);
             } else {
-                temp = temp + ".";
+                temp = temp + " ";
             }
         }
         this.code = temp;
