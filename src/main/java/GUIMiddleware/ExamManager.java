@@ -79,6 +79,7 @@ public class ExamManager {
 
     private void getExamGrades(){
         this.key = studentExams.get(0);
+        this.studentExams.remove(0);
         this.studentNumberGrades = grader.getGrades(studentExams, key);
     }
 
